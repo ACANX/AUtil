@@ -50,7 +50,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <project.release.version>0.0.1.0-SNAPSHOT</project.release.version>
+        <project.release.version>0.0.1.1.SNAPSHOT</project.release.version>
     </properties>
 
 
@@ -78,11 +78,23 @@
 
     </dependencies>
 
+
+    <distributionManagement>
+        <repository>
+            <id>snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </repository>
+        <snapshotRepository>
+            <id>snapshots</id>
+            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+        </snapshotRepository>
+    </distributionManagement>
+
     <profiles>
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.0-RELEASE</project.release.version>
+                <project.release.version>0.0.1.1.RELEASE</project.release.version>
             </properties>
         </profile>
     </profiles>
@@ -160,7 +172,7 @@
                 <configuration>
                     <serverId>ossrh</serverId>
                     <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <!--<autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
                 </configuration>
             </plugin>
             <!--原文：https://blog.csdn.net/alinyua/article/details/83687250-->
