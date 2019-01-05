@@ -5,7 +5,7 @@ package com.acanx.utils;
  * 文件由 ACANX 创建于 2019/1/5 . 15:46
  *
  * @author ACANX
- * @description StringUtil:
+ * @description StringUtil:字符串处理相关工具类
  * 补充说明：
  * @date 2019/1/5  15:46
  * @since 0.0.1-SNAPSHOT
@@ -17,8 +17,8 @@ public class StringUtil {
 
     /**
      * 生成指定长度的随机字符串
-     * @param length
-     * @return
+     * @param length  String 字符串长度
+     * @return   String   生成的字符串
      */
       public static String getRandomStr(int length){
           StringBuffer sb=new StringBuffer();
@@ -29,7 +29,12 @@ public class StringUtil {
       }
 
 
-
+    /**
+     *  生成指定长度的指定字符串
+     * @param str   String 指定字符串
+     * @param length   int 循环长度
+     * @return    String 生成的字符串
+     */
       public static String getStrSeq(String str,int length){
           StringBuffer sb=new StringBuffer();
           for (int i = 0; i <length ; i++) {
@@ -37,6 +42,5 @@ public class StringUtil {
           }
           return  sb.toString();
       }
-
 
 }

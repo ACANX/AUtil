@@ -1,9 +1,28 @@
-# acanx-utils
+# acanx-utils 工具库
 
 #### 介绍
 ACANX开源的工具库
 
 学习学习
+
+
+### Maven坐标
+
+```xml
+
+<dependencies>
+    <groupId>com.acanx</groupId>
+    <artifactId>acanx-utils</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+</dependencies>
+
+```
+
+
+# 使用要求
+
+- JDK8/11  强烈建议升级到JDK11
+
 
 #### 软件架构
 软件架构说明
