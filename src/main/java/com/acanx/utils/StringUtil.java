@@ -4,11 +4,12 @@ package com.acanx.utils;
  * ACANX-Demo / com.acanx.utils / StringUtil
  * 文件由 ACANX 创建于 2019/1/5 . 15:46
  *
- * @author ACANX
- * @description StringUtil:字符串处理相关工具类
+ *  @author ACANX
+ *  StringUtil:字符串处理相关工具类
  * 补充说明：
- * @date 2019/1/5  15:46
+ *  2019/1/5  15:46
  * @since 0.0.1-SNAPSHOT
+ * @version v0.0.1.0
  */
 public class StringUtil {
 

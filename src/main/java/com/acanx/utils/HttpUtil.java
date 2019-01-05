@@ -5,9 +5,9 @@ package com.acanx.utils;
  * 文件由 ACANX 创建于 2019/1/5 . 15:46
  *
  * @author ACANX
- * @description HttpUtil:
+ *  HttpUtil:
  * 补充说明：
- * @date 2019/1/5  15:46
+ *  2019/1/5  15:46
  * @since 0.0.1-SNAPSHOT
  */
 public class HttpUtil {

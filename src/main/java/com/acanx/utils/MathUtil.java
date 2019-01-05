@@ -5,9 +5,9 @@ package com.acanx.utils;
  * 文件由 ACANX 创建于 2019/1/5 . 15:48
  *
  * @author ACANX
- * @description MathUtil:
+ *  MathUtil:
  * 补充说明：
- * @date 2019/1/5  15:48
+ *  2019/1/5  15:48
  * @since 0.0.1-SNAPSHOT
  */
 public class MathUtil {
