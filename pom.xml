@@ -4,22 +4,29 @@
     <modelVersion>4.0.0</modelVersion>
 
     <!--<parent>-->
-        <!--<groupId>org.springframework.boot</groupId>-->
-        <!--<artifactId>spring-boot-starter-parent</artifactId>-->
-        <!--<version>2.1.1.RELEASE</version>-->
+    <!--<groupId>org.springframework.boot</groupId>-->
+    <!--<artifactId>spring-boot-starter-parent</artifactId>-->
+    <!--<version>2.1.1.RELEASE</version>-->
     <!--</parent>-->
     <!--<parent>-->
-        <!--<groupId>org.sonatype.oss</groupId>-->
-        <!--<artifactId>oss-parent</artifactId>-->
-        <!--<version>7</version>-->
+    <!--<groupId>org.sonatype.oss</groupId>-->
+    <!--<artifactId>oss-parent</artifactId>-->
+    <!--<version>7</version>-->
     <!--</parent>-->
 
 
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>${project.release.version}</version>
+    <version>0.0.1.4.RELEASE</version>
+
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
+    <url>https://gitee.com/ACANX/acanx-utils</url>
+    <inceptionYear>2019</inceptionYear>
+    <organization>
+        <name>ACANX</name>
+        <url>https://www.acanx.com</url>
+    </organization>
 
     <licenses>
         <license>
@@ -50,21 +57,19 @@
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <project.release.version>0.0.1.1.SNAPSHOT</project.release.version>
+        <project.release.version>0.0.1.4.RELEASE</project.release.version>
     </properties>
-
-
 
 
     <dependencies>
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-web</artifactId>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-web</artifactId>-->
         <!--</dependency>-->
         <!--<dependency>-->
-            <!--<groupId>org.springframework.boot</groupId>-->
-            <!--<artifactId>spring-boot-starter-test</artifactId>-->
-            <!--<scope>test</scope>-->
+        <!--<groupId>org.springframework.boot</groupId>-->
+        <!--<artifactId>spring-boot-starter-test</artifactId>-->
+        <!--<scope>test</scope>-->
         <!--</dependency>-->
 
         <!-- https://mvnrepository.com/artifact/junit/junit -->
@@ -79,105 +84,136 @@
     </dependencies>
 
 
-    <distributionManagement>
-        <repository>
-            <id>snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </repository>
-        <snapshotRepository>
-            <id>snapshots</id>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-        </snapshotRepository>
-    </distributionManagement>
-
     <profiles>
+
+        <!--本地发布-->
+        <profile>
+            <id>dev</id>
+            <properties>
+                <project.release.version>0.0.1.4.RELEASE</project.release.version>
+            </properties>
+            <build>
+                <plugins>
+                    <!--<plugin>-->
+                        <!--<groupId>org.springframework.boot</groupId>-->
+                        <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+                    <!--</plugin>-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven-compiler-plugin.version}</version>
+                        <configuration>
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+
+        <!--本地发布-->
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.1.RELEASE</project.release.version>
+                <project.release.version>0.0.1.4.RELEASE</project.release.version>
             </properties>
         </profile>
-    </profiles>
 
-    <build>
-        <plugins>
-            <!--<plugin>-->
-                <!--<groupId>org.springframework.boot</groupId>-->
-                <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
-            <!--</plugin>-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>${maven-compiler-plugin.version}</version>
-                <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
-                </configuration>
-            </plugin>
-
-
-
-            <!--生成Source jar文件-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>2.2.1</version>
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--生成Javadoc，关闭doclint,避免注解检查不通过-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.0.0</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
+        <!--maven 中央仓库发布-->
+        <profile>
+            <id>sonatype-oss-release</id>
+            <properties>
+                <project.release.version>0.0.1.4.RELEASE</project.release.version>
+            </properties>
+            <build>
+                <plugins>
+                    <!--<plugin>-->
+                    <!--<groupId>org.springframework.boot</groupId>-->
+                    <!--<artifactId>spring-boot-maven-plugin</artifactId>-->
+                    <!--</plugin>-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-compiler-plugin</artifactId>
+                        <version>${maven-compiler-plugin.version}</version>
                         <configuration>
-                            <!--<additionalparam>-Xdoclint:none</additionalparam>-->
+                            <source>${maven.compiler.source}</source>
+                            <target>${maven.compiler.target}</target>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--Maven GPG插件用于使用以下配置对组件进行签名-->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
-                <executions>
-                    <execution>
-                        <id>sign-artifacts</id>
-                        <phase>verify</phase>
-                        <goals>
-                            <goal>sign</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-            <!--Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法-->
-            <plugin>
-                <groupId>org.sonatype.plugins</groupId>
-                <artifactId>nexus-staging-maven-plugin</artifactId>
-                <version>1.6.7</version>
-                <extensions>true</extensions>
-                <configuration>
-                    <serverId>ossrh</serverId>
-                    <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                    <autoReleaseAfterClose>true</autoReleaseAfterClose>
-                </configuration>
-            </plugin>
-            <!--原文：https://blog.csdn.net/alinyua/article/details/83687250-->
-
-        </plugins>
-    </build>
+                    </plugin>
+                    <!--生成Source jar文件-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--生成Javadoc，关闭doclint,避免注解检查不通过-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.0.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <additionalparam>-Xdoclint:none</additionalparam>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--Maven GPG插件用于使用以下配置对组件进行签名-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-gpg-plugin</artifactId>
+                        <version>1.5</version>
+                        <executions>
+                            <execution>
+                                <id>sign-artifacts</id>
+                                <phase>verify</phase>
+                                <goals>
+                                    <goal>sign</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!--Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法-->
+                    <plugin>
+                        <groupId>org.sonatype.plugins</groupId>
+                        <artifactId>nexus-staging-maven-plugin</artifactId>
+                        <version>1.6.8</version>
+                        <extensions>true</extensions>
+                        <configuration>
+                            <serverId>sonatype-nexus-staging</serverId>
+                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
+                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                        </configuration>
+                    </plugin>
+                    <!--原文：https://blog.csdn.net/alinyua/article/details/83687250-->
+                </plugins>
+            </build>
+            <distributionManagement>
+                <repository>
+                    <id>sonatype-nexus-staging</id>
+                    <name>Nexus Release Repository</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
+                <snapshotRepository>
+                    <id>sonatype-nexus-snapshots</id>
+                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                </snapshotRepository>
+            </distributionManagement>
+        </profile>
+    </profiles>
 
 </project>
