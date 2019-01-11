@@ -10,11 +10,11 @@ ACANX开源的工具库
 
 ```xml
 
-<dependencies>
-    <groupId>com.acanx</groupId>
-    <artifactId>acanx-utils</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
-</dependencies>
+<dependency>
+  <groupId>com.acanx</groupId>
+  <artifactId>acanx-utils</artifactId>
+  <version>0.0.1.5</version>
+</dependency>
 
 ```
 
