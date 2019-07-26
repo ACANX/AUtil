@@ -12,11 +12,13 @@
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
     <url>https://gitee.com/ACANX/acanx-utils</url>
+    <logo>https://cdn.acanx.com/FirstPage/img/7c88d8ef5ba65e74a696a898cd8af19b_100x100.png</logo>
 
     <inceptionYear>2019</inceptionYear>
     <organization>
         <name>ACANX</name>
         <url>https://www.acanx.com</url>
+        <!--<logo>https://www.easyicon.net/api/resizeApi.php?id=1194402&size=128</logo>-->
     </organization>
 
     <licenses>
