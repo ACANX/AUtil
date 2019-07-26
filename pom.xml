@@ -7,7 +7,7 @@
 
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.1.5</version>
+    <version>0.0.1.6</version>
 
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
@@ -48,7 +48,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <project.release.version>0.0.1.5</project.release.version>
+        <project.release.version>0.0.1.6</project.release.version>
     </properties>
 
 
@@ -71,7 +71,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.1.4.RELEASE</project.release.version>
+                <project.release.version>0.0.1.6.RELEASE</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -93,15 +93,20 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.4.RELEASE</project.release.version>
+                <project.release.version>0.0.1.6.RELEASE</project.release.version>
             </properties>
         </profile>
 
         <!-- 发布到 Maven中央仓库-->
         <profile>
             <id>sonatype-oss-release</id>
+            <!--设为默认profile 开始-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <!--设为默认profile 结束-->
             <properties>
-                <project.release.version>0.0.1.5</project.release.version>
+                <project.release.version>0.0.1.6</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -149,7 +154,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.5</version>
+                        <version>1.6</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -175,14 +180,15 @@
                     <!--原文：https://blog.csdn.net/alinyua/article/details/83687250-->
                 </plugins>
             </build>
+            <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
             <distributionManagement>
                 <repository>
-                    <id>sonatype-nexus-staging</id>
+                    <id>ossrh</id>
                     <name>Nexus Release Repository</name>
                     <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
                 <snapshotRepository>
-                    <id>sonatype-nexus-staging</id>
+                    <id>ossrh</id>
                     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
             </distributionManagement>

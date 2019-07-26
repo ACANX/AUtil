@@ -47,11 +47,10 @@ public class StringUtil {
       }
 
 
-    /**
-     * 来自  package org.apache.commons.lang3.RandomStringUtils;
-     */
 
     /**
+     * 来自  package org.apache.commons.lang3.RandomStringUtils;
+     *
      * <p>Creates a random string based on a variety of options, using
      * supplied source of randomness.</p>
      *
