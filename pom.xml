@@ -7,12 +7,12 @@
 
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.1.6</version>
-
+    <version>0.0.1.7</version>
+    <packaging>jar</packaging>
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
     <url>https://gitee.com/ACANX/acanx-utils</url>
-    <logo>https://cdn.acanx.com/FirstPage/img/7c88d8ef5ba65e74a696a898cd8af19b_100x100.png</logo>
+    <!--<logo>https://cdn.acanx.com/FirstPage/img/7c88d8ef5ba65e74a696a898cd8af19b_100x100.png</logo>-->
 
     <inceptionYear>2019</inceptionYear>
     <organization>
@@ -50,7 +50,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <project.release.version>0.0.1.6</project.release.version>
+        <project.release.version>0.0.1.7</project.release.version>
     </properties>
 
 
@@ -73,7 +73,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.1.6.RELEASE</project.release.version>
+                <project.release.version>0.0.1.7.RELEASE</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -95,7 +95,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.6.RELEASE</project.release.version>
+                <project.release.version>0.0.1.7.RELEASE</project.release.version>
             </properties>
         </profile>
 
@@ -108,7 +108,7 @@
             </activation>
             <!--设为默认profile 结束-->
             <properties>
-                <project.release.version>0.0.1.6</project.release.version>
+                <project.release.version>0.0.1.7</project.release.version>
             </properties>
             <build>
                 <plugins>
