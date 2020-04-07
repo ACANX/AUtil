@@ -27,8 +27,8 @@ import java.util.Random;
  *
  * @author ACANXX
  * @version 0.0.1.0
- * @date 2020/4/5  18:48
- * @since 0.0.1-SNAPSHOT
+ *       2020/4/5  18:48
+ * @since 0.0.1.8
  */
 public class CaptchaUtil {
     /**
@@ -69,7 +69,7 @@ public class CaptchaUtil {
      * code为生成的验证码
      * codePic为生成的验证码BufferedImage对象
      *
-     * @return
+     * @return 返回包含code码及captcha图片的 {@link HashMap}
      */
     public static Map<String, Object> generateCodeAndPic() {
         // 定义图像buffer

@@ -18,9 +18,9 @@ public class LocalDateTimeUtil {
 
 
     /**
-     * LocalDateTime转Date
-     * @param localDateTime
-     * @return
+     *{@link  LocalDateTime}转{@link  java.util.Date}
+     * @param localDateTime 输入的localDateTime
+     * @return  {@link java.util.Date}类型的日期时间类型
      */
     public static Date LocalDateTime2Date(LocalDateTime localDateTime) {
         return null;
@@ -28,9 +28,9 @@ public class LocalDateTimeUtil {
 
 
     /**
-     * Date转LocalDateTime
-     * @param date
-     * @return
+     * {@link Date}转{@link LocalDateTime}
+     * @param date  {@link java.util.Date}类型的日期时间类型
+     * @return 输出对应的localDateTime类型
      */
     public static LocalDateTime Date2LocalDateTime(Date date) {
         return null;
