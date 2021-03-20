@@ -3,11 +3,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-
-
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.1.8</version>
+    <version>0.0.1.9</version>
     <packaging>jar</packaging>
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
@@ -18,7 +16,7 @@
     <organization>
         <name>ACANX</name>
         <url>https://www.acanx.com</url>
-        <!--<logo>https://www.easyicon.net/api/resizeApi.php?id=1194402&size=128</logo>-->
+        <!-- <logo>https://www.easyicon.net/api/resizeApi.php?id=1194402&size=128</logo>  -->
     </organization>
 
     <licenses>
@@ -50,7 +48,7 @@
         <maven.compiler.target>11</maven.compiler.target>
         <java.version>11</java.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <project.release.version>0.0.1.7</project.release.version>
+        <project.release.version>0.0.1.9</project.release.version>
     </properties>
 
 
@@ -72,7 +70,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.1.8.RELEASE</project.release.version>
+                <project.release.version>0.0.1.9</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -94,7 +92,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.8.RELEASE</project.release.version>
+                <project.release.version>0.0.1.9</project.release.version>
             </properties>
         </profile>
 
@@ -107,7 +105,7 @@
             </activation>
             <!--设为默认profile 结束-->
             <properties>
-                <project.release.version>0.0.1.8</project.release.version>
+                <project.release.version>0.0.1.9</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -138,7 +136,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.0.0</version>
+                        <version>3.2.0</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -146,7 +144,11 @@
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
-                                    <!--<additionalparam>-Xdoclint:none</additionalparam>-->
+                                    <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
+                                    <!-- <aggregate>true</aggregate>-->
+                                    <charset>UTF-8</charset><!-- utf-8读取文件 -->
+                                    <encoding>UTF-8</encoding><!-- utf-8进行编码代码 -->
+                                    <docencoding>UTF-8</docencoding><!-- utf-8进行编码文档 -->
                                 </configuration>
                             </execution>
                         </executions>
