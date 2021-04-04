@@ -36,7 +36,7 @@ public class CaptchaUtilTest {
     public void testGenerateCodeAndPic() throws Exception {
 
         Long totalCost=0L;
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < 10; i++) {
             //创建文件输出流对象
             Long start = System.currentTimeMillis();
             String path="D://" + start + ".jpg";
@@ -52,7 +52,7 @@ public class CaptchaUtilTest {
             System.out.println("验证码的值为：" + map.get("code") + " 生成耗时：" + cost + "ms");
             totalCost=totalCost+cost;
         }
-        System.out.println("平均耗时："+(totalCost/200)+"ms");
+        System.out.println("平均耗时："+(totalCost/10)+"ms");
     }
 
 

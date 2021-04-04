@@ -145,12 +145,10 @@ public class StringUtil {
                 count++;
                 continue;
             }
-
             if (letters && Character.isLetter(codePoint)
                     || numbers && Character.isDigit(codePoint)
                     || !letters && !numbers) {
                 builder.appendCodePoint(codePoint);
-
                 if (numberOfChars == 2) {
                     count--;
                 }
@@ -160,6 +158,12 @@ public class StringUtil {
             }
         }
         return builder.toString();
+    }
+
+
+    public static boolean isEmpty(String str) {
+        // TODO
+        return true;
     }
 
 }
