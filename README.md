@@ -13,7 +13,7 @@ ACANX开源的工具库
 <dependency>
   <groupId>com.acanx</groupId>
   <artifactId>acanx-utils</artifactId>
-  <version>0.0.1.6</version>
+  <version>0.0.1.8</version>
 </dependency>
 
 ```
