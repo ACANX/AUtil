@@ -2,36 +2,26 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.1.9</version>
+    <version>0.0.1.10-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
     <url>https://gitee.com/ACANX/acanx-utils</url>
-    <!--<logo>https://cdn.acanx.com/FirstPage/img/7c88d8ef5ba65e74a696a898cd8af19b_100x100.png</logo>-->
-
+    <!-- <logo>https://cdn.acanx.com/FirstPage/img/7c88d8ef5ba65e74a696a898cd8af19b_100x100.png</logo> -->
     <inceptionYear>2019</inceptionYear>
-    <organization>
-        <name>ACANX</name>
-        <url>https://www.acanx.com</url>
-        <!-- <logo>https://www.easyicon.net/api/resizeApi.php?id=1194402&size=128</logo>  -->
-    </organization>
-
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
     <scm>
         <tag>master</tag>
         <url>git@gitee.com:ACANX/acanx-utils.git</url>
         <connection>scm:git:git@gitee.com:ACANX/acanx-utils.git</connection>
         <developerConnection>scm:git:git@gitee.com:ACANX/acanx-utils.git</developerConnection>
     </scm>
+    <organization>
+        <name>ACANX</name>
+        <url>https://www.acanx.com</url>
+        <!--  <logo>https://www.easyicon.net/api/resizeApi.php?id=1194402&size=128</logo>   -->
+    </organization>
     <developers>
         <developer>
             <name>ACANX</name>
@@ -39,38 +29,53 @@
             <organization>ACANX</organization>
         </developer>
     </developers>
-
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <java.version>11</java.version>
+        <maven.compiler.source>8</maven.compiler.source>
+        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>8</java.version>
         <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
-        <project.release.version>0.0.1.9</project.release.version>
+        <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
+        <junit-jupiter.version>5.10.2</junit-jupiter.version>
     </properties>
 
-
     <dependencies>
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
 
+<!--    <build>-->
+<!--        <plugins>-->
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>8</source>-->
+<!--                    <target>8</target>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+<!--        </plugins>-->
+<!--    </build>-->
 
     <profiles>
-
         <!--本地发布-->
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.1.9</project.release.version>
+                <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -83,29 +88,65 @@
                             <target>${maven.compiler.target}</target>
                         </configuration>
                     </plugin>
+
+                    <!--生成Source jar文件-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-source-plugin</artifactId>
+                        <version>2.2.1</version>
+                        <executions>
+                            <execution>
+                                <id>attach-sources</id>
+                                <goals>
+                                    <goal>jar-no-fork</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-javadoc-plugin</artifactId>
+                        <version>3.2.0</version>
+                        <executions>
+                            <execution>
+                                <id>attach-javadocs</id>
+                                <goals>
+                                    <goal>jar</goal>
+                                </goals>
+                                <configuration>
+                                    <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
+                                    <!-- <aggregate>true</aggregate>-->
+                                    <charset>UTF-8</charset> <!-- utf-8读取文件 -->
+                                    <encoding>UTF-8</encoding> <!-- utf-8进行编码代码 -->
+                                    <docencoding>UTF-8</docencoding> <!-- utf-8进行编码文档 -->
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
                 </plugins>
             </build>
         </profile>
 
 
-        <!--发布到本地仓库-->
+        <!-- 发布到本地仓库 -->
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.9</project.release.version>
+                <project.release.version>0.0.1.10</project.release.version>
             </properties>
         </profile>
 
-        <!-- 发布到 Maven中央仓库-->
+        <!-- 发布到 Maven中央仓库 -->
         <profile>
             <id>sonatype-oss-release</id>
-            <!--设为默认profile 开始-->
+            <!-- 设为默认profile 开始 -->
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
-            <!--设为默认profile 结束-->
+            <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.0.1.9</project.release.version>
+                <project.release.version>0.0.1.10</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -168,7 +209,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!--Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法-->
+                    <!-- Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法 -->
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
@@ -180,7 +221,7 @@
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
                     </plugin>
-                    <!--原文：https://blog.csdn.net/alinyua/article/details/83687250-->
+                    <!-- 参考：https://blog.csdn.net/alinyua/article/details/83687250 -->
                 </plugins>
             </build>
             <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
