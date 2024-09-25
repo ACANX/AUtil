@@ -4,14 +4,14 @@ import java.io.UnsupportedEncodingException;
 import java.util.Base64;
 
 /**
- * ACANX-Demo / com.acanx.utils / Base64Util
+ * ACANX-Util / com.acanx.utils / Base64Util
  * 文件由 ACANX 创建于 2019/1/5 . 15:52
  *
  * @author ACANX
  *  Base64Util:
  * 补充说明：
  *  2019/1/5  15:52
- * @since 0.0.1-SNAPSHOT
+ * @since 0.0.1
  */
 public class Base64Util {
 
@@ -27,6 +27,7 @@ public class Base64Util {
     private static final char[] encodeTable = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
 
     public Base64Util() {
+
     }
 
 
@@ -127,27 +128,6 @@ public class Base64Util {
     public static String decodeBase64(String str,String charsetName) throws UnsupportedEncodingException{
         return new String(decoder.decode(str), charsetName);
     }
-
-
-//      public static void main(String[] args) throws Exception{
-//        final String text = "字串文字中华人民共和国1111111111111111111111111";
-//        final byte[] textByte = text.getBytes("UTF-8");
-//        //编码
-//        final String encodedText = encoder.encodeToString(textByte);
-//        System.out.println(encodedText);
-//        //解码
-//        System.out.println(new String(decoder.decode(encodedText), "UTF-8"));
-//
-//
-//        /**
-//         * base64 demo 测试
-//         */
-//        System.out.println(text);
-//        String encode=encodeBase64(text);
-//        System.out.println(encode);
-//        System.out.println(decodeBase64(encode));
-//    }
-
 
 
 }

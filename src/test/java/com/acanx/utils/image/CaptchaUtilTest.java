@@ -1,9 +1,6 @@
 package com.acanx.utils.image;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.theories.suppliers.TestedOn;
+import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
 import java.awt.image.RenderedImage;
@@ -21,27 +18,18 @@ import java.util.Map;
  */
 public class CaptchaUtilTest {
 
-    @Before
-    public void before() throws Exception {
-    }
-
-    @After
-    public void after() throws Exception {
-    }
-
     /**
      * Method: generateCodeAndPic()
      */
     @Test
     public void testGenerateCodeAndPic() throws Exception {
-
-        Long totalCost=0L;
+        Long totalCost = 0L;
         for (int i = 0; i < 10; i++) {
             //创建文件输出流对象
             Long start = System.currentTimeMillis();
-            String path="D://" + start + ".jpg";
+            String path = "D://" + start + ".jpg";
             File file = new File(path);
-            if(!file.exists()){
+            if (!file.exists()) {
                 file.createNewFile();
             }
             OutputStream out = new FileOutputStream(file);
@@ -50,9 +38,9 @@ public class CaptchaUtilTest {
             Long stop = System.currentTimeMillis();
             Long cost = (stop - start);
             System.out.println("验证码的值为：" + map.get("code") + " 生成耗时：" + cost + "ms");
-            totalCost=totalCost+cost;
+            totalCost = totalCost + cost;
         }
-        System.out.println("平均耗时："+(totalCost/10)+"ms");
+        System.out.println("平均耗时：" + (totalCost / 10) + "ms");
     }
 
 

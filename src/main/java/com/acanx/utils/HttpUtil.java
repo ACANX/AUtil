@@ -9,14 +9,14 @@ import java.util.List;
 import java.util.Map;
 
 /**
- *    ACANX-Demo / com.acanx.utils / HttpUtil
+ *    ACANX-Util / com.acanx.utils / HttpUtil
  *   文件由 ACANX 创建于 2019/1/5 . 15:46
  *
  *  @author ACANX
  *  HttpUtil:
  *  补充说明：
  *  2019/1/5  15:46
- *  @since 0.0.0.1.6-SNAPSHOT
+ *  @since 0.0.0.1.6
  */
 public class HttpUtil {
 

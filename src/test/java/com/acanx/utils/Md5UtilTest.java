@@ -1,0 +1,20 @@
+package com.acanx.utils;
+
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class Md5UtilTest {
+    /**
+     * 字符串的MD5加密 默认输出为大写十六进制字符
+     * @return  加密后的MD5值，32位（十六进制字符、大写）
+     */
+    @Test
+    void getMD5Test() {
+        String base = "123456";
+         // @param str  待加密的字符串
+        String md5 = StringUtil.getStringMD5Code(base);
+        System.out.println(md5.toUpperCase());
+    }
+
+}
