@@ -14,138 +14,138 @@ public class FileConstant {
      */
     /**  txt */
     public static final String DOT_TXT = ".txt";
-    /**  txt */
+    /**  doc */
     public static final String DOT_DOC = ".doc";
-    /**  txt */
+    /**  docx */
     public static final String DOT_DOCX = ".docx";
-    /**  txt */
+    /**  pdf */
     public static final String DOT_PDF = ".pdf";
-    /**  txt */
-    public static final String DOT_CSV = ".csv";
-    /**  txt */
+    /**  pdf */
+    public static final String DOT_CSV = ".pdf";
+    /**  xls */
     public static final String DOT_XLS = ".xls";
-    /**  txt */
+    /**  xlsm */
     public static final String DOT_XLSM = ".xlsm";
-    /**  txt */
+    /**  xlsx */
     public static final String DOT_XLSX = ".xlsx";
-    /**  txt */
+    /**  md */
     public static final String DOT_MD = ".md";
 
     /**
      *  音频
      */
-    /**  txt */
+    /**  mp3 */
     public static final String DOT_MP3 = ".mp3";
-    /**  txt */
+    /**  flac */
     public static final String DOT_FLAC = ".flac";
-    /**  txt */
+    /**  wav */
     public static final String DOT_WAV = ".wav";
-    /**  txt */
+    /**  ape */
     public static final String DOT_APE = ".ape";
 
     /**
      *  视频
      */
-    /**  txt */
+    /**  mp4 */
     public static final String DOT_MP4 = ".mp4";
-    /**  txt */
+    /**  mkv */
     public static final String DOT_MKV = ".mkv";
-    /**  txt */
+    /**  rmvb */
     public static final String DOT_RMVB = ".rmvb";
 
     /**
      *  编程语言
      */
-    /**  txt */
+    /**  c */
     public static final String DOT_C = ".c";
-    /**  txt */
+    /**  h */
     public static final String DOT_H = ".h";
-    /**  txt */
+    /**  cpp */
     public static final String DOT_CPP = ".cpp";
-    /**  txt */
+    /**  json */
     public static final String DOT_JSON = ".json";
-    /**  txt */
+    /**  css */
     public static final String DOT_CSS = ".css";
-    /**  txt */
+    /**  html */
     public static final String DOT_HTML = ".html";
-    /**  txt */
+    /**  shtml */
     public static final String DOT_SHTML = ".shtml";
-    /**  txt */
+    /**  mht */
     public static final String DOT_MHT = ".mht";
-    /**  txt */
+    /**  js */
     public static final String DOT_JS = ".js";
-    /**  txt */
+    /**  ts */
     public static final String DOT_TS = ".ts";
-    /**  txt */
+    /**  java */
     public static final String DOT_JAVA = ".java";
-    /**  txt */
+    /**  kt */
     public static final String DOT_KOTLIN = ".kt";
-    /**  txt */
+    /**  class */
     public static final String DOT_CLASS = ".class";
-    /**  txt */
+    /**  properties */
     public static final String DOT_PROPERTIES = ".properties";
-    /**  txt */
+    /**  xml */
     public static final String DOT_XML = ".xml";
-    /**  txt */
+    /**  jar */
     public static final String DOT_JAR = ".jar";
-    /**  txt */
+    /**  war */
     public static final String DOT_WAR = ".war";
-    /**  txt */
+    /**  go */
     public static final String DOT_GO = ".go";
-    /**  txt */
+    /**  php */
     public static final String DOT_PHP = ".php";
-    /**  txt */
+    /**  yml */
     public static final String DOT_YML = ".yml";
-    /**  txt */
+    /**  yaml */
     public static final String DOT_YAML = ".yaml";
 
 
     /**
      *  Linux
      */
-    /**  txt */
+    /**  so */
     public static final String DOT_SO = ".so";
-    /**  txt */
+    /**  deb */
     public static final String DOT_DEB = ".deb";
 
     /**
      *  Windows
      */
-    /**  txt */
+    /**  dll */
     public static final String DOT_DLL = ".dll";
-    /**  txt */
+    /**  exe */
     public static final String DOT_EXE = ".exe";
-    /**  txt */
+    /**  msi */
     public static final String DOT_MSI = ".msi";
 
     /**
      *  MacOS
      */
-    /**  txt */
+    /**  dmg */
     public static final String DOT_DMG = ".dmg";
 
     /**
      *  Android
      */
-    /**  txt */
+    /**  apk */
     public static final String DOT_APK = ".apk";
 
     /**
      *  图片格式
      */
-    /**  txt */
+    /**  png */
     public static final String DOT_PNG = ".png";
-    /**  txt */
+    /**  jpg */
     public static final String DOT_JPG = ".jpg";
-    /**  txt */
+    /**  jpeg */
     public static final String DOT_JPEG = ".jpeg";
-    /**  txt */
+    /**  webp */
     public static final String DOT_WEBP = ".webp";
-    /**  txt */
+    /**  gif */
     public static final String DOT_GIF = ".gif";
-    /**  txt */
+    /**  bmp */
     public static final String DOT_BMP = ".bmp";
-    /**  txt */
+    /**  psd */
     public static final String DOT_PSD = ".psd";
 
 

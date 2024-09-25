@@ -50,7 +50,7 @@ public class FileUtil {
      * 构造函数
      * @hidden
      */
-    public FileUtil() {
+    private FileUtil() {
     }
 
     /**

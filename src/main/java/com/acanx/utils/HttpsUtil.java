@@ -15,7 +15,7 @@ public class HttpsUtil {
      * 构造函数
      * @hidden
      */
-    public HttpsUtil() {
+    private HttpsUtil() {
     }
 
 

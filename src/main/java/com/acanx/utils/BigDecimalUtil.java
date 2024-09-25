@@ -18,15 +18,14 @@ import java.math.BigDecimal;
 @Alpha
 public class BigDecimalUtil {
 
+   /**  bigDecimal */
+   public static  BigDecimal bigDecimal;
+
    /**
     * 构造函数
     * @hidden
     */
    private BigDecimalUtil() {
    }
-
-   /**  bigDecimal */
-   public static  BigDecimal bigDecimal;
-
 
 }

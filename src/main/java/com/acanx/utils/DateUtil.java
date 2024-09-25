@@ -32,7 +32,7 @@ public class DateUtil {
      * 构造方法
      * @hidden
      */
-    public DateUtil() {
+    private DateUtil() {
     }
 
     /**

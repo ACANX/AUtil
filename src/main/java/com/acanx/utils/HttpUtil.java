@@ -23,7 +23,7 @@ public class HttpUtil {
      * 构造函数
      * @hidden
      */
-    public HttpUtil() {
+    private HttpUtil() {
     }
 
     /**
