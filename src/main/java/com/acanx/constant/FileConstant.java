@@ -21,7 +21,7 @@ public class FileConstant {
     /**  pdf */
     public static final String DOT_PDF = ".pdf";
     /**  pdf */
-    public static final String DOT_CSV = ".pdf";
+    public static final String DOT_CSV = ".csv";
     /**  xls */
     public static final String DOT_XLS = ".xls";
     /**  xlsm */
