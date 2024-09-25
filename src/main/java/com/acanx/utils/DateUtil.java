@@ -12,18 +12,28 @@ import java.util.Date;
 /**
  * ACANX-Util / com.acanx.utils / DateUtil
  * 文件由 ACANX 创建于 2019/1/5 . 15:47
- *
- * @author ACANX
  *  DateUtil:
  * 补充说明：
  *  2019/1/5  15:47
+ *
+ * @author ACANX
  * @since 0.0.1
  */
 public class DateUtil {
 
+    /** SDF_YMDHMS  */
     public static SimpleDateFormat SDF_YMDHMS = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    /** SDF_HMS  */
     public static SimpleDateFormat SDF_HMS = new SimpleDateFormat("HH:mm:ss");
+    /** SDF_YMD  */
     public static SimpleDateFormat SDF_YMD = new SimpleDateFormat("yyyy-MM-dd");
+
+    /**
+     * 构造方法
+     * @hidden
+     */
+    public DateUtil() {
+    }
 
     /**
      *  将 java.util.Date 转换为 java.time.LocalDateTime，使用系统默认时区
@@ -86,9 +96,9 @@ public class DateUtil {
      *
      *    日期前后X天的日期计算
      *
-     * @param beginDate
-     * @param delta
-     * @return
+     * @param beginDate 开始日期
+     * @param delta     间隔天数
+     * @return          目标日期
      */
     @Alpha
     public static int dateAdd(int beginDate, int delta) {
@@ -115,8 +125,8 @@ public class DateUtil {
     /**
      *  int类型的日期合法性校验（仅限1970年及以后的日期）
      *
-     * @param date
-     * @return
+     * @param date   输入日期
+     * @return       日期是否合法
      */
     @Alpha
     public static boolean isDateValid(int date) {

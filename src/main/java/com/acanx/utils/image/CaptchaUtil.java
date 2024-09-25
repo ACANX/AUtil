@@ -24,13 +24,21 @@ import java.util.Random;
  * <p>
  * 实现参考：
  * https://www.cnblogs.com/nanyangke-cjz/p/7049281.html
+ *        2020/4/5  18:48
  *
  * @author ACANXX
  * @version 0.0.1.0
- *       2020/4/5  18:48
  * @since 0.0.1.8
  */
 public class CaptchaUtil {
+
+    /**
+     * 构造函数
+     * @hidden
+     */
+    private CaptchaUtil() {
+    }
+
     /**
      * 定义图片的width
      */

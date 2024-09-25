@@ -93,6 +93,8 @@ public class StopWatch {
      * Determine whether the TaskInfo array is built over time. Set this to
      * "false" when using a StopWatch for millions of intervals, or the task
      * info structure will consume excessive memory. Default is "true".
+     *
+     * @param keepTaskList keepTaskList
      */
     public void setKeepTaskList(boolean keepTaskList) {
         this.keepTaskList = keepTaskList;
@@ -127,6 +129,8 @@ public class StopWatch {
      * methods are called without invoking at least one pair
      * {@code start()} / {@code stop()} methods.
      * @see #start()
+     *
+     * @throws IllegalStateException IllegalStateException
      */
     public void stop() throws IllegalStateException {
         if (this.currentTaskName == null) {
@@ -145,6 +149,7 @@ public class StopWatch {
     /**
      * Return whether the stop watch is currently running.
      * @see #currentTaskName()
+     * @return  结果
      */
     public boolean isRunning() {
         return (this.currentTaskName != null);
@@ -154,6 +159,7 @@ public class StopWatch {
      * Return the name of the currently running task, if any.
      * @since 4.2.2
      * @see #isRunning()
+     * @return 结果
      */
     @Nullable
     public String currentTaskName() {
@@ -163,6 +169,9 @@ public class StopWatch {
 
     /**
      * Return the time taken by the last task.
+     *
+     * @return  结果
+     * @throws IllegalStateException IllegalStateException
      */
     public long getLastTaskTimeMillis() throws IllegalStateException {
         if (this.lastTaskInfo == null) {
@@ -173,6 +182,9 @@ public class StopWatch {
 
     /**
      * Return the name of the last task.
+     *
+     * @return 结果
+     * @throws IllegalStateException IllegalStateException
      */
     public String getLastTaskName() throws IllegalStateException {
         if (this.lastTaskInfo == null) {
@@ -183,6 +195,9 @@ public class StopWatch {
 
     /**
      * Return the last task as a TaskInfo object.
+     *
+     * @return 结果
+     * @throws IllegalStateException IllegalStateException
      */
     public TaskInfo getLastTaskInfo() throws IllegalStateException {
         if (this.lastTaskInfo == null) {
@@ -194,6 +209,8 @@ public class StopWatch {
 
     /**
      * Return the total time in milliseconds for all tasks.
+     *
+     * @return 结果
      */
     public long getTotalTimeMillis() {
         return this.totalTimeMillis;
@@ -201,6 +218,9 @@ public class StopWatch {
 
     /**
      * Return the total time in seconds for all tasks.
+     *
+     *
+     * @return 结果
      */
     public double getTotalTimeSeconds() {
         return this.totalTimeMillis / 1000.0;
@@ -208,6 +228,8 @@ public class StopWatch {
 
     /**
      * Return the number of tasks timed.
+     *
+     * @return 结果
      */
     public int getTaskCount() {
         return this.taskCount;
@@ -215,6 +237,8 @@ public class StopWatch {
 
     /**
      * Return an array of the data for tasks performed.
+     *
+     * @return 结果
      */
     public TaskInfo[] getTaskInfo() {
         if (!this.keepTaskList) {
@@ -226,6 +250,8 @@ public class StopWatch {
 
     /**
      * Return a short description of the total running time.
+     *
+     * @return  结果
      */
     public String shortSummary() {
         return "StopWatch '" + getId() + "': running time (millis) = " + getTotalTimeMillis();
@@ -234,6 +260,8 @@ public class StopWatch {
     /**
      * Return a string with a table describing all tasks performed.
      * For custom reporting, call getTaskInfo() and use the task info directly.
+     *
+     * @return  结果
      */
     public String prettyPrint() {
         StringBuilder sb = new StringBuilder(shortSummary());
@@ -263,6 +291,8 @@ public class StopWatch {
     /**
      * Return an informative string describing all tasks performed
      * For custom reporting, call {@code getTaskInfo()} and use the task info directly.
+     *
+     * @return 结果
      */
     @Override
     public String toString() {
@@ -297,6 +327,8 @@ public class StopWatch {
 
         /**
          * Return the name of this task.
+         *
+         * @return name
          */
         public String getTaskName() {
             return this.taskName;
@@ -304,6 +336,8 @@ public class StopWatch {
 
         /**
          * Return the time in milliseconds this task took.
+         *
+         * @return  timeMillis
          */
         public long getTimeMillis() {
             return this.timeMillis;
@@ -311,6 +345,8 @@ public class StopWatch {
 
         /**
          * Return the time in seconds this task took.
+         *
+         * @return timeSeconds
          */
         public double getTimeSeconds() {
             return (this.timeMillis / 1000.0);

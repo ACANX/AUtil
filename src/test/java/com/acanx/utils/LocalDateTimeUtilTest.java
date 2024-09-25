@@ -10,7 +10,7 @@ public class LocalDateTimeUtilTest {
 
 
     @Test
-    void getCurrentFormattedTimeTest() {
+    public void getCurrentFormattedTimeTest() {
         // 调用方法并打印结果
         System.out.println(LocalDateTimeUtil.getCurrentFormatTime(format));
     }

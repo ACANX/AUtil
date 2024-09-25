@@ -11,7 +11,7 @@ public class Base64UtilTest {
     public static final Base64.Encoder encoder = Base64.getEncoder();
 
 
-    final String text = "字串文字中华人民共和国1111111111111111111111111";
+    final String text = "字串文字华人1111111111111111111111111";
 
     @Test
     public void encodeTest() throws UnsupportedEncodingException {
@@ -47,7 +47,7 @@ public class Base64UtilTest {
     }
 
     @Test
-    void testDecodeBase64Test() {
+    public void testDecodeBase64Test() {
 
     }
 }

@@ -6,16 +6,18 @@ import java.util.Base64;
 /**
  * ACANX-Util / com.acanx.utils / Base64Util
  * 文件由 ACANX 创建于 2019/1/5 . 15:52
- *
- * @author ACANX
  *  Base64Util:
  * 补充说明：
  *  2019/1/5  15:52
+ *
+ * @author ACANX
  * @since 0.0.1
  */
 public class Base64Util {
 
+    /** Base64编码器 */
     public static final Base64.Decoder decoder = Base64.getDecoder();
+    /** Base64解码器 */
     public static final Base64.Encoder encoder = Base64.getEncoder();
 
     private static final char last2byte = (char) Integer.parseInt("00000011", 2);
@@ -26,6 +28,7 @@ public class Base64Util {
     private static final char lead2byte = (char) Integer.parseInt("11000000", 2);
     private static final char[] encodeTable = new char[]{'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '+', '/'};
 
+    /** 构造方法 */
     public Base64Util() {
 
     }

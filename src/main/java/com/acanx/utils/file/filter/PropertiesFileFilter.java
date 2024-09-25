@@ -7,11 +7,19 @@ import java.io.File;
 import java.io.FileFilter;
 
 /**
+ *  PropertiesFileFilter Properties文件过滤器
  *
  * @since 0.0.1.10
  */
 @Alpha
 public class PropertiesFileFilter implements FileFilter {
+
+    /**
+     * 构造函数
+     * @hidden
+     */
+    private PropertiesFileFilter() {
+    }
 
     /**
      * Tests whether or not the specified abstract pathname should be
