@@ -110,7 +110,7 @@
                         <artifactId>maven-compiler-plugin</artifactId>
                         <version>${maven-compiler-plugin.version}</version>
                         <configuration>
-                            <encoding>UTF-8</encoding>
+                            <encoding>${project.build.sourceEncoding}</encoding>
                             <source>${maven.compiler.source}</source>
                             <target>${maven.compiler.target}</target>
                         </configuration>
@@ -118,7 +118,6 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-surefire-plugin</artifactId>
-                        <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
                         <version>${maven-surefire-plugin.version}</version>
                     </plugin>
                     <!-- 生成Source jar文件 -->
@@ -149,9 +148,9 @@
                                 <configuration>
                                     <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
                                     <!-- <aggregate>true</aggregate>-->
-                                    <charset>UTF-8</charset> <!-- utf-8读取文件 -->
-                                    <encoding>UTF-8</encoding> <!-- utf-8进行编码代码 -->
-                                    <docencoding>UTF-8</docencoding> <!-- utf-8进行编码文档 -->
+                                    <charset>${project.build.sourceEncoding}</charset> <!-- utf-8读取文件 -->
+                                    <encoding>${project.build.sourceEncoding}</encoding> <!-- utf-8进行编码代码 -->
+                                    <docencoding>${project.build.sourceEncoding}</docencoding> <!-- utf-8进行编码文档 -->
                                 </configuration>
                             </execution>
                         </executions>
@@ -219,9 +218,9 @@
                                 <configuration>
                                     <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
                                     <!-- <aggregate>true</aggregate>-->
-                                    <charset>UTF-8</charset><!-- utf-8读取文件 -->
-                                    <encoding>UTF-8</encoding><!-- utf-8进行编码代码 -->
-                                    <docencoding>UTF-8</docencoding><!-- utf-8进行编码文档 -->
+                                    <charset>${project.build.sourceEncoding}</charset><!-- utf-8读取文件 -->
+                                    <encoding>${project.build.sourceEncoding}</encoding><!-- utf-8进行编码代码 -->
+                                    <docencoding>${project.build.sourceEncoding}</docencoding><!-- utf-8进行编码文档 -->
                                 </configuration>
                             </execution>
                         </executions>
@@ -252,7 +251,7 @@
                         <version>${nexus-staging-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-<!--                            <serverId>sonatype-nexus-staging</serverId>-->
+                        <!-- <serverId>sonatype-nexus-staging</serverId> -->
                             <serverId>sonatype-nexus-snapshots</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
@@ -263,11 +262,11 @@
             </build>
             <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
             <distributionManagement>
-<!--                <repository>-->
-<!--                    <id>sonatype-nexus-staging</id>-->
-<!--                    <name>Nexus Release Repository</name>-->
-<!--                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
-<!--                </repository>-->
+                <repository>
+                    <id>sonatype-nexus-staging</id>
+                    <name>Nexus Release Repository</name>
+                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                </repository>
                 <snapshotRepository>
                     <id>sonatype-nexus-snapshots</id>
                     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
