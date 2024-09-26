@@ -10,11 +10,11 @@ public class Md5UtilTest {
      * @return  加密后的MD5值，32位（十六进制字符、大写）
      */
     @Test
-    void getMD5Test() {
+    public void getMD5Test() {
         String base = "123456";
          // @param str  待加密的字符串
         String md5 = StringUtil.getStringMD5Code(base);
-        System.out.println(md5.toUpperCase());
+        System.out.println("MD5:" + md5.toUpperCase());
     }
 
 }

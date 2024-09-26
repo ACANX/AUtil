@@ -24,18 +24,24 @@ import java.util.StringJoiner;
 /**
  * ACANX-Util / com.acanx.utils / StringUtil
  * 文件由 ACANX 创建于 2019/1/5 . 15:46
- *
- *  @author ACANX
  *  StringUtil:字符串处理相关工具类
  * 补充说明：
  *  2019/1/5  15:46
+ *
+ * @author ACANX
  * @since 0.0.1
  * @version v0.0.1.0
  */
 public class StringUtil {
 
-
     private static final int STRING_BUILDER_SIZE = 256;
+
+    /**
+     * 构造函数
+     * @hidden
+     */
+    private StringUtil() {
+    }
 
     /**
      * <p>Checks if a CharSequence is empty ("") or null.</p>
@@ -48,8 +54,8 @@ public class StringUtil {
      * StringUtil.isEmpty("  bob  ") = false
      * </pre>
      *
-     * @param str
-     * @return
+     * @param str  字符串
+     * @return    空值判断结果
      * @since 0.0.1.10
      */
     @Alpha
@@ -68,8 +74,8 @@ public class StringUtil {
      * StringUtil.isNotEmpty("  bob  ") = true
      * </pre>
      *
-     * @param str
-     * @return
+     * @param str  字符串
+     * @return     判断结果
      * @since 0.0.1.10
      */
     @Alpha
@@ -78,9 +84,10 @@ public class StringUtil {
     }
 
     /**
+     *   字符串空格判断
      *
-     * @param str
-     * @return
+     * @param str  字符串
+     * @return     判断结果
      * @since 0.0.1.10
      */
     @Alpha
@@ -98,8 +105,8 @@ public class StringUtil {
      * StringUtil.isNotBlank("  bob  ") = true
      * </pre>
      *
-     * @param str
-     * @return
+     * @param str  字符串
+     * @return     非空格判断结果
      * @since 0.0.1.10
      */
     @Alpha
@@ -146,10 +153,11 @@ public class StringUtil {
 
 
     /**
+     *  字符串相同判断
      *
-     * @param str1
-     * @param str2
-     * @return
+     * @param str1  字符串1
+     * @param str2  字符串2
+     * @return      判断结果
      * @since 0.0.1.10
      */
     @Alpha
@@ -239,10 +247,26 @@ public class StringUtil {
         return joiner.toString();
     }
 
+    /**
+     *  toStringOrEmpty
+     *
+     * @param obj  obj
+     * @return 结果
+     */
     @Alpha
     private static String toStringOrEmpty(Object obj) {
         return Objects.toString(obj, "");
     }
+
+    /**
+     *   join
+     *
+     * @param array  array
+     * @param delimiter delimiter
+     * @param startIndex 起始位置
+     * @param endIndex  结束位置
+     * @return  结果
+     */
     @Alpha
     public static String join(Object[] array, char delimiter, int startIndex, int endIndex) {
         if (array == null) {
@@ -476,8 +500,8 @@ public class StringUtil {
      * StringUtil.isNumeric("+123") = false
      * </pre>
      *
-     * @param str
-     * @return
+     * @param str  字符串
+     * @return     判断结果
      */
     @Alpha
     public static boolean isNumeric(String str) {
@@ -555,8 +579,8 @@ public class StringUtil {
      * StringUtil.isAlphanumeric("ab-c") = false
      * </pre>
      *
-     * @param str
-     * @return
+     * @param str  字符串
+     * @return     判断结果
      */
     @Alpha
     public static boolean isAlphanumeric(String str) {
@@ -568,8 +592,8 @@ public class StringUtil {
     /**
      *  获取字符串的SHA1值
      *
-     * @param input
-     * @return
+     * @param input  字符串
+     * @return       SHA1
      * @since 0.0.1.10
      */
     @Alpha
@@ -650,10 +674,11 @@ public class StringUtil {
 
 
     /**
+     *    驼峰转下划线
      *
-     * @param camelName
-     * @param split
-     * @return
+     * @param camelName  驼峰命名字符串
+     * @param split       split
+     * @return          转换后的结果字符串
      */
     @Alpha
     public static String camelToSplitName(String camelName, String split) {
@@ -684,9 +709,10 @@ public class StringUtil {
     }
 
     /**
+     *  splitNameByLastCamel
      *
-     * @param camelName
-     * @return
+     * @param camelName 驼峰格式的字符串
+     * @return          转换后的结果
      */
     @Alpha
     public static String splitNameByLastCamel(String camelName) {
@@ -702,15 +728,15 @@ public class StringUtil {
                     break;
                 }
             }
-
             return index >= 0 ? camelName.substring(index).toLowerCase() : camelName;
         }
     }
 
     /**
+     *    字符串首字母转大写
      *
-     * @param value
-     * @return
+     * @param value  字符串
+     * @return       转换后的结果字符串
      */
     @Alpha
     public static String toUpperCaseFirstChar(String value) {
@@ -729,10 +755,11 @@ public class StringUtil {
 
 
     /**
+     *      字符串左
      *
-     * @param str
-     * @param num
-     * @return
+     * @param str  字符串
+     * @param num   num
+     * @return     处理后的结果
      */
     @Alpha
     public static String right(String str, int num) {
@@ -740,11 +767,12 @@ public class StringUtil {
     }
 
     /**
+     *   right
      *
-     * @param str1
-     * @param num
-     * @param str2
-     * @return
+     * @param str1  字符串
+     * @param num   num
+     * @param str2  str2
+     * @return     处理结果
      */
     @Alpha
     public static String right(String str1, int num, String str2) {
@@ -752,10 +780,12 @@ public class StringUtil {
     }
 
     /**
+     *  left
      *
-     * @param str
-     * @param num
-     * @return
+     * @param str 字符串
+     * @param num  num
+     * @return    处理后的结果
+     *
      */
     @Alpha
     public static String left(String str, int num) {
@@ -763,11 +793,12 @@ public class StringUtil {
     }
 
     /**
+     * left
      *
-     * @param str1
-     * @param num
-     * @param str2
-     * @return
+     * @param str1 字符串1
+     * @param num  num
+     * @param str2 字符串2
+     * @return  处理结果
      */
     @Alpha
     public static String left(String str1, int num, String str2) {
@@ -776,15 +807,24 @@ public class StringUtil {
 
 
     /**
+     *   defaultIfBlank
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return  处理结果
      */
     @Alpha
     public static String defaultIfBlank(String str) {
         return isEmpty(str) ? str : (isEmpty(str.trim()) ? " " : str.trim());
     }
 
+    /**
+     *    leftDelChar
+     *
+     * @param descStr   descStr
+     * @param text     text
+     * @param ch      字符
+     * @return        结果
+     */
     @Alpha
     public static String leftDelChar(String descStr, String text, char ch) {
         if (isEmpty(text)) {
@@ -960,10 +1000,11 @@ public class StringUtil {
     }
 
     /**
+     *     字符在字符串中的位置
      *
-     * @param str
-     * @param searchChar
-     * @return
+     * @param str   字符串
+     * @param searchChar  搜索字符
+     * @return   位置结果
      */
     @Alpha
     public static int positionOf(String str, char searchChar) {
@@ -972,10 +1013,11 @@ public class StringUtil {
     }
 
     /**
+     *  子字符串在字符串中的位置
      *
-     * @param str
-     * @param searchStr
-     * @return
+     * @param str  字符串
+     * @param searchStr 子字符串
+     * @return        位置结果
      */
     @Alpha
     public static int positionOf(String str, String searchStr) {
@@ -987,6 +1029,13 @@ public class StringUtil {
         }
     }
 
+    /**
+     *   containsAll
+     *
+     * @param str str
+     * @param searchChars searchChars
+     * @return 结果
+     */
     @Alpha
     public static boolean containsAll(String str, String searchChars) {
         int number8191 = 8191;
@@ -1020,7 +1069,7 @@ public class StringUtil {
      * </pre>
      * @param seq        被检索的字符串
      * @param searchSeq  检索的子字符串
-     * @return
+     * @return 结果
      */
     @Alpha
     public static boolean contains(final CharSequence seq, final CharSequence searchSeq) {
@@ -1117,12 +1166,13 @@ public class StringUtil {
     }
 
     /**
+     *  substring
      *
-     * @param str1
-     * @param pos
-     * @param len
-     * @param str2
-     * @return
+     * @param str1 字符串
+     * @param pos  起始位置
+     * @param len  长度
+     * @param str2  字符串2
+     * @return 结果
      */
     @Alpha
     public static String substring(String str1, int pos, int len, String str2) {
@@ -1142,12 +1192,13 @@ public class StringUtil {
     }
 
     /**
+     * substringEquals
      *
-     * @param str1
-     * @param pos
-     * @param len
-     * @param str2
-     * @return
+     * @param str1  str1
+     * @param pos 位置
+     * @param len 长度
+     * @param str2 str2
+     * @return 结果
      */
     @Alpha
     public static boolean substringEquals(String str1, int pos, int len, String str2) {
@@ -1167,10 +1218,10 @@ public class StringUtil {
     /**
      *   集合转字符串（以separator（如逗号）间隔）
      *
-     * @param list
-     * @param wrappeFlag
-     * @param separator
-     * @return
+     * @param list   字符串集合
+     * @param wrappeFlag  首末是否需要添加间隔符
+     * @param separator  间隔符
+     * @return 结果字符串
      */
     @Alpha
     public static String listToString(List<String> list, boolean wrappeFlag, char separator){
@@ -1193,8 +1244,8 @@ public class StringUtil {
     /**
      *  元素之间以逗号间隔的字符串转集合
      *
-     * @param str
-     * @return
+     * @param str 字符串
+     * @return  字符串集合
      */
     @Alpha
     public static List<String> stringToList(String str){
@@ -1210,8 +1261,8 @@ public class StringUtil {
     /**
      *   获取当前日期时间字符串
      *
-     * @param sdf
-     * @return
+     * @param sdf   SimpleDateFormat
+     * @return   格式化后的当前日期时间字符串
      */
     @Alpha
     public static String getCurrentDateTimeString(SimpleDateFormat sdf){
@@ -1259,10 +1310,11 @@ public class StringUtil {
 
 
     /**
+     *   日期时间字符串转Timestamp
      *
-     * @param dateStr
-     * @param format
-     * @return
+     * @param dateStr  日期字符串
+     * @param format   格式化模板
+     * @return         Timestamp
      */
     @Alpha
     public static Timestamp formattedDateStringToTimestamp(String dateStr, String format) {
@@ -1282,8 +1334,9 @@ public class StringUtil {
     /**
      * 将字符串转日期成Long类型的时间戳，格式为：yyyy-MM-dd HH:mm:ss
      *
-     * @param time
-     * @return
+     * @param time  时间
+     * @param format 时间格式化模式
+     * @return   Long类型的时间戳
      */
     @Alpha
     public static Long formattedTimeStringToLong(String time, String format) {
@@ -1295,9 +1348,10 @@ public class StringUtil {
 
     /**
      *   秒级的时间戳转Date
-     * @param seconds
-     * @param format
-     * @return
+     *
+     * @param seconds  秒级的时间戳
+     * @param format   格式化
+     * @return   日期时间字符串
      */
     @Alpha
     public static String timestampStrToFormattedDateString(String seconds, String format) {

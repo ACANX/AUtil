@@ -10,18 +10,45 @@ import org.junit.jupiter.api.Test;
 * @version 1.0 
 */
 public class StringUtilTest {
+    /**
+     *
+     */
+    @Test
+    public void isEmptyTest(){
+        System.out.println(StringUtil.isEmpty(" "));  // false
+        System.out.println(StringUtil.isEmpty(""));   // true
+        System.out.println(StringUtil.isEmpty(null)); // true
+    }
+
+
+    /**
+     *
+     */
+    @Test
+    public void isBlankTest(){
+        System.out.println(StringUtil.isBlank(" "));  // true
+        System.out.println(StringUtil.isBlank(""));   // true
+        System.out.println(StringUtil.isBlank("             ")); // true
+        System.out.println(StringUtil.isBlank(" 111    ")); // false
+        System.out.println(StringUtil.isBlank(null)); // true
+        System.out.println(StringUtil.isBlank("             121")); // false
+        System.out.println(StringUtil.isBlank("121            ")); // false
+    }
 
     /**
      * Method: generateRandomStr(int length)
      */
     @Test
-    public void testGenerateRandomStr() throws Exception {
+    public void generateRandomStrTest() throws Exception {
 
     }
 
 
+    /**
+     *
+     */
     @Test
-    public void getStrSeq() {
+    public void getStrSeqTest() {
         for (int i = 0; i < 100; i++) {
             System.out.println(StringUtil.getStrSeq("-", i));
         }

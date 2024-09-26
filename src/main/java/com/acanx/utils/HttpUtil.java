@@ -11,21 +11,46 @@ import java.util.Map;
 /**
  *    ACANX-Util / com.acanx.utils / HttpUtil
  *   文件由 ACANX 创建于 2019/1/5 . 15:46
- *
- *  @author ACANX
  *  HttpUtil:
  *  补充说明：
  *  2019/1/5  15:46
+ *
+ *  @author ACANX
  *  @since 0.0.0.1.6
  */
 public class HttpUtil {
+    /**
+     * 构造函数
+     * @hidden
+     */
+    private HttpUtil() {
+    }
 
+    /**
+     *      POST请求
+     *
+     * @param requestUrl   请求路径
+     * @param accessToken  accessToken
+     * @param params       请求参数
+     * @return             请求结果
+     * @throws Exception   Exception
+     */
     public static String post(String requestUrl, String accessToken, String params)
             throws Exception {
         String contentType = "application/x-www-form-urlencoded";
         return HttpUtil.post(requestUrl, accessToken, contentType, params);
     }
 
+    /**
+     *   post请求方法
+     *
+     * @param requestUrl 请求地址
+     * @param accessToken accessToken
+     * @param contentType contentType
+     * @param params  参数
+     * @return       请求结果
+     * @throws Exception  Exception
+     */
     public static String post(String requestUrl, String accessToken, String contentType, String params)
             throws Exception {
         String encoding = "UTF-8";
@@ -35,12 +60,33 @@ public class HttpUtil {
         return HttpUtil.post(requestUrl, accessToken, contentType, params, encoding);
     }
 
+    /**
+     *   POST请求
+     *
+     * @param requestUrl  请求路径
+     * @param accessToken  accessToken
+     * @param contentType  contentType
+     * @param params       参数
+     * @param encoding     编码
+     * @return             请求结果
+     * @throws Exception   Exception
+     */
     public static String post(String requestUrl, String accessToken, String contentType, String params, String encoding)
             throws Exception {
         String url = requestUrl + "?access_token=" + accessToken;
         return HttpUtil.postGeneralUrl(url, contentType, params, encoding);
     }
 
+    /**
+     *  POST请求生成方法
+     *
+     * @param generalUrl   请求路径
+     * @param contentType   contentType
+     * @param params      请求参数
+     * @param encoding    编码
+     * @return            请求结果
+     * @throws Exception  Exception
+     */
     public static String postGeneralUrl(String generalUrl, String contentType, String params, String encoding)
             throws Exception {
         URL url = new URL(generalUrl);

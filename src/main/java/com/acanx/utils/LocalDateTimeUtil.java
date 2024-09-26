@@ -12,13 +12,20 @@ import java.util.Date;
  * 文件由 ACANX 创建于 2019/7/26 - 17:15
  * Description  LocalDateTimeUtil:
  * 补充说明：
+ * Date 2019/7/26  17:15
  *
  * @author ACANX
  * @version 0.0.1.6
- * Date 2019/7/26  17:15
  * @since 0.0.1
  */
 public class LocalDateTimeUtil {
+
+    /**
+     * 构造函数
+     * @hidden
+     */
+    private LocalDateTimeUtil() {
+    }
 
     /**
      *{@link  LocalDateTime}转{@link  java.util.Date}
@@ -32,8 +39,8 @@ public class LocalDateTimeUtil {
 
     /**
      *   LocalDateTime  转Long
-     * @param localDateTime
-     * @return
+     * @param localDateTime  入参localDateTime
+     * @return       Long
      */
     @Alpha
     public static Long toLong(LocalDateTime localDateTime){
@@ -42,9 +49,10 @@ public class LocalDateTimeUtil {
 
     /**
      *   LocalDateTime转字符串  例如： yyyy/MM/dd  yyyy-MM-dd  yyyy_MM_dd
-     * @param date
-     * @param splitChar
-     * @return
+     *
+     * @param date   LocalDateTime类型的日期
+     * @param splitChar    间隔符
+     * @return  格式化后的字符串
      */
     @Alpha
     public static String toDateStr(LocalDateTime date, String splitChar) {
@@ -53,6 +61,7 @@ public class LocalDateTimeUtil {
 
     /**
      * 获取当前时间，并按照指定格式格式化
+     *
      * @param dtf  {@link java.time.format.DateTimeFormatter}类型的日期时间类型
      * @return 格式化后的时间字符串LocalDateTimeUtilTest
      * @since 0.0.1.10

@@ -36,19 +36,28 @@ import java.util.Objects;
 /**
  * ACANX-Util / com.acanx.utils / FileUtil
  * 文件由 ACANX 创建于 2019/1/5 . 15:47
- *
- * @author ACANX
  *  FileUtil:
  * 补充说明：
  *  2019/1/5  15:47
+ *
+ *
+ * @author ACANX
  * @since 0.0.1
  */
 public class FileUtil {
 
     /**
+     * 构造函数
+     * @hidden
+     */
+    private FileUtil() {
+    }
+
+    /**
+     *   文件是否存在
      *
-     * @param file
-     * @return
+     * @param file 文件
+     * @return     判断结果
      */
     @Alpha
     public static boolean fileExists(File file) {
@@ -86,7 +95,7 @@ public class FileUtil {
      * 删除目标文件
      *
      * @param file 目标文件
-     * @return
+     * @return     文件删除结果
      */
     @Alpha
     public static boolean deleteFile(File file) {
@@ -108,8 +117,8 @@ public class FileUtil {
 
     /**
      *   重载方法，支持传入多个目录
-     * @param dir
-     * @return
+     * @param dir  入口文件夹
+     * @return     文件集合
      */
     @Alpha
     public static List<File> getFileList(File dir) {
@@ -129,9 +138,9 @@ public class FileUtil {
     /**
      *   获取过滤后的文件列表
      *
-     * @param dir
-     * @param fileFilter  过滤器实现类
-     * @return
+     * @param dir          入口文件
+     * @param fileFilter   过滤器实现类
+     * @return             过滤后的文件集合
      */
     @Alpha
     public static List<File> getFilteredFileList(File dir, FileFilter fileFilter){
@@ -151,9 +160,10 @@ public class FileUtil {
 
 
     /**
+     *     计算文件的MD5
      *
-     * @param file
-     * @return
+     * @param file 需要计算的文件
+     * @return     计算的文件MD5值
      */
     @Alpha
     public static String getFileMD5(File file) {
@@ -180,9 +190,10 @@ public class FileUtil {
 
 
     /***
+     * 计算文件的SHA1
      *
-     * @param file
-     * @return
+     * @param file 需要计算SHA1的文件
+     * @return     文件的SHA1值
      */
     @Alpha
     public static String getFileSHA1(File file) {
@@ -214,8 +225,9 @@ public class FileUtil {
 
     /**
      * 根据文件路径读取byte[] 数组
-     * @param filePath   文件路径
-     * @return    文本内容，byte[]类型
+     *
+     * @param filePath       文件路径
+     * @return               文本内容，byte[]类型
      * @throws IOException   IO异常
      */
     public static byte[] readFileAsBytes(String filePath) throws IOException {
@@ -269,11 +281,12 @@ public class FileUtil {
     }
 
     /**
+     *   按行读取文件，将其保存到字符串集合中返回
      *
-     * @param file
-     * @param charset
-     * @return
-     * @throws IOException
+     * @param file           需要读的文件
+     * @param charset        文件字符集
+     * @return               字符串集合 一行一项
+     * @throws IOException   IOException
      * @since 0.0.1.10
      */
     @Alpha
@@ -285,9 +298,10 @@ public class FileUtil {
     /**
      *  读取文件内容，作为字符串返回
      *
-     * @param filePath  文件路径
-     * @return   文件内容
-     * @throws IOException    文件IO异常
+     * @param filePath         文件路径
+     * @return                 文件内容
+     * @throws IOException     文件IO异常
+     * @since 0.0.1.10
      */
     public static String readFileAsString(String filePath) throws IOException {
         File file = new File(filePath);
@@ -366,9 +380,9 @@ public class FileUtil {
     }
     /**
      *
-     * @param input
-     * @param charset
-     * @return
+     * @param input    输入流
+     * @param charset  字符集
+     * @return         返回的字符串
      * @throws IOException
      */
     private static String toString(InputStream input, Charset charset) throws IOException {
@@ -431,11 +445,12 @@ public class FileUtil {
      */
     private static final OpenOption[] EMPTY_OPEN_OPTION_ARRAY = {};
     /**
+     *    按行写入字符串集合
      *
-     * @param file
-     * @param lines
-     * @param charset
-     * @throws IOException
+     * @param file       文件
+     * @param lines      lines
+     * @param charset    字符集
+     * @throws IOException IOException
      * @since 0.0.1.10
      */
     @Alpha
@@ -444,9 +459,26 @@ public class FileUtil {
             writeLines(lines, null, out, charset);
         }
     }
+    /**
+     *     输出流
+     *
+     * @param path    路径
+     * @param append  append
+     * @return        输出流
+     * @throws IOException
+     */
     private static OutputStream newOutputStream(final Path path, final boolean append) throws IOException {
         return newOutputStream(path, EMPTY_LINK_OPTION_ARRAY, append ? OPEN_OPTIONS_APPEND : OPEN_OPTIONS_TRUNCATE);
     }
+
+    /**
+     *
+     * @param path  路径
+     * @param linkOptions   linkOptions
+     * @param openOptions   openOptions
+     * @return              输出流
+     * @throws IOException
+     */
     private static OutputStream newOutputStream(final Path path, final LinkOption[] linkOptions, final OpenOption... openOptions) throws IOException {
         if (!exists(path, linkOptions)) {
             createParentDirectories(path, linkOptions != null && linkOptions.length > 0 ? linkOptions[0] : NULL_LINK_OPTION);
@@ -455,10 +487,26 @@ public class FileUtil {
         list.addAll(Arrays.asList(linkOptions != null ? linkOptions : EMPTY_LINK_OPTION_ARRAY));
         return Files.newOutputStream(path, list.toArray(EMPTY_OPEN_OPTION_ARRAY));
     }
+
+    /**
+     *    是否存在
+     * @param path 路径
+     * @param options   可选参数
+     * @return          判断结果
+     */
     private static boolean exists(final Path path, final LinkOption... options) {
         Objects.requireNonNull(path, "path");
         return options != null ? Files.exists(path, options) : Files.exists(path);
     }
+
+    /**
+     *
+     * @param path       路径
+     * @param linkOption linkOption
+     * @param attrs      动态attrs
+     * @return           路径
+     * @throws IOException
+     */
     private static Path createParentDirectories(final Path path, final LinkOption linkOption, final FileAttribute<?>... attrs) throws IOException {
         Path parent = getParent(path);
         parent = linkOption == LinkOption.NOFOLLOW_LINKS ? parent : readIfSymbolicLink(parent);
@@ -468,12 +516,37 @@ public class FileUtil {
         final boolean exists = linkOption == null ? Files.exists(parent) : Files.exists(parent, linkOption);
         return exists ? parent : Files.createDirectories(parent, attrs);
     }
+
+    /**
+     *       获取父路径
+     *
+     * @param path 路径
+     * @return     父路径
+     */
     private static Path getParent(final Path path) {
         return path == null ? null : path.getParent();
     }
+
+    /**
+     *   获取readIfSymbolicLink
+     *
+     * @param path  路径
+     * @return      结果路径
+     * @throws IOException
+     */
     private static Path readIfSymbolicLink(final Path path) throws IOException {
         return path != null ? Files.isSymbolicLink(path) ? Files.readSymbolicLink(path) : path : null;
     }
+
+    /**
+     *    按行写入文件
+     *
+     * @param lines   lines
+     * @param lineEnding  lineEnding
+     * @param output   输出流
+     * @param charset  字符集
+     * @throws IOException
+     */
     private static void writeLines(final Collection<?> lines, String lineEnding, final OutputStream output,
                                   Charset charset) throws IOException {
         if (lines == null) {
