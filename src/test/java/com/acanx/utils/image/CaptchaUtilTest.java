@@ -1,5 +1,6 @@
 package com.acanx.utils.image;
 
+import com.acanx.utils.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;
@@ -23,11 +24,12 @@ public class CaptchaUtilTest {
      */
     @Test
     public void generateCodeAndPicTest() throws Exception {
+        String pathPrefix = FileUtil.getSysTempDir() + File.separator + "Captcha";
         Long totalCost = 0L;
         for (int i = 0; i < 10; i++) {
             //创建文件输出流对象
             Long start = System.currentTimeMillis();
-            String path = "D://" + start + ".jpg";
+            String path = pathPrefix + start + ".jpg";
             File file = new File(path);
             if (!file.exists()) {
                 file.createNewFile();
@@ -37,6 +39,7 @@ public class CaptchaUtilTest {
             ImageIO.write((RenderedImage) map.get("codePic"), "jpeg", out);
             Long stop = System.currentTimeMillis();
             Long cost = (stop - start);
+            System.out.println("Generate image file path: " + path);
             System.out.println("验证码的值为：" + map.get("code") + " 生成耗时：" + cost + "ms");
             totalCost = totalCost + cost;
         }
