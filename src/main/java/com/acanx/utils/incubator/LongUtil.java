@@ -33,7 +33,7 @@ public class LongUtil {
      *
      * @param time Long类型的时间
      * @param format  时间格式如：yyyy-MM-dd HH:mm:ss
-     * @return
+     * @return        String类型的时间字符串
      *
      */
     @Alpha
