@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.List;
 
 /**
+ *  音频处理相关工具类
  *
  * @since 0.0.1.10
  */
@@ -18,7 +19,7 @@ public class AudioFileUtil {
      *
      * @param dir 音频文件目录
      * @param list 存放文件列表的集合
-     * @return
+     * @return  文件夹下的文件集合
      * @since 0.0.1.10
      */
     @UnitTestsPassed
@@ -46,7 +47,7 @@ public class AudioFileUtil {
      *
      * @param dirs 音频文件目录（集合）
      * @param list 存放文件列表的集合
-     * @return
+     * @return 文件夹下的文件集合
      * @since 0.0.1.10
      */
     @Alpha

@@ -56,7 +56,7 @@ public class FileUtil {
     /**
      *  获取系统临时目录
      *
-     * @return
+     * @return 系统临时目录路径字符串
      */
     public static String getSysTempDir(){
         return System.getProperty("java.io.tmpdir");

@@ -10,9 +10,21 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
+/**
+ *  FileZipUtil
+ *
+ * @since 0.0.1.10
+ */
 public class FileZipUtil {
 
 
+    /**
+     *  压缩文件
+     *
+     * @param zipOutputStream 要锁输出流
+     * @param file 文件
+     * @param parentFileName  父级目录
+     */
     private static void zipFile(ZipOutputStream zipOutputStream, File file, String parentFileName) {
         FileInputStream in = null;
 
@@ -46,6 +58,12 @@ public class FileZipUtil {
 
     }
 
+    /**
+     *  directory
+     * @param zipOutputStream 要锁输出流
+     * @param file  文件
+     * @param parentFileName 父级目录
+     */
     private static void directory(ZipOutputStream zipOutputStream, File file, String parentFileName) {
         File[] files = file.listFiles();
         String parentFileNameTemp = null;
@@ -64,6 +82,12 @@ public class FileZipUtil {
 
     }
 
+    /**
+     *  压缩文件
+     *
+     * @param source 源路径
+     * @param target 输出目标文件路径
+     */
     public static void zipFiles(String source, String target) {
         File file = new File(source);
         ZipOutputStream zipOutputStream = null;

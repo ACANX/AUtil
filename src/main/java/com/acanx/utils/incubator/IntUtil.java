@@ -9,13 +9,25 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
+/**
+ *  IntUtil
+ *
+ * @since 0.0.1.10
+ */
 public class IntUtil {
+
+    /**
+     *  构造方法
+     * @hidden
+     */
+    private IntUtil() {
+    }
 
     /**
      *  数字类型的日期（如20240901）转换为对应的LocalDate类型
      *
-     * @param intDate
-     * @return
+     * @param intDate  整形的日期
+     * @return   LocalDate类型的日期
      */
     public static LocalDate toLocalDate(Integer intDate) {
         return LocalDate.parse(String.valueOf(intDate), DateTimeFormatter.BASIC_ISO_DATE);
@@ -24,10 +36,10 @@ public class IntUtil {
     /**
      *  数字类型的 日期（yyyyMMdd）、时间（HHmmss）转换为格式化的字符串
      *
-     * @param date
-     * @param time
-     * @param dateTimeFormatter
-     * @return
+     * @param date  整形的日期
+     * @param time  整形的时间
+     * @param dateTimeFormatter  dateTimeFormatter
+     * @return  格式化后的字符串
      */
     public static String dateTimeToFormattedString(int date, int time, DateTimeFormatter dateTimeFormatter) {
         LocalDate localDate = toLocalDate(date);

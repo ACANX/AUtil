@@ -6,6 +6,7 @@ import java.util.Collection;
 
 
 /**
+ * Java集合处理工具类
  *
  * @since 0.0.1.10
  *
