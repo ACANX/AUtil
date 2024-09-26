@@ -14,7 +14,7 @@ public class Md5UtilTest {
         String base = "123456";
          // @param str  待加密的字符串
         String md5 = StringUtil.getStringMD5Code(base);
-        System.out.println(md5.toUpperCase());
+        System.out.println("MD5:" + md5.toUpperCase());
     }
 
 }

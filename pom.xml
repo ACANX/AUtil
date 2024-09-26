@@ -43,7 +43,12 @@
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <java.version>8</java.version>
-        <maven-compiler-plugin.version>3.8.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+        <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+        <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
+        <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
+        <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
         <junit-jupiter.version>5.10.2</junit-jupiter.version>
     </properties>
@@ -51,7 +56,7 @@
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter-api</artifactId>
+            <artifactId>junit-jupiter</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
@@ -110,12 +115,17 @@
                             <target>${maven.compiler.target}</target>
                         </configuration>
                     </plugin>
-
-                    <!--生成Source jar文件-->
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-surefire-plugin</artifactId>
+                        <!-- JUnit 5 requires Surefire version 2.22.0 or higher -->
+                        <version>${maven-surefire-plugin.version}</version>
+                    </plugin>
+                    <!-- 生成Source jar文件 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version>
+                        <version>${maven-source-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -129,7 +139,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.8.0</version>
+                        <version>${maven-javadoc-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -155,7 +165,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.10</project.release.version>
+                <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
             </properties>
         </profile>
 
@@ -168,7 +178,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.0.1.10</project.release.version>
+                <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -185,7 +195,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
-                        <version>3.3.1</version>
+                        <version>${maven-source-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-sources</id>
@@ -199,7 +209,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
-                        <version>3.8.0</version>
+                        <version>${maven-javadoc-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>attach-javadocs</id>
@@ -220,7 +230,7 @@
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
-                        <version>1.6</version>
+                        <version>${maven-gpg-plugin.version}</version>
                         <executions>
                             <execution>
                                 <id>sign-artifacts</id>
@@ -230,15 +240,20 @@
                                 </goals>
                             </execution>
                         </executions>
+                        <configuration>
+                            <!-- 改成你自己的路径 -->
+                            <executable>D:\ProgramExt\GnuPG\bin\gpg.exe</executable>
+                        </configuration>
                     </plugin>
                     <!-- Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法 -->
                     <plugin>
                         <groupId>org.sonatype.plugins</groupId>
                         <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.8</version>
+                        <version>${nexus-staging-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>sonatype-nexus-staging</serverId>
+<!--                            <serverId>sonatype-nexus-staging</serverId>-->
+                            <serverId>sonatype-nexus-snapshots</serverId>
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
@@ -248,13 +263,13 @@
             </build>
             <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
             <distributionManagement>
-                <repository>
-                    <id>sonatype-staging</id>
-                    <name>Nexus Release Repository</name>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-                </repository>
+<!--                <repository>-->
+<!--                    <id>sonatype-nexus-staging</id>-->
+<!--                    <name>Nexus Release Repository</name>-->
+<!--                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>-->
+<!--                </repository>-->
                 <snapshotRepository>
-                    <id>sonatype-snapshots</id>
+                    <id>sonatype-nexus-snapshots</id>
                     <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
             </distributionManagement>

@@ -22,7 +22,7 @@ public class CaptchaUtilTest {
      * Method: generateCodeAndPic()
      */
     @Test
-    public void testGenerateCodeAndPic() throws Exception {
+    public void generateCodeAndPicTest() throws Exception {
         Long totalCost = 0L;
         for (int i = 0; i < 10; i++) {
             //创建文件输出流对象
