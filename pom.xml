@@ -68,15 +68,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -86,9 +86,9 @@
                         <configuration>
                             <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
                             <!-- <aggregate>true</aggregate>-->
-                            <charset>UTF-8</charset> <!-- utf-8读取文件 -->
-                            <encoding>UTF-8</encoding> <!-- utf-8进行编码代码 -->
-                            <docencoding>UTF-8</docencoding> <!-- utf-8进行编码文档 -->
+                            <charset>${project.build.sourceEncoding}</charset> <!-- utf-8读取文件 -->
+                            <encoding>${project.build.sourceEncoding}</encoding> <!-- utf-8进行编码代码 -->
+                            <docencoding>${project.build.sourceEncoding}</docencoding> <!-- utf-8进行编码文档 -->
                         </configuration>
                     </execution>
                 </executions>

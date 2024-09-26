@@ -8,7 +8,6 @@ package com.acanx.utils;
  *  2019/1/5  15:48
  *
  * @author ACANX
- * @hidden
  * @since 0.0.1
  */
 public class TimeUtil {

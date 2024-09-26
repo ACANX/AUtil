@@ -23,7 +23,7 @@ public class IPv4Util {
     /**
      *  获取当前主机的公网IP地址
      *
-     * @return
+     * @return  当前主机的公网IP地址（字符串）
      */
     @Alpha
     public static String getCurrentHostPublicIp() {

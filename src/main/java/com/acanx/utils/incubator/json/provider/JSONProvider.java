@@ -14,9 +14,9 @@ public class JSONProvider {
     /**
      *   Java对象序列化为JSON字符串
      *
-     * @param obj    Java对象
+     * @param obj     Java对象
      * @param config  序列化配置
-     * @return      序列化后的JSON字符串
+     * @return        序列化后的JSON字符串
      */
     public static String toJsonString(Object obj, Map<String, Object> config) {
         // TODO
@@ -31,6 +31,7 @@ public class JSONProvider {
      * @param t           对象类型
      * @param config      反序列化配置
      * @return            反序列化后的Java对象
+     * @param <T>         Java类型参数
      * @throws NoSuchMethodException NoSuchMethodException
      * @throws InvocationTargetException InvocationTargetException
      * @throws InstantiationException InstantiationException

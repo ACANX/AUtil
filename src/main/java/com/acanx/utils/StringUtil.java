@@ -656,8 +656,8 @@ public class StringUtil {
 
     /**
      * 生成指定长度的指定字符串
-     *   如：  getStrSeq("123", 3)   ==>  "123123123"
-     *        getStrSeq("321", 4)   ==>  "321321321321"
+     *   如：  getStrSeq("123", 3)   return  "123123123"
+     *        getStrSeq("321", 4)   return  "321321321321"
      *
      * @param str    String 指定字符串
      * @param length int 循环长度
