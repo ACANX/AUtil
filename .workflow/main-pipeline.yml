@@ -48,4 +48,4 @@ triggers:
   push:
     branches:
       include:
-        - master
+        - main

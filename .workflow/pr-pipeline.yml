@@ -37,4 +37,4 @@ triggers:
   pr:
     branches:
       include:
-        - master
+        - dev
