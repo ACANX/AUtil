@@ -50,7 +50,7 @@
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
-        <junit-jupiter.version>5.10.2</junit-jupiter.version>
+        <junit-jupiter.version>5.11.3</junit-jupiter.version>
     </properties>
 
     <dependencies>
