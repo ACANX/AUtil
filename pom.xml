@@ -251,8 +251,12 @@
                         <version>${nexus-staging-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                        <!-- <serverId>sonatype-nexus-staging</serverId> -->
+                            <!-- 快照 -->
+                            <stagingRepositoryId>sonatype-nexus-snapshots</stagingRepositoryId>
                             <serverId>sonatype-nexus-snapshots</serverId>
+                            <!-- 正式版 -->
+                            <!-- <stagingRepositoryId>sonatype-nexus-staging</stagingRepositoryId> -->
+                            <!-- <serverId>sonatype-nexus-staging</serverId> -->
                             <nexusUrl>https://oss.sonatype.org/</nexusUrl>
                             <autoReleaseAfterClose>true</autoReleaseAfterClose>
                         </configuration>
