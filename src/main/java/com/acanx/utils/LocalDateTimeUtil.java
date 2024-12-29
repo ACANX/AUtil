@@ -1,11 +1,16 @@
 package com.acanx.utils;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.constant.PatternConstant;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
 
 /**
  * ACANX-Util / com.acanx.utils / LocalDateTimeUtil.java
@@ -74,5 +79,45 @@ public class LocalDateTimeUtil {
         return now.format(dtf);
     }
 
+
+    /**
+     * 将 LocalDateTime 转换为 RFC 822 标准的日期格式字符串
+     *
+     *  典型场景：
+     *   1.HTTP请求响应参数“Date”的日时间格式
+     *   2.RSS/ATOM/Feed 订阅中使用的时间格式
+     *
+     * @param localDateTime 需要转换的 LocalDateTime 对象
+     * @return String 符合 RFC 822 标准的日期格式字符串
+     */
+    public static String toRfc822DateTimeString(LocalDateTime localDateTime) {
+        // 定义 RFC 822 格式的 DateTimeFormatter
+        DateTimeFormatter rfc822Formatter = PatternConstant.FORMATTER_DATETIME_RFC822
+                .withZone(ZoneId.of("UTC"))
+                .withLocale(Locale.US);
+        // 将 LocalDateTime 转换为 ZonedDateTime，指定时区为 UTC (GMT)
+        ZonedDateTime zonedDateTime = localDateTime.atZone(ZoneId.systemDefault()).withZoneSameInstant(ZoneId.of("UTC"));
+        // 格式化并返回 RFC 822 标准的日期字符串
+        return zonedDateTime.format(rfc822Formatter);
+    }
+
+
+
+    /**
+     * 从 LocalDateTime集合中选择日期最靠后的一个值并返回。
+     *
+     * @param dateTimeList 包含 LocalDateTime 对象的列表
+     * @return LocalDateTime 最新的 LocalDateTime 对象，如果列表为空或只包含 null，则返回 Optional.empty()
+     */
+    public static LocalDateTime getLatestDateTime(List<LocalDateTime> dateTimeList) {
+        // 检查列表是否为空或只包含 null
+        if (dateTimeList == null || dateTimeList.isEmpty() || dateTimeList.stream().allMatch(Objects::isNull)) {
+            return null;
+        }
+        // 过滤掉 null 值，并使用 Collections.max() 找到最新的 LocalDateTime
+        return dateTimeList.stream()
+                .filter(Objects::nonNull)
+                .max(LocalDateTime::compareTo).get();
+    }
 
 }

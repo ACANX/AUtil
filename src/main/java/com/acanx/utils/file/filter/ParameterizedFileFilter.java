@@ -16,6 +16,11 @@ public class ParameterizedFileFilter implements FileFilter {
 
    private String fileNameSuffix;
 
+    /**
+     *  构造函数
+     *
+     * @param fileNameSuffix  文件扩展名
+     */
     public ParameterizedFileFilter(String fileNameSuffix) {
         this.fileNameSuffix = fileNameSuffix;
     }
