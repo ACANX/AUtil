@@ -46,6 +46,8 @@ import java.util.Objects;
  */
 public class FileUtil {
 
+    private static final Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
+
     /**
      * 构造函数
      * @hidden
@@ -271,6 +273,27 @@ public class FileUtil {
             }
         }
     }
+
+
+
+    /**
+     * Reads the contents of a file line by line to a List of Strings. The file is always closed.
+     *
+     *  Use Default CharSet UTF-8
+     *
+     * @param file     the file to read, must not be {@code null}
+     * @return the list of Strings representing each line in the file, never {@code null}
+     * @throws NullPointerException if file is {@code null}.
+     * @throws IOException if an I/O error occurs, including when the file does not exist, is a directory rather than a
+     *         regular file, or for some other reason why the file cannot be opened for reading.
+     * @throws java.nio.charset.UnsupportedCharsetException if the named charset is unavailable.
+     * @since 0.0.1.10
+     */
+    @Alpha
+    public static List<String> readLines(final File file) throws IOException {
+        return readLines(file, CHARSET_UTF_8);
+    }
+
 
     /**
      * Reads the contents of a file line by line to a List of Strings. The file is always closed.
