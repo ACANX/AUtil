@@ -4,6 +4,11 @@ package com.acanx.utils.incubator.file;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ *  OccupySize
+ *
+ * @since 0.0.1.10
+ */
 public class OccupySize {
 
     private static final long BYTES_PER_KB = 1024L;
@@ -14,34 +19,80 @@ public class OccupySize {
     private static final String ERROR_INPUT = "-1";
     private final long bytes;
 
+    /**
+     *  构造方法
+     *
+     * @param bytes bytes
+     */
     public OccupySize(long bytes) {
         this.bytes = bytes;
     }
 
+    /**
+     *  OccupySize
+     *
+     * @param bytes bytes
+     * @return OccupySize
+     */
     public static OccupySize ofB(long bytes) {
         return new OccupySize(bytes);
     }
 
+    /**
+     * OccupySize
+     *
+     * @param kbytes kbytes
+     * @return OccupySize
+     */
     public static OccupySize ofKB(long kbytes) {
         return new OccupySize(Math.multiplyExact(1024L, kbytes));
     }
 
+    /**
+     * OccupySize
+     * @param kbytes kbytes
+     * @return OccupySize
+     */
     public static OccupySize ofMB(long kbytes) {
         return new OccupySize(Math.multiplyExact(1048576L, kbytes));
     }
 
+    /**
+     * OccupySize
+     *
+     * @param kbytes kbytes
+     * @return OccupySize
+     */
     public static OccupySize ofGB(long kbytes) {
         return new OccupySize(Math.multiplyExact(1073741824L, kbytes));
     }
 
+    /**
+     * OccupySize
+     *
+     * @param kbytes kbytes
+     * @return OccupySize
+     */
     public static OccupySize ofTB(long kbytes) {
         return new OccupySize(Math.multiplyExact(1099511627776L, kbytes));
     }
 
+    /**
+     * OccupySize
+     *
+     * @return OccupySize
+     */
     public long toBytes() {
         return this.bytes;
     }
 
+    /**
+     * OccupySize
+     *
+     * @param size  size
+     * @param unit  unit
+     * @return OccupySize
+     */
     public static OccupySize of(long size, OccupyUnit unit) {
         if (unit == null) {
             throw new IllegalArgumentException("LogUnit单位不能为null");
@@ -50,6 +101,11 @@ public class OccupySize {
         }
     }
 
+    /**
+     * resolve
+     * @param input input
+     * @return OccupySize
+     */
     public static OccupySize resolve(CharSequence input) {
         if (input == null) {
             throw new IllegalArgumentException("input不能为null");

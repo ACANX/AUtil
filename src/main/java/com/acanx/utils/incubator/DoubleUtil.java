@@ -1,6 +1,17 @@
 package com.acanx.utils.incubator;
 
+/**
+ * DoubleUtil
+ *
+ * @since 0.0.1.10
+ */
 public class DoubleUtil {
+    /**
+     * 构造方法
+     * @hidden
+     */
+    private DoubleUtil() {
+    }
 
     // TODO 加法
 

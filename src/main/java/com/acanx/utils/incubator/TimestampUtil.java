@@ -8,7 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
 /**
- *
+ * TimestampUtil
  *
  * @since 0.0.1.10
  */

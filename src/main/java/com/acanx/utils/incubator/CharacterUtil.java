@@ -7,7 +7,7 @@ import java.util.Random;
 
 
 /**
- *
+ * 字符相关处理工具类
  *
  * @since 0.0.1.10
  */
@@ -17,8 +17,8 @@ public class CharacterUtil {
     /**
      *  方法1：length为产生的位数
      *
-     * @param length
-     * @return
+     * @param length 长度
+     * @return 生成的随机字符串
      */
     public static String getRandomString(int length) {
         // 由Random生成随机数
@@ -38,8 +38,8 @@ public class CharacterUtil {
     /**
      *  第二种方法
      *
-     * @param length
-     * @return
+     * @param length 长度
+     * @return 生成的随机字符串
      */
     @Alpha
     public static String getRandomStr(int length) {

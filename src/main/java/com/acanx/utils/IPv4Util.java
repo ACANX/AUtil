@@ -23,14 +23,15 @@ public class IPv4Util {
     /**
      *  获取当前主机的公网IP地址
      *
-     * @return
+     * @return  当前主机的公网IP地址（字符串）
      */
     @Alpha
     public static String getCurrentHostPublicIp() {
+        HttpURLConnection connection;
         try {
             // 使用一个常用的获取公网IP的HTTP服务（这里仅作为示例，实际使用中需考虑服务稳定性和隐私政策）
             URL url = new URL("http://ifconfig.me");
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection = (HttpURLConnection) url.openConnection();
             connection.setRequestMethod("GET");
             try (BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
                 String line;

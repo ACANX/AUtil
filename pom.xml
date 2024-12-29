@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.1.10-SNAPSHOT</version>
+    <version>0.0.1.10</version>
     <packaging>jar</packaging>
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
@@ -38,19 +38,21 @@
     </licenses>
 
     <properties>
+        <project.release.version>0.0.1.10</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <java.version>8</java.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
+        <central-publishing-maven-plugin.version>0.6.0</central-publishing-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
-        <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
-        <junit-jupiter.version>5.10.2</junit-jupiter.version>
+        <junit-jupiter.version>5.11.3</junit-jupiter.version>
     </properties>
 
     <dependencies>
@@ -68,15 +70,15 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.8.0</version>
+                <version>${maven-javadoc-plugin.version}</version>
                 <executions>
                     <execution>
                         <id>attach-javadocs</id>
@@ -86,9 +88,9 @@
                         <configuration>
                             <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
                             <!-- <aggregate>true</aggregate>-->
-                            <charset>UTF-8</charset> <!-- utf-8读取文件 -->
-                            <encoding>UTF-8</encoding> <!-- utf-8进行编码代码 -->
-                            <docencoding>UTF-8</docencoding> <!-- utf-8进行编码文档 -->
+                            <charset>${project.build.sourceEncoding}</charset> <!-- utf-8读取文件 -->
+                            <encoding>${project.build.sourceEncoding}</encoding> <!-- utf-8进行编码代码 -->
+                            <docencoding>${project.build.sourceEncoding}</docencoding> <!-- utf-8进行编码文档 -->
                         </configuration>
                     </execution>
                 </executions>
@@ -101,7 +103,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.1.10</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -164,7 +166,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.1.10</project.release.version>
             </properties>
         </profile>
 
@@ -177,7 +179,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.0.1.10-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.1.10</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -190,7 +192,7 @@
                             <target>${maven.compiler.target}</target>
                         </configuration>
                     </plugin>
-                    <!--生成Source jar文件-->
+                    <!-- 生成Source jar文件 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-source-plugin</artifactId>
@@ -204,7 +206,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!--生成Javadoc，关闭doclint,避免注解检查不通过-->
+                    <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-javadoc-plugin</artifactId>
@@ -216,8 +218,8 @@
                                     <goal>jar</goal>
                                 </goals>
                                 <configuration>
-                                    <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
-                                    <!-- <aggregate>true</aggregate>-->
+                                    <!-- <additionalparam>-Xdoclint:none</additionalparam> -->
+                                    <!-- <aggregate>true</aggregate> -->
                                     <charset>${project.build.sourceEncoding}</charset><!-- utf-8读取文件 -->
                                     <encoding>${project.build.sourceEncoding}</encoding><!-- utf-8进行编码代码 -->
                                     <docencoding>${project.build.sourceEncoding}</docencoding><!-- utf-8进行编码文档 -->
@@ -225,7 +227,7 @@
                             </execution>
                         </executions>
                     </plugin>
-                    <!--Maven GPG插件用于使用以下配置对组件进行签名-->
+                    <!-- Maven GPG插件用于使用以下配置对组件进行签名 -->
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-gpg-plugin</artifactId>
@@ -244,23 +246,40 @@
                             <executable>D:\ProgramExt\GnuPG\bin\gpg.exe</executable>
                         </configuration>
                     </plugin>
-                    <!-- Nexus Staging Maven插件是将组件部署到OSSRH并将其发布到Central Repository的推荐方法 -->
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>${nexus-staging-maven-plugin.version}</version>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-deploy-plugin</artifactId>
+                        <version>${maven-deploy-plugin.version}</version>
+                    </plugin>
+                    <!-- 正式版发布使用central-publishing-maven-plugin插件-->
+                    <plugin>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central-publishing-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                        <!-- <serverId>sonatype-nexus-staging</serverId> -->
-                            <serverId>sonatype-nexus-snapshots</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>sonatype-nexus-staging</publishingServerId>
+                            <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
+                    <!-- 快照版本发布使用nexus-staging-maven-plugin插件，正式版发布时需要注释掉此插件，正式版使用central-publishing-maven-plugin插件 -->
+<!--                    <plugin>-->
+<!--                        <groupId>org.sonatype.plugins</groupId>-->
+<!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
+<!--                        <version>${nexus-staging-maven-plugin.version}</version>-->
+<!--                        <extensions>true</extensions>-->
+<!--                        <configuration>-->
+<!--                            <stagingRepositoryId>sonatype-nexus-snapshots</stagingRepositoryId>-->
+<!--                            <serverId>sonatype-nexus-snapshots</serverId>-->
+<!--                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
+<!--                            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
+<!--                        </configuration>-->
+<!--                    </plugin>-->
                     <!-- 参考：https://blog.csdn.net/alinyua/article/details/83687250 -->
+                    <!-- 参考：https://blog.csdn.net/Lily_Li0315/article/details/143944838 -->
                 </plugins>
             </build>
-            <!-- 【注】snapshotRepository 与 repository 中的 id 一定要与 setting.xml 中 server 的 id 保持一致！ -->
+            <!-- repository、snapshotRepository中的id一定要与Maven的setting.xml文件中的server节点下的id 保持一一对应！ -->
             <distributionManagement>
                 <repository>
                     <id>sonatype-nexus-staging</id>

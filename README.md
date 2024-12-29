@@ -18,6 +18,11 @@ ACANX开源的工具库
 
 ```
 
+### 在线文档
+
+- JavaDoc文档地址： https://apidoc.gitee.com/ACANX/acanx-utils
+- 备用Doc文档地址： https://docs.acanx.com/Java/ACANX-Utils/index.html
+- 分支： dev
 
 # 使用要求
 

@@ -9,7 +9,7 @@ import java.time.format.DateTimeFormatter;
 
 
 /**
- *
+ * Long类型处理工具类
  *
  * @since 0.0.1.10
  */
@@ -19,8 +19,8 @@ public class LongUtil {
     /**
      *    Timestamp  转  LocalDateTime
      *
-     * @param timestamp
-     * @return
+     * @param timestamp 时间戳（毫秒）
+     * @return  LocalDateTime类型的时间
      */
     @Alpha
     public static LocalDateTime toLocalDateTime(Long timestamp){
@@ -31,9 +31,9 @@ public class LongUtil {
     /**
      *  将Long类型的时间戳转换成String 类型的时间格式，
      *
-     * @param time
+     * @param time Long类型的时间
      * @param format  时间格式如：yyyy-MM-dd HH:mm:ss
-     * @return
+     * @return        String类型的时间字符串
      *
      */
     @Alpha

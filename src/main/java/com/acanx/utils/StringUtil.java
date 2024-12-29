@@ -656,8 +656,8 @@ public class StringUtil {
 
     /**
      * 生成指定长度的指定字符串
-     *   如：  getStrSeq("123", 3)   ==>  "123123123"
-     *        getStrSeq("321", 4)   ==>  "321321321321"
+     *   如：  getStrSeq("123", 3)   return  "123123123"
+     *        getStrSeq("321", 4)   return  "321321321321"
      *
      * @param str    String 指定字符串
      * @param length int 循环长度
@@ -670,6 +670,39 @@ public class StringUtil {
             sb.append(str.toCharArray());
         }
         return sb.toString();
+    }
+
+
+    /**
+     * 将下划线字符串转换为驼峰字符串
+     *
+     * @param underlineString 下划线字符串
+     * @return 驼峰字符串
+     */
+    public static String underlineToCamelCase(String underlineString) {
+        if (underlineString == null || underlineString.isEmpty()) {
+            return underlineString;
+        }
+        StringBuilder camelCaseString = new StringBuilder();
+        boolean toUpper = false;
+        for (char c : underlineString.toCharArray()) {
+            if (c == '_') {
+                toUpper = true;
+            } else {
+                if (toUpper) {
+                    camelCaseString.append(Character.toUpperCase(c));
+                    toUpper = false;
+                } else {
+                    camelCaseString.append(c);
+                }
+            }
+        }
+        // 如果字符串以下划线开头，则结果应该以小写字母开头（假设这是期望的行为）
+        // 如果不期望这种行为，可以移除或修改下面的代码
+        if (camelCaseString.length() > 0 && Character.isUpperCase(camelCaseString.charAt(0))) {
+            camelCaseString.setCharAt(0, Character.toLowerCase(camelCaseString.charAt(0)));
+        }
+        return camelCaseString.toString();
     }
 
 

@@ -1,25 +1,28 @@
 package com.acanx.utils.file.filter;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.FileConstant;
 
 import java.io.File;
 import java.io.FileFilter;
 
+
 /**
- *  PropertiesFileFilter Properties文件过滤器
+ * ParameterizedFileFilter 通用文件过滤器
  *
  * @since 0.0.1.10
  */
 @Alpha
-@Deprecated
-public class PropertiesFileFilter implements FileFilter {
+public class ParameterizedFileFilter implements FileFilter {
+
+   private String fileNameSuffix;
 
     /**
-     * 构造函数
-     * @hidden
+     *  构造函数
+     *
+     * @param fileNameSuffix  文件扩展名
      */
-    public PropertiesFileFilter() {
+    public ParameterizedFileFilter(String fileNameSuffix) {
+        this.fileNameSuffix = fileNameSuffix;
     }
 
     /**
@@ -31,8 +34,10 @@ public class PropertiesFileFilter implements FileFilter {
      * should be included
      */
     @Override
-    public boolean accept(File pathname) {
-        return new ParameterizedFileFilter(FileConstant.DOT_PROPERTIES).accept(pathname);
+    public boolean accept(File pathname){
+        return pathname.getName().toLowerCase().endsWith(this.fileNameSuffix);
     }
+
+
 
 }

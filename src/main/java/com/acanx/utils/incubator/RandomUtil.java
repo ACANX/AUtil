@@ -7,12 +7,17 @@ import java.util.Random;
 
 
 /**
- *
- *
+ * RandomUtil
  *
  * @since 0.0.1.10
  */
 public class RandomUtil {
+    /**
+     *  构造方法
+     * @hidden
+     */
+    private RandomUtil() {
+    }
 
     /**
      * 生成指定长度的随机字符串
@@ -135,8 +140,8 @@ public class RandomUtil {
     /**
      *  生成随机数字符串
      *
-     * @param length
-     * @return
+     * @param length  长度
+     * @return  随机数字符串
      */
     @Alpha
     public static String getRandomNum(int length) {

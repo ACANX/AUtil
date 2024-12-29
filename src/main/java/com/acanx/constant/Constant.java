@@ -338,6 +338,8 @@ public class Constant {
     public static final Character CHAR_LH = 'h';
     /**  CHAR_EMPTY */
     public static final Character CHAR_EMPTY = ' ';
+    /**  CHAR_COMMA  */
+    public static final Character CHAR_COMMA = ',';
     /**  CHAR_BREAK */
     public static final Character CHAR_BREAK = ',';
 
