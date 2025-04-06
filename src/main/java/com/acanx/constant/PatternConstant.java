@@ -20,6 +20,10 @@ public class PatternConstant {
     public static final String PATTERN_FORMAT_DATETIME2 = "yyyyMMddHHmmss";
     /**  PATTERN_FORMAT_DATETIME3   */
     public static final String PATTERN_FORMAT_DATETIME3 = "yyyyMMddHHmmssSSS";
+    /**  PATTERN_FORMAT_DATETIME4   */
+    public static final String PATTERN_FORMAT_DATETIME4 = "yyyyMMddHHmmssSSSSSS";
+    /**  PATTERN_FORMAT_DATETIME5   */
+    public static final String PATTERN_FORMAT_DATETIME5 = "yyyyMMddHHmmssSSSSSSSSS";
     /**  PATTERN_FORMAT_RFC822   */
     public static final String PATTERN_FORMAT_DATETIME_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
 
@@ -46,6 +50,10 @@ public class PatternConstant {
     public static final DateTimeFormatter FORMATTER_DATETIME2 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATETIME2);
     /**  FORMATTER_DATETIME3   */
     public static final DateTimeFormatter FORMATTER_DATETIME3 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATETIME3);
+    /**  FORMATTER_DATETIME4   */
+    public static final DateTimeFormatter FORMATTER_DATETIME4 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATETIME4);
+    /**  FORMATTER_DATETIME5   */
+    public static final DateTimeFormatter FORMATTER_DATETIME5 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATETIME5);
     /**  FORMATTER_DATETIME_RFC822   */
     public static final DateTimeFormatter FORMATTER_DATETIME_RFC822 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATETIME_RFC822);
 

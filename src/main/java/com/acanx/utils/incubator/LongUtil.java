@@ -1,7 +1,9 @@
 package com.acanx.utils.incubator;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.constant.PatternConstant;
 
+import java.math.BigInteger;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -43,5 +45,15 @@ public class LongUtil {
         return formatString.format(LocalDateTime.ofInstant(Instant.ofEpochMilli(time), ZoneId.systemDefault()));
     }
 
+
+    /**
+     *   获取当前的8位数字类型的日期  格式：yyyyMMddHHmmssSSS
+     *
+     * @return  格式化后的毫秒级时间字符串
+     */
+    @Alpha
+    public static Long getCurrentDateTimeMs() {
+        return Long.parseLong(LocalDateTime.now().format(PatternConstant.FORMATTER_DATETIME3));
+    }
 
 }
