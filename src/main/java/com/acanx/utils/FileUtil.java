@@ -30,6 +30,8 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -624,6 +626,36 @@ public class FileUtil {
         }
     }
 
+
+
+    /**
+     * 获取按最后修改时间排序的文件列表
+     *
+     * @param directory 文件夹路径
+     * @return 按最后修改时间排序的文件数组  最早修改的在前，最近修改/写入的排在最后
+     */
+    public static File[] getSortedFilesByLastModified(String directory) {
+        List<File> list = getFileListSortedByLastModified(directory);
+        return list.toArray(new File[list.size()]);
+    }
+
+    /**
+     * 获取按最后修改时间排序的文件列表
+     *
+     * @param directory 文件夹路径
+     * @return 按最后修改时间(正序)排序的文件列表
+     */
+    public static List<File> getFileListSortedByLastModified(String directory) {
+        File folder = new File(directory);
+        if (!folder.exists() || !folder.isDirectory()) {
+            throw new IllegalArgumentException("指定的路径不是一个有效的文件夹");
+        }
+        // 递归获取所有文件
+        List<File> allFiles = FileUtil.getFileList(folder);
+        // 按最后修改时间排序（最先修改的排在前面）
+        Collections.sort(allFiles, Comparator.comparingLong(File::lastModified));
+        return allFiles;
+    }
 
 
 
