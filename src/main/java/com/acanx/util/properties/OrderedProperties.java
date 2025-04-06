@@ -23,11 +23,11 @@ public class OrderedProperties {
     private final List<Entry> entries = new ArrayList<>();
     private final Map<String, Entry> propertyMap = new HashMap<>();
 
-
     /**
      *   加载.properties配置文件
-     * @param file
-     * @throws IOException
+     *
+     * @param file  文件
+     * @throws IOException  异常
      */
     public void load(File file) throws IOException {
         load(new FileInputStream(file));
@@ -35,8 +35,9 @@ public class OrderedProperties {
 
     /**
      *   加载.properties配置文件
-     * @param in
-     * @throws IOException
+     *
+     * @param in   输入流
+     * @throws IOException 异常
      */
     public void load(InputStream in) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(in, StandardCharsets.UTF_8));
@@ -56,8 +57,9 @@ public class OrderedProperties {
 
     /**
      * 获取属性值的方法
-     * @param key
-     * @return
+     *
+     * @param key 键
+     * @return   值
      */
     public String getProperty(String key) {
         Entry entry = propertyMap.get(key);
@@ -67,7 +69,7 @@ public class OrderedProperties {
     /**
      * 获取所有键（可选功能）
      *
-     * @return
+     * @return  键值集合
      */
     public List<String> getKeys() {
         List<String> keys = new ArrayList<>();
@@ -80,6 +82,11 @@ public class OrderedProperties {
     }
 
 
+    /***
+     *    解析对应行
+     *
+     * @param line  行号
+     */
     private void parsePropertyLine(String line) {
         int sepIdx = -1;
         // 查找第一个分隔符（=或:）
@@ -107,6 +114,12 @@ public class OrderedProperties {
     }
 
 
+    /**
+     *
+     * @param key   键
+     * @param value 值
+     * @param separator 间隔符
+     */
     private void addProperty(String key, String value, String separator) {
         Entry entry = new Entry(key, value, separator);
         entries.add(entry);
@@ -114,6 +127,11 @@ public class OrderedProperties {
     }
 
 
+    /**
+     *
+     * @param key  键
+     * @param value 值
+     */
     public void setProperty(String key, String value) {
         if (propertyMap.containsKey(key)) {
             propertyMap.get(key).setValue(value);
@@ -123,6 +141,11 @@ public class OrderedProperties {
     }
 
 
+    /**
+     *
+     * @param out   输出流
+     * @throws IOException 异常
+     */
     public void store(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.ISO_8859_1));
         for (Entry entry : entries) {
@@ -133,9 +156,11 @@ public class OrderedProperties {
     }
 
 
-
     /**
      * 将属性按键排序后写入文件，非属性条目（注释、空行）保留原始顺序
+     *
+     * @param propFile  输出文件
+     * @throws IOException  异常
      */
     public void resortAndStore(File propFile) throws IOException {
         // 分离非属性条目和属性条目

@@ -32,8 +32,8 @@ public class Entry {
     /**
      *  构造
      *
-     * @param type
-     * @param rawLine
+     * @param type  类型呢
+     * @param rawLine line
      */
     public Entry(Type type, String rawLine) {
         this.type = type;
@@ -43,9 +43,9 @@ public class Entry {
     /**
      * 构造属性
      *
-     * @param key
-     * @param value
-     * @param separator
+     * @param key   键
+     * @param value 值
+     * @param separator 间隔符
      */
     public Entry(String key, String value, String separator) {
         this.type = Type.PROPERTY;
@@ -57,40 +57,40 @@ public class Entry {
     /**
      * getType
      *
-     * @return
+     * @return  类型
      */
     public Type getType() { return type; }
 
     /**
      *  getComment
      *
-     * @return
+     * @return 注释
      */
     public String getComment() { return comment; }
 
     /**
      * getKey
-     * @return
+     * @return 键
      */
     public String getKey() { return key; }
 
     /**
      * getValue
-     * @return
+     * @return 值
      */
     public String getValue() { return value; }
 
     /**
      * setValue
      *
-     * @param value
+     * @param value  值
      */
     public void setValue(String value) { this.value = value; }
 
     /**
      * getSeparator
      *
-     * @return
+     * @return  间隔符
      */
     public String getSeparator() { return separator; }
 

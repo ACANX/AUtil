@@ -29,6 +29,12 @@ import java.util.Properties;
 @Alpha
 public class PropertiesUtil {
 
+    /**
+     *    加载文件配置
+     *
+     * @param file  文件
+     * @return  Properties类型的对象
+     */
     private static Properties loadConfig(File file) {
         Properties properties = new Properties();
         try (FileInputStream fis = new FileInputStream(file)) {
@@ -39,20 +45,35 @@ public class PropertiesUtil {
         return properties;
     }
 
+    /**
+     *   获取文件配置值
+     *
+     * @param file  文件
+     * @param key   键
+     * @return      值
+     */
     public static String getPropertiesFileConfigValue(File file, String key) {
         Properties properties = loadConfig(file);
         return properties.getProperty(key);
     }
 
+    /**
+     *  从配置文件中读取对应键的值
+     *
+     * @param properties  Properties
+     * @param key   键
+     * @return      值
+     */
     private static String getPropertiesFileConfigValue(Properties properties, String key) {
         return properties.getProperty(key);
     }
 
     /**
      *  修改配置，（注意：此操作会修改配置项的原有顺序，如需要保证顺序请选择 @See modifyProperties ）
-     * @param file
-     * @param key
-     * @param value
+     *
+     * @param file  文件
+     * @param key   键
+     * @param value  值
      */
     public static void setPropertiesFileConfigValue(File file, String key, String value) {
         Properties properties = loadConfig(file);
@@ -60,6 +81,12 @@ public class PropertiesUtil {
         saveConfig(properties, file);
     }
 
+    /**
+     *   保存配置到文件
+     *
+     * @param properties 配置
+     * @param file       文件
+     */
     private static void saveConfig(Properties properties, File file) {
         try (FileOutputStream fos = new FileOutputStream(file)) {
             properties.store(fos, "");
@@ -71,9 +98,10 @@ public class PropertiesUtil {
 
     /**
      *  修改配置文件的配置值，不改变配置的顺序。
-     * @param file
-     * @param key
-     * @param value
+     *
+     * @param file  文件
+     * @param key   键
+     * @param value 值
      */
     public static void modifyProperties(File file, String key, String value) {
         if (StringUtil.isNotBlank(key) && StringUtil.isNotBlank(value) && null != getPropertiesFileConfigValue(file, key)){
@@ -117,8 +145,9 @@ public class PropertiesUtil {
     /**
      *   一次完成修改多项配置后保存到文件
      *
-     * @param file
-     * @param needModPropMap
+     * @param file             文件
+     * @param needModPropMap   需要修改的配置Map
+     * @param allowAddProp     允许添加属性标识
      */
     public static void modifyProperties(File file, Map<String, String> needModPropMap, boolean allowAddProp) {
         // 构建配置文件数据结构
