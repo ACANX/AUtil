@@ -46,7 +46,7 @@ import java.util.Objects;
  */
 public class FileUtil {
 
-    private static final Charset CHARSET_UTF_8 = Charset.forName("UTF-8");
+    private static final Charset CHARSET_UTF_8 = StandardCharsets.UTF_8;
 
     /**
      * 构造函数
@@ -134,12 +134,14 @@ public class FileUtil {
     @Alpha
     public static List<File> getFileList(File dir) {
         List<File> list = new ArrayList<File>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()){
-                List<File> fileList = getFileList(file);
-                list.addAll(fileList);
-            } else {
-                list.add(file);
+        if (dir.isDirectory() && null != dir.listFiles() && dir.listFiles().length > 0) {
+            for (File file : dir.listFiles()) {
+                if (file.isDirectory()){
+                    List<File> fileList = getFileList(file);
+                    list.addAll(fileList);
+                } else {
+                    list.add(file);
+                }
             }
         }
         return list;
@@ -357,6 +359,12 @@ public class FileUtil {
         return sb.toString();
     }
 
+
+    @Alpha
+    public static String readFileToString(final File file) throws IOException {
+        return readFileToString(file, StandardCharsets.UTF_8);
+    }
+
     /**
      * Reads the contents of a file into a String. The file is always closed.
      *
@@ -436,7 +444,18 @@ public class FileUtil {
     }
 
 
-
+    /**
+     * Writes a CharSequence to a file creating the file if it does not exist.
+     *
+     * @param file     the file to write
+     * @param data     the content to write to the file
+     * @throws IOException in case of an I/O error
+     * @since 0.0.1.11
+     */
+    @Alpha
+    public static void write(final File file, final CharSequence data) throws IOException {
+        write(file, data, StandardCharsets.UTF_8);
+    }
 
     /**
      * Writes a CharSequence to a file creating the file if it does not exist.
