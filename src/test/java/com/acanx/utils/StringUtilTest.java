@@ -54,4 +54,17 @@ public class StringUtilTest {
         }
     }
 
+    @Test
+    void underlineToCamelCaseTest() {
+        String str = "user_name";
+        System.out.println(StringUtil.underlineToCamelCase(str));
+    }
+
+    @Test
+    void camelCaseToUnderlineTest() {
+        String str = "userName";
+        System.out.println(StringUtil.camelCaseToUnderline(str));
+        String str2 = "JSONName";
+        System.out.println(StringUtil.camelCaseToUnderline(str2));
+    }
 }

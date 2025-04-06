@@ -677,7 +677,7 @@ public class StringUtil {
      * 将下划线字符串转换为驼峰字符串
      *
      * @param underlineString 下划线字符串
-     * @return 驼峰字符串
+     * @return 小驼峰格式的字符串
      */
     public static String underlineToCamelCase(String underlineString) {
         if (underlineString == null || underlineString.isEmpty()) {
@@ -703,6 +703,18 @@ public class StringUtil {
             camelCaseString.setCharAt(0, Character.toLowerCase(camelCaseString.charAt(0)));
         }
         return camelCaseString.toString();
+    }
+
+
+    /**
+     * 将下划线字符串转换为驼峰字符串
+     *
+     * @param camelString 小驼峰字符串
+     * @return 下划线格式的字符串
+     */
+    @Alpha
+    public static String camelCaseToUnderline(String camelString) {
+        return camelToSplitName(camelString, "_");
     }
 
 
@@ -736,7 +748,6 @@ public class StringUtil {
                     buf.append(ch);
                 }
             }
-
             return buf == null ? camelName : buf.toString();
         }
     }
@@ -1398,5 +1409,17 @@ public class StringUtil {
         return sdf.format(new Date(Long.valueOf(seconds + "000")));
     }
 
+
+    /**
+     * 判断输入的字符串是否是给定字符串列表中的某一个等值的字符串
+     *
+     * @param inputString 需要判断的字符串
+     * @param stringList  字符串列表
+     * @return 如果输入的字符串在列表中，则返回 true；否则返回 false
+     */
+    public static boolean containsString(String inputString, List<String> stringList) {
+        // 使用 Stream API 来进行判断
+        return stringList.stream().anyMatch(inputString::equals);
+    }
 
 }
