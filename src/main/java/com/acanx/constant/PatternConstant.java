@@ -27,6 +27,8 @@ public class PatternConstant {
     public static final String PATTERN_FORMAT_DATE = "yyyy-MM-dd";
     /**  PATTERN_FORMAT_DATE2   */
     public static final String PATTERN_FORMAT_DATE2 = "yyyyMMdd";
+    /**  PATTERN_FORMAT_DATE3   */
+    public static final String PATTERN_FORMAT_DATE3 = "yyyy/MM/dd";
     /**  PATTERN_FORMAT_TIME   */
     public static final String PATTERN_FORMAT_TIME = "HH:mm:ss";
     /**  PATTERN_FORMAT_TIME1   */
@@ -51,6 +53,8 @@ public class PatternConstant {
     public static final DateTimeFormatter FORMATTER_DATE = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATE);
     /**  FORMATTER_DATE2   */
     public static final DateTimeFormatter FORMATTER_DATE2 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATE2);
+    /**  FORMATTER_DATE3   */
+    public static final DateTimeFormatter FORMATTER_DATE3 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATE3);
     /**  FORMATTER_TIME   */
     public static final DateTimeFormatter FORMATTER_TIME = DateTimeFormatter.ofPattern(PATTERN_FORMAT_TIME);
     /**  FORMATTER_TIME1   */
