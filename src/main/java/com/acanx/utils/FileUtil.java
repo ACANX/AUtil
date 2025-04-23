@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
@@ -34,6 +35,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * ACANX-Util / com.acanx.utils / FileUtil
@@ -47,6 +49,7 @@ import java.util.Objects;
  * @since 0.0.1
  */
 public class FileUtil {
+   private static final Logger logger = Logger.getLogger(FileUtil.class.getName());
 
     private static final Charset CHARSET_UTF_8 = StandardCharsets.UTF_8;
 
@@ -126,6 +129,23 @@ public class FileUtil {
             }
             return file.delete();
         }
+    }
+
+
+    /**
+     * 获取文件扩展名（NIO 方法）
+     * @param filePath 文件路径
+     * @return 扩展名（如 "jpg"），若无扩展名返回空字符串
+     */
+    @Alpha
+    public static String getFileExtension(String filePath) {
+        Path path = Paths.get(filePath);
+        String fileName = path.getFileName().toString();
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1).toLowerCase();
+        }
+        return "";
     }
 
     /**
@@ -658,6 +678,19 @@ public class FileUtil {
     }
 
 
-
+    public static void deleteEmptyDir(File f) {
+        if (f.isDirectory()) {
+            if (f.listFiles().length == 0){
+                FileUtil.deleteFile(f);
+                logger.fine("删除空文件夹["+f.getAbsolutePath()+"]");
+            } else {
+                for (File sub : f.listFiles()) {
+                    if (sub.isDirectory()) {
+                        deleteEmptyDir(sub);
+                    }
+                }
+            }
+        }
+    }
 
 }

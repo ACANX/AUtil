@@ -47,13 +47,23 @@ public class LongUtil {
 
 
     /**
-     *   获取当前的8位数字类型的日期  格式：yyyyMMddHHmmssSSS
+     *   获取当前的17位数字类型的日期  格式：yyyyMMddHHmmssSSS
      *
      * @return  格式化后的毫秒级时间字符串
      */
     @Alpha
     public static Long getCurrentDateTimeMs() {
         return Long.parseLong(LocalDateTime.now().format(PatternConstant.FORMATTER_DATETIME3));
+    }
+
+    /**
+     *   获取当前的14位数字类型的日期时间  格式：yyyyMMddHHmmss
+     *
+     * @return  格式化后的秒级时间字符串
+     */
+    @Alpha
+    public static Long getCurrentDateTime() {
+        return Long.parseLong(LocalDateTime.now().format(PatternConstant.FORMATTER_DATETIME2));
     }
 
 }

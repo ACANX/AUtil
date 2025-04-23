@@ -6,7 +6,8 @@ import com.acanx.constant.PatternConstant;
 import java.math.BigInteger;
 import java.time.LocalDateTime;
 
-public class BigIntegerUtil {
+@Alpha
+public class BigIntUtil {
 
     /**
      *   获取当前的20位数字类型的日期  格式：yyyyMMddHHmmssSSSSSS

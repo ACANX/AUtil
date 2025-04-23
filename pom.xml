@@ -50,7 +50,7 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
-        <central-publishing-maven-plugin.version>0.6.0</central-publishing-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <junit-jupiter.version>5.11.3</junit-jupiter.version>
     </properties>
@@ -70,8 +70,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>${maven.compiler.source}</source>
-                    <target>${maven.compiler.target}</target>
+                    <source>8</source>
+                    <target>8</target>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
@@ -251,32 +251,17 @@
                         <artifactId>maven-deploy-plugin</artifactId>
                         <version>${maven-deploy-plugin.version}</version>
                     </plugin>
-                    <!-- 正式版发布使用central-publishing-maven-plugin插件-->
+                    <!-- 正式版/SNAPSHOT发布使用central-publishing-maven-plugin插件-->
                     <plugin>
                         <groupId>org.sonatype.central</groupId>
                         <artifactId>central-publishing-maven-plugin</artifactId>
                         <version>${central-publishing-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>sonatype-nexus-staging</publishingServerId>
+                            <publishingServerId>sonatype-nexus-snapshots</publishingServerId>
                             <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
-                    <!-- 快照版本发布使用nexus-staging-maven-plugin插件，正式版发布时需要注释掉此插件，正式版使用central-publishing-maven-plugin插件 -->
-<!--                    <plugin>-->
-<!--                        <groupId>org.sonatype.plugins</groupId>-->
-<!--                        <artifactId>nexus-staging-maven-plugin</artifactId>-->
-<!--                        <version>${nexus-staging-maven-plugin.version}</version>-->
-<!--                        <extensions>true</extensions>-->
-<!--                        <configuration>-->
-<!--                            <stagingRepositoryId>sonatype-nexus-snapshots</stagingRepositoryId>-->
-<!--                            <serverId>sonatype-nexus-snapshots</serverId>-->
-<!--                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>-->
-<!--                            <autoReleaseAfterClose>true</autoReleaseAfterClose>-->
-<!--                        </configuration>-->
-<!--                    </plugin>-->
-                    <!-- 参考：https://blog.csdn.net/alinyua/article/details/83687250 -->
-                    <!-- 参考：https://blog.csdn.net/Lily_Li0315/article/details/143944838 -->
                 </plugins>
             </build>
             <!-- repository、snapshotRepository中的id一定要与Maven的setting.xml文件中的server节点下的id 保持一一对应！ -->
@@ -288,7 +273,7 @@
                 </repository>
                 <snapshotRepository>
                     <id>sonatype-nexus-snapshots</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+                    <url>https://central.sonatype.com/repository/maven-snapshots/</url>
                 </snapshotRepository>
             </distributionManagement>
         </profile>

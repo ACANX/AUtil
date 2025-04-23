@@ -17,7 +17,6 @@ public class PropertiesFileFilter implements FileFilter {
 
     /**
      * 构造函数
-     * @hidden
      */
     public PropertiesFileFilter() {
     }

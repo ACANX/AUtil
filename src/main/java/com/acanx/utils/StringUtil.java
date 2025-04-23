@@ -1422,4 +1422,30 @@ public class StringUtil {
         return stringList.stream().anyMatch(inputString::equals);
     }
 
+
+    /**
+     * 生成固定长度数字字符串，不足位时前面补零
+     * @param no 原始数字
+     * @param length 目标字符串长度
+     * @return 补零后的等长字符串
+     * @throws IllegalArgumentException 参数不合法时抛出
+     */
+    @Alpha
+    public static String getLeftPadZeroNo(int no, int length) {
+        // 参数校验
+        if (length <= 0) {
+            throw new IllegalArgumentException("长度必须大于0");
+        }
+        if (no < 0) {
+            throw new IllegalArgumentException("不支持负数");
+        }
+        // 计算数字位数
+        int numDigits = (no == 0) ? 1 : (int) (Math.log10(no) + 1);
+        if (numDigits > length) {
+            throw new IllegalArgumentException("数字位数超过目标长度");
+        }
+        // 使用String.format进行格式化补零
+        return String.format("%0" + length + "d", no);
+    }
+
 }
