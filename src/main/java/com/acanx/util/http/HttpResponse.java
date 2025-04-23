@@ -5,6 +5,9 @@ import com.acanx.constant.HttpC;
 import java.util.List;
 import java.util.Map;
 
+/**
+ *  HttpResponse
+ */
 public class HttpResponse {
 
     private int statusCode;

@@ -153,6 +153,7 @@ public class BaseHttp {
     /**  ========== 快捷方法 ========== */
 
     /**
+     *   GET请求
      *
      * @param url 资源地址
      * @return    响应
@@ -162,6 +163,7 @@ public class BaseHttp {
     }
 
     /**
+     * GET请求
      *
      * @param url        资源地址
      * @param params     URL参数
@@ -172,6 +174,7 @@ public class BaseHttp {
     }
 
     /**
+     *  POST请求
      *
      * @param url     资源地址
      * @param body    请求体
@@ -182,6 +185,7 @@ public class BaseHttp {
     }
 
     /**
+     * POST请求
      *
      * @param url     资源地址
      * @param headers 请求头
@@ -193,6 +197,7 @@ public class BaseHttp {
     }
 
     /**
+     * POST请求
      *
      * @param url       资源地址
      * @param params    URL参数
@@ -205,6 +210,7 @@ public class BaseHttp {
     }
 
     /**
+     *  POST请求
      *
      * @param url     资源地址
      * @param params  URL参数
@@ -219,6 +225,7 @@ public class BaseHttp {
 
 
     /**
+     *  POST请求
      *
      * @param url         资源地址
      * @param formData    表单数据
@@ -232,6 +239,7 @@ public class BaseHttp {
     }
 
     /**
+     *   获取HTTP响应
      *
      * @param request   请求对象
      * @return          响应

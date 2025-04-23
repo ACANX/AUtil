@@ -1,11 +1,5 @@
 package com.acanx.util;
 
-import com.acanx.utils.StringUtil;
-
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -13,18 +7,15 @@ import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
- *
+ *   JDBCUtil
  *
  */
 public class JDBCUtil {
 
     /**
+     *    获取连接
      *
      * @param driverClass   驱动类
      * @param jdbcUrl       url

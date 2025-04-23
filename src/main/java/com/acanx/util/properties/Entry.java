@@ -17,11 +17,11 @@ public class Entry {
      */
     private String comment;
     /**
-     *
+     *  key
      */
     private String key;
     /**
-     *
+     * value
      */
     private String value;
     /**

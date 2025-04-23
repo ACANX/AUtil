@@ -16,6 +16,12 @@ import java.util.Map;
 public class URLUtil {
 
 
+    /**
+     *  编码字符串参数
+     *
+     * @param value  原字符串
+     * @return       编码后的字符串
+     */
     public static String encodeParameter(String value) {
         // 显式使用 UTF-8 编码
         String encoded = null;
@@ -28,11 +34,24 @@ public class URLUtil {
         return encoded.replace("%20", "+");
     }
 
+    /**
+     *  编码URL参数
+     *
+     * @param entry  Map Entry
+     * @return    编码后的字符串
+     */
     public static String encodeParameter(Map.Entry<String, String> entry) {
         return encodeParameter(entry.getKey()) + "=" + encodeParameter(entry.getValue());
     }
 
 
+    /**
+     *    编码URL参数
+     *
+     * @param key  键
+     * @param value 值
+     * @return   编码后的字符串
+     */
     public static String encodeParameter(String key, String value) {
         return encodeParameter(key) + "=" + encodeParameter(value);
     }

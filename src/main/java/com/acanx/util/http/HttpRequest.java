@@ -4,6 +4,9 @@ import com.acanx.constant.HttpC;
 
 import java.util.Map;
 
+/**
+ *  HttpRequest
+ */
 public class HttpRequest {
 
     private String method = HttpC.GET;
