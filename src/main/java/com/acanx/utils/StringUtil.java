@@ -672,85 +672,133 @@ public class StringUtil {
         return sb.toString();
     }
 
+    /**
+     *  将下划线字符串转换为小驼峰字符串
+     *
+     * @param snakeCaseField 下划线字符串
+     * @return       驼峰字符串
+     */
+    @Alpha
+    public static String snakeToCamelCase(String snakeCaseField) {
+        return snakeToCamelCase(snakeCaseField, false);
+    }
 
     /**
-     * 将下划线字符串转换为驼峰字符串
+     *  将下划线字符串转换为驼峰字符串
      *
-     * @param underlineString 下划线字符串
-     * @return 小驼峰格式的字符串
+     * @param snakeCaseField 下划线字符串
+     * @param largeCamelFlag 首字母大写标识
+     * @return       驼峰字符串
      */
-    public static String underlineToCamelCase(String underlineString) {
-        if (underlineString == null || underlineString.isEmpty()) {
-            return underlineString;
+    @Alpha
+    public static String snakeToCamelCase(String snakeCaseField, Boolean largeCamelFlag) {
+        if (isEmpty(snakeCaseField)) {
+            return snakeCaseField;
         }
-        StringBuilder camelCaseString = new StringBuilder();
+        StringBuilder camelCaseField = new StringBuilder();
         boolean toUpper = false;
-        for (char c : underlineString.toCharArray()) {
+        for (char c : snakeCaseField.toCharArray()) {
             if (c == '_') {
                 toUpper = true;
             } else {
                 if (toUpper) {
-                    camelCaseString.append(Character.toUpperCase(c));
+                    camelCaseField.append(Character.toUpperCase(c));
                     toUpper = false;
                 } else {
-                    camelCaseString.append(c);
+                    camelCaseField.append(c);
                 }
             }
         }
-        // 如果字符串以下划线开头，则结果应该以小写字母开头（假设这是期望的行为）
-        // 如果不期望这种行为，可以移除或修改下面的代码
-        if (camelCaseString.length() > 0 && Character.isUpperCase(camelCaseString.charAt(0))) {
-            camelCaseString.setCharAt(0, Character.toLowerCase(camelCaseString.charAt(0)));
+        // 判断是否需要将首字母大写
+        if (largeCamelFlag && camelCaseField.length() > 0 && Character.isLowerCase(camelCaseField.charAt(0))) {
+            camelCaseField.setCharAt(0, Character.toUpperCase(camelCaseField.charAt(0)));
         }
-        return camelCaseString.toString();
+        return camelCaseField.toString();
+
     }
 
-
     /**
-     * 将下划线字符串转换为驼峰字符串
+     * 将驼峰字符串转换为下划线字符串
      *
-     * @param camelString 小驼峰字符串
-     * @return 下划线格式的字符串
+     * @param camelCaseField 小驼峰字符串
+     * @return               下划线格式的字符串
      */
     @Alpha
-    public static String camelCaseToUnderline(String camelString) {
-        return camelToSplitName(camelString, "_");
+    public static String camelToSnakeCase(String camelCaseField) {
+        return camelToSnakeCase(camelCaseField, '_');
     }
 
-
     /**
-     *    驼峰转下划线
+     *    将驼峰字符串转换为下划线字符串
      *
-     * @param camelName  驼峰命名字符串
-     * @param split       split
-     * @return          转换后的结果字符串
+     * @param camelCaseField 小驼峰字符串
+     * @return               下划线格式的字符串
      */
     @Alpha
-    public static String camelToSplitName(String camelName, String split) {
-        if (isEmpty(camelName)) {
-            return camelName;
+    public static String camelToSnakeCase(String camelCaseField, Character splitChar) {
+        if (isEmpty(camelCaseField)) {
+            return camelCaseField;
         } else {
             StringBuilder buf = null;
-            for(int i = 0; i < camelName.length(); ++i) {
-                char ch = camelName.charAt(i);
+            for(int i = 0; i < camelCaseField.length(); ++i) {
+                char ch = camelCaseField.charAt(i);
                 if (ch >= 'A' && ch <= 'Z') {
                     if (buf == null) {
                         buf = new StringBuilder();
                         if (i > 0) {
-                            buf.append(camelName.substring(0, i));
+                            buf.append(camelCaseField.substring(0, i));
                         }
                     }
                     if (i > 0) {
-                        buf.append(split);
+                        buf.append(splitChar);
                     }
                     buf.append(Character.toLowerCase(ch));
                 } else if (buf != null) {
                     buf.append(ch);
                 }
             }
-            return buf == null ? camelName : buf.toString();
+            return buf == null ? camelCaseField : buf.toString();
         }
     }
+
+    /**
+     *  将下划线字符串转换为驼峰字符串
+     *
+     * @param snakeCaseField 下划线字符串
+     * @return 小驼峰格式的字符串
+     */
+    @Deprecated
+    public static String underlineToCamelCase(String snakeCaseField) {
+        return snakeToCamelCase(snakeCaseField);
+    }
+
+
+    /**
+     * 将下划线字符串转换为驼峰字符串
+     *
+     * @param camelCaseField 小驼峰字符串
+     * @return 下划线格式的字符串
+     */
+    @Alpha
+    @Deprecated
+    public static String camelToUnderlineCase(String camelCaseField) {
+        return camelToSnakeCase(camelCaseField, '_');
+    }
+
+
+    /**
+     *    驼峰转下划线
+     *
+     * @param camelCaseField  驼峰命名字符串
+     * @param split       split
+     * @return          转换后的结果字符串
+     */
+    @Alpha
+    @Deprecated
+    public static String camelToSplitName(String camelCaseField, String split) {
+        return camelToSnakeCase(camelCaseField, '_');
+    }
+
 
     /**
      *  splitNameByLastCamel
@@ -764,7 +812,6 @@ public class StringUtil {
             return camelName;
         } else {
             int index = -1;
-
             for(int i = camelName.length() - 1; i >= 0; --i) {
                 char ch = camelName.charAt(i);
                 if (ch >= 'A' && ch <= 'Z') {

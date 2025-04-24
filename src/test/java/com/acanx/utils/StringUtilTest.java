@@ -63,8 +63,27 @@ public class StringUtilTest {
     @Test
     void camelCaseToUnderlineTest() {
         String str = "userName";
-        System.out.println(StringUtil.camelCaseToUnderline(str));
+        System.out.println(StringUtil.camelToUnderlineCase(str));
         String str2 = "JSONName";
-        System.out.println(StringUtil.camelCaseToUnderline(str2));
+        System.out.println(StringUtil.camelToUnderlineCase(str2));
+    }
+
+
+    @Test
+    void snakeToCamelCaseTest(){
+        String line = "are_you_OK";
+        // 下划线转驼峰（大驼峰）
+        // 预期结果：AreYouOK
+        String camel = StringUtil.snakeToCamelCase(line, true);
+        System.out.println(camel);
+
+        // 下划线转驼峰（小驼峰）
+        // 预期结果：areYouOK
+        camel = StringUtil.snakeToCamelCase(line);
+        System.out.println(camel);
+
+        // 驼峰转下划线
+        // 预期结果：are_you_o_k
+        System.out.println(StringUtil.camelToSnakeCase(camel));
     }
 }
