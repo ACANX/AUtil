@@ -1,6 +1,6 @@
 package com.acanx.util.http;
 
-import com.acanx.constant.HttpC;
+import com.acanx.constant.HTTPC;
 
 import java.util.List;
 import java.util.Map;
@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  *  HttpResponse
  */
-public class HttpResponse {
+public class HResponse {
 
     private int statusCode;
     private Map<String, List<String>> headers;
@@ -108,7 +108,7 @@ public class HttpResponse {
         if (headers == null){
             return null;
         }
-        List<String> cookieHeaders = headers.get(HttpC.SET_COOKIE);
+        List<String> cookieHeaders = headers.get(HTTPC.SET_COOKIE);
         if (cookieHeaders == null){
             return null;
         }

@@ -1,15 +1,15 @@
 package com.acanx.util.http;
 
-import com.acanx.constant.HttpC;
+import com.acanx.constant.HTTPC;
 
 import java.util.Map;
 
 /**
  *  HttpRequest
  */
-public class HttpRequest {
+public class HRequest {
 
-    private String method = HttpC.GET;
+    private String method = HTTPC.GET;
     private String url;
     private Map<String, String> params;
     private Map<String, String> headers;
@@ -35,7 +35,7 @@ public class HttpRequest {
      * Builder 类
      */
     public static class Builder {
-        private final HttpRequest config = new HttpRequest();
+        private final HRequest config = new HRequest();
 
         public Builder method(String method) {
             config.method = method.toUpperCase();
@@ -81,7 +81,7 @@ public class HttpRequest {
             if (config.headers == null) {
                 config.headers = new java.util.HashMap<>();
             }
-            config.headers.put(HttpC.AUTHORIZATION, token);
+            config.headers.put(HTTPC.AUTHORIZATION, token);
             return this;
         }
 
@@ -89,11 +89,11 @@ public class HttpRequest {
             if (config.headers == null) {
                 config.headers = new java.util.HashMap<>();
             }
-            config.headers.put(HttpC.CONTENT_TYPE, type);
+            config.headers.put(HTTPC.CONTENT_TYPE, type);
             return this;
         }
 
-        public HttpRequest build() {
+        public HRequest build() {
             return config;
         }
     }

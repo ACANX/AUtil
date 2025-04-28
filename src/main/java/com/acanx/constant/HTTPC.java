@@ -1,6 +1,6 @@
 package com.acanx.constant;
 
-public class HttpC {
+public class HTTPC {
 
     /**  GET  */
     public static final String GET = "GET";
