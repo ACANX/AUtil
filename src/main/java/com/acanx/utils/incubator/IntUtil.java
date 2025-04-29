@@ -1,5 +1,6 @@
 package com.acanx.utils.incubator;
 
+import com.acanx.annotation.Alpha;
 import com.acanx.constant.Constant;
 import com.acanx.constant.PatternConstant;
 import com.acanx.utils.StringUtil;
@@ -21,6 +22,28 @@ public class IntUtil {
      * @hidden
      */
     private IntUtil() {
+    }
+
+
+
+    /**
+     *   获取当前的8位数字类型的日期  格式：yyyyMMdd
+     *
+     * @return  格式化后的字符串
+     */
+    @Alpha
+    public static Integer getCurrentDate() {
+        return Integer.parseInt(LocalDateTime.now().format(PatternConstant.FORMATTER_DATE2));
+    }
+
+    /**
+     *   获取当前的8位数字类型的日期  格式：yyyyMMdd
+     *
+     * @return  格式化后的字符串
+     */
+    @Alpha
+    public static Integer getCurrentTime() {
+        return Integer.parseInt(LocalDateTime.now().format(PatternConstant.FORMATTER_TIME2));
     }
 
     /**
@@ -48,6 +71,8 @@ public class IntUtil {
         LocalDateTime localDateTime = LocalDateTime.of(localDate, localTime);
         return localDateTime.format(dateTimeFormatter);
     }
+
+
 
 
 

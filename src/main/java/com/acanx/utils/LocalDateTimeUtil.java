@@ -1,6 +1,7 @@
 package com.acanx.utils;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.constant.Constant;
 import com.acanx.constant.PatternConstant;
 
 import java.time.LocalDateTime;
@@ -61,7 +62,28 @@ public class LocalDateTimeUtil {
      */
     @Alpha
     public static String toDateStr(LocalDateTime date, String splitChar) {
-        return String.format("%d%s%d%s%d", date.getYear(), splitChar, date.getMonthValue(), splitChar, date.getDayOfMonth());
+        if (StringUtil.isBlank(splitChar)){
+            return date.format(PatternConstant.FORMATTER_DATE2);
+        } else {
+            if (Constant.STR_HYPHEN.equals(splitChar)){
+                return date.format(PatternConstant.FORMATTER_DATE);
+            } else if (Constant.STR_FORWARD_SLASH.equals(splitChar)) {
+                return date.format(PatternConstant.FORMATTER_DATE3);
+            } else {
+                return date.format(DateTimeFormatter.ofPattern(String.format("yyyy%sMM%sdd", splitChar)));
+            }
+        }
+    }
+
+    /**
+     *    将输入的date转换为对应的数字日期，数字日期的格式：yyyyMMdd
+     *
+     * @param date   LocalDateTime类型的日期
+     * @return  格式化后的字符串
+     */
+    @Alpha
+    public static Integer toIntDate(LocalDateTime date) {
+        return Integer.parseInt(date.format(PatternConstant.FORMATTER_DATE2));
     }
 
     /**
@@ -118,6 +140,23 @@ public class LocalDateTimeUtil {
         return dateTimeList.stream()
                 .filter(Objects::nonNull)
                 .max(LocalDateTime::compareTo).get();
+    }
+
+    /**
+     * 从 LocalDateTime集合中选择日期最早的一个值并返回。
+     *
+     * @param dateTimeList 包含 LocalDateTime 对象的列表
+     * @return LocalDateTime 最新的 LocalDateTime 对象，如果列表为空或只包含 null，则返回 Optional.empty()
+     */
+    public static LocalDateTime getEarliestDateTime(List<LocalDateTime> dateTimeList) {
+        // 检查列表是否为空或只包含 null
+        if (dateTimeList == null || dateTimeList.isEmpty() || dateTimeList.stream().allMatch(Objects::isNull)) {
+            return null;
+        }
+        // 过滤掉 null 值，并使用 Collections.max() 找到最新的 LocalDateTime
+        return dateTimeList.stream()
+                .filter(Objects::nonNull)
+                .min(LocalDateTime::compareTo).get();
     }
 
 }

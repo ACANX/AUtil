@@ -22,6 +22,7 @@ import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.OpenOption;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.FileAttribute;
@@ -30,8 +31,11 @@ import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
+import java.util.logging.Logger;
 
 /**
  * ACANX-Util / com.acanx.utils / FileUtil
@@ -45,6 +49,9 @@ import java.util.Objects;
  * @since 0.0.1
  */
 public class FileUtil {
+   private static final Logger logger = Logger.getLogger(FileUtil.class.getName());
+
+    private static final Charset CHARSET_UTF_8 = StandardCharsets.UTF_8;
 
     /**
      * 构造函数
@@ -124,6 +131,23 @@ public class FileUtil {
         }
     }
 
+
+    /**
+     * 获取文件扩展名（NIO 方法）
+     * @param filePath 文件路径
+     * @return 扩展名（如 "jpg"），若无扩展名返回空字符串
+     */
+    @Alpha
+    public static String getFileExtension(String filePath) {
+        Path path = Paths.get(filePath);
+        String fileName = path.getFileName().toString();
+        int dotIndex = fileName.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < fileName.length() - 1) {
+            return fileName.substring(dotIndex + 1).toLowerCase();
+        }
+        return "";
+    }
+
     /**
      *   重载方法，支持传入多个目录
      * @param dir  入口文件夹
@@ -132,12 +156,14 @@ public class FileUtil {
     @Alpha
     public static List<File> getFileList(File dir) {
         List<File> list = new ArrayList<File>();
-        for (File file : dir.listFiles()) {
-            if (file.isDirectory()){
-                List<File> fileList = getFileList(file);
-                list.addAll(fileList);
-            } else {
-                list.add(file);
+        if (dir.isDirectory() && null != dir.listFiles() && dir.listFiles().length > 0) {
+            for (File file : dir.listFiles()) {
+                if (file.isDirectory()){
+                    List<File> fileList = getFileList(file);
+                    list.addAll(fileList);
+                } else {
+                    list.add(file);
+                }
             }
         }
         return list;
@@ -272,6 +298,27 @@ public class FileUtil {
         }
     }
 
+
+
+    /**
+     * Reads the contents of a file line by line to a List of Strings. The file is always closed.
+     *
+     *  Use Default CharSet UTF-8
+     *
+     * @param file     the file to read, must not be {@code null}
+     * @return the list of Strings representing each line in the file, never {@code null}
+     * @throws NullPointerException if file is {@code null}.
+     * @throws IOException if an I/O error occurs, including when the file does not exist, is a directory rather than a
+     *         regular file, or for some other reason why the file cannot be opened for reading.
+     * @throws java.nio.charset.UnsupportedCharsetException if the named charset is unavailable.
+     * @since 0.0.1.10
+     */
+    @Alpha
+    public static List<String> readLines(final File file) throws IOException {
+        return readLines(file, CHARSET_UTF_8);
+    }
+
+
     /**
      * Reads the contents of a file line by line to a List of Strings. The file is always closed.
      *
@@ -332,6 +379,12 @@ public class FileUtil {
         }
         fis.close();
         return sb.toString();
+    }
+
+
+    @Alpha
+    public static String readFileToString(final File file) throws IOException {
+        return readFileToString(file, StandardCharsets.UTF_8);
     }
 
     /**
@@ -413,7 +466,18 @@ public class FileUtil {
     }
 
 
-
+    /**
+     * Writes a CharSequence to a file creating the file if it does not exist.
+     *
+     * @param file     the file to write
+     * @param data     the content to write to the file
+     * @throws IOException in case of an I/O error
+     * @since 0.0.1.11
+     */
+    @Alpha
+    public static void write(final File file, final CharSequence data) throws IOException {
+        write(file, data, StandardCharsets.UTF_8);
+    }
 
     /**
      * Writes a CharSequence to a file creating the file if it does not exist.
@@ -584,6 +648,49 @@ public class FileUtil {
 
 
 
+    /**
+     * 获取按最后修改时间排序的文件列表
+     *
+     * @param directory 文件夹路径
+     * @return 按最后修改时间排序的文件数组  最早修改的在前，最近修改/写入的排在最后
+     */
+    public static File[] getSortedFilesByLastModified(String directory) {
+        List<File> list = getFileListSortedByLastModified(directory);
+        return list.toArray(new File[list.size()]);
+    }
 
+    /**
+     * 获取按最后修改时间排序的文件列表
+     *
+     * @param directory 文件夹路径
+     * @return 按最后修改时间(正序)排序的文件列表
+     */
+    public static List<File> getFileListSortedByLastModified(String directory) {
+        File folder = new File(directory);
+        if (!folder.exists() || !folder.isDirectory()) {
+            throw new IllegalArgumentException("指定的路径不是一个有效的文件夹");
+        }
+        // 递归获取所有文件
+        List<File> allFiles = FileUtil.getFileList(folder);
+        // 按最后修改时间排序（最先修改的排在前面）
+        Collections.sort(allFiles, Comparator.comparingLong(File::lastModified));
+        return allFiles;
+    }
+
+
+    public static void deleteEmptyDir(File f) {
+        if (f.isDirectory()) {
+            if (f.listFiles().length == 0){
+                FileUtil.deleteFile(f);
+                logger.fine("删除空文件夹["+f.getAbsolutePath()+"]");
+            } else {
+                for (File sub : f.listFiles()) {
+                    if (sub.isDirectory()) {
+                        deleteEmptyDir(sub);
+                    }
+                }
+            }
+        }
+    }
 
 }
