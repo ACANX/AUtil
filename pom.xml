@@ -4,12 +4,12 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.1.11-SNAPSHOT</version>
+    <version>0.0.1.11</version>
     <packaging>jar</packaging>
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
     <url>https://gitee.com/ACANX/acanx-utils</url>
-<!--    <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo>-->
+    <!-- <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo> -->
     <inceptionYear>2019</inceptionYear>
     <scm>
         <tag>master</tag>
@@ -20,14 +20,14 @@
     <organization>
         <name>ACANX</name>
         <url>https://www.acanx.com</url>
-<!--        <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo>-->
+        <!-- <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo> -->
     </organization>
     <developers>
         <developer>
             <name>ACANX</name>
             <email>acanx@qq.com</email>
             <organization>ACANX</organization>
-<!--            <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo>-->
+            <!-- <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo> -->
         </developer>
     </developers>
     <licenses>
@@ -39,7 +39,7 @@
     </licenses>
 
     <properties>
-        <project.release.version>0.0.1.11-SNAPSHOT</project.release.version>
+        <project.release.version>0.0.1.11</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>8</maven.compiler.source>
@@ -104,7 +104,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.1.11-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.1.11</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -167,7 +167,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.11-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.1.11</project.release.version>
             </properties>
         </profile>
 
@@ -180,7 +180,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.0.1.11-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.1.11</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -259,7 +259,7 @@
                         <version>${central-publishing-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>sonatype-nexus-snapshots</publishingServerId>
+                            <publishingServerId>sonatype-nexus-staging</publishingServerId>
                             <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>

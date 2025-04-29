@@ -28,8 +28,8 @@ ACANX开源的工具库
 - 文档地址： https://docs.acanx.com/Java/ACANX-Utils/index.html
 - 备用JavaDoc文档地址： https://apidoc.gitee.com/ACANX/acanx-utils
 
-- 分支： dev
+- 分支： dev、main
 
 # 使用要求
 
-- JDK8/11  强烈建议升级到JDK11
+- 最低要求JDK8，强烈建议升级到JDK11
