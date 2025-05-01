@@ -3,7 +3,7 @@ package com.acanx.util.http;
 import com.acanx.constant.HTTPC;
 import com.acanx.constant.MIMEC;
 import com.acanx.util.URLUtil;
-import com.acanx.utils.StringUtil;
+import com.acanx.util.StringUtil;
 
 import java.io.BufferedReader;
 import java.io.IOException;

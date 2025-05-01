@@ -1,8 +1,7 @@
 package com.acanx.utils;
 
+import com.acanx.util.StringUtil;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class Md5UtilTest {
     /**

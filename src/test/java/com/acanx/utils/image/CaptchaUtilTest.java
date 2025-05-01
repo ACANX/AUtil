@@ -1,6 +1,7 @@
 package com.acanx.utils.image;
 
-import com.acanx.utils.FileUtil;
+import com.acanx.util.image.CaptchaUtil;
+import com.acanx.util.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import javax.imageio.ImageIO;

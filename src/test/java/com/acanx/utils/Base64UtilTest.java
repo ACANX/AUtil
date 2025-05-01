@@ -1,5 +1,6 @@
 package com.acanx.utils;
 
+import com.acanx.util.Base64Util;
 import org.junit.jupiter.api.Test;
 
 import java.io.UnsupportedEncodingException;

@@ -1,5 +1,7 @@
 package com.acanx.utils;
 
+import com.acanx.util.StringUtil;
+
 /**
  * ACANX-Util / com.acanx.utils / Md5Util
  * 文件由 ACANX 创建于 2019/1/5 . 15:51

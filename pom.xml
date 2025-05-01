@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.1.11</version>
+    <version>0.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
@@ -39,7 +39,7 @@
     </licenses>
 
     <properties>
-        <project.release.version>0.0.1.11</project.release.version>
+        <project.release.version>0.0.2-SNAPSHOT</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <maven.compiler.source>8</maven.compiler.source>
@@ -104,7 +104,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.1.11</project.release.version>
+                <project.release.version>0.0.2-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -167,7 +167,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.1.11</project.release.version>
+                <project.release.version>0.0.2-SNAPSHOT</project.release.version>
             </properties>
         </profile>
 
@@ -180,7 +180,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.0.1.11</project.release.version>
+                <project.release.version>0.0.2-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>

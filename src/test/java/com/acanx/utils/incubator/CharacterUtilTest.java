@@ -1,8 +1,7 @@
 package com.acanx.utils.incubator;
 
+import com.acanx.util.CharacterUtil;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class CharacterUtilTest {
 

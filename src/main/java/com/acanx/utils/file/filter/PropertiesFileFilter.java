@@ -2,6 +2,7 @@ package com.acanx.utils.file.filter;
 
 import com.acanx.annotation.Alpha;
 import com.acanx.constant.FileConstant;
+import com.acanx.util.file.filter.ParameterizedFileFilter;
 
 import java.io.File;
 import java.io.FileFilter;

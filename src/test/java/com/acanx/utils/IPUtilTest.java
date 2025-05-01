@@ -1,5 +1,6 @@
 package com.acanx.utils;
 
+import com.acanx.util.IPUtil;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,9 +1,7 @@
 package com.acanx.utils.incubator;
 
-import com.acanx.utils.StringUtil;
+import com.acanx.util.RandomUtil;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class RandomUtilTest {
 

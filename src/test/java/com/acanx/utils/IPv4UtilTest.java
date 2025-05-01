@@ -1,8 +1,7 @@
 package com.acanx.utils;
 
+import com.acanx.util.IPv4Util;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class IPv4UtilTest {
 

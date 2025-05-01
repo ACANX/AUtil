@@ -1,11 +1,6 @@
 package com.acanx.util;
 
-import com.acanx.utils.PropertiesUtil;
 import org.junit.jupiter.api.Test;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 public class PropertiesUtilTest {
 
