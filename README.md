@@ -1,5 +1,5 @@
 <p align="center">
-	<a href="https://docs.acanx.com/Java/AUtil/index.html"><img src="https://acanx.com/ed913b81_526602.png?t=1" width="20%"></a>
+	<a href="https://docs.acanx.com/Java/AUtil/index.html"><img src="https://acanx.com/ed913b81_526602.png" width="20%"></a>
 </p>
 <h1 align="center">AUtil 工具库</h1>
 
