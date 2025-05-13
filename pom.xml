@@ -55,7 +55,7 @@
 
     <modules>
         <module>autil-core</module>
-        <module>autil-json</module>
+        <!-- <module>autil-json</module>-->
     </modules>
 
     <dependencies>
