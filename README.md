@@ -1,5 +1,5 @@
 <p align="center">
-	<a href="https://docs.acanx.com/Java/AUtil/index.html"><img src="https://acanx.com/logo.png" width="20%" title="Logo"></a>
+	<a href="https://docs.acanx.com/Java/AUtil/index.html"><img src="https://github.com/ACANX/AUtil/blob/V0.1.x/logo.png" width="20%" title="Logo"></a>
 </p>
 <h1 align="center">AUtil Library</h1>
 
