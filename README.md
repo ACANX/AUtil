@@ -25,7 +25,7 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 ### Java API Docs
 
 - [AUtil Online API Docs](https://docs.acanx.com/Java/AUtil/index.html) 
-- [Alternative Address](https://apidoc.gitee.com/ACANX/AUtil)
+- [Alternative Docs Address](https://apidoc.gitee.com/ACANX/AUtil)
 
 ### Branch
 
