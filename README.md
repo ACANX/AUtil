@@ -18,7 +18,7 @@ ACANX开源的工具库
 <dependency>
   <groupId>com.acanx</groupId>
   <artifactId>acanx-utils</artifactId>
-  <version>0.0.2-SNAPSHOT</version>
+  <version>0.0.2</version>
 </dependency>
 
 ```
@@ -28,7 +28,7 @@ ACANX开源的工具库
 - 文档地址： https://docs.acanx.com/Java/ACANX-Utils/index.html
 - 备用JavaDoc文档地址： https://apidoc.gitee.com/ACANX/acanx-utils
 
-- 分支： dev、main
+- 分支： dev、main、V0.0.2.x、V0.2.x
 
 # 使用要求
 

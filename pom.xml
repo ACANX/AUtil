@@ -4,12 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx</groupId>
     <artifactId>acanx-utils</artifactId>
-    <version>0.0.2-SNAPSHOT</version>
+    <version>0.0.2</version>
     <packaging>jar</packaging>
     <name>ACANX-Utils</name>
     <description>ACANX-Utils 工具库</description>
     <url>https://gitee.com/ACANX/acanx-utils</url>
-    <!-- <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo> -->
     <inceptionYear>2019</inceptionYear>
     <scm>
         <tag>master</tag>
@@ -20,14 +19,12 @@
     <organization>
         <name>ACANX</name>
         <url>https://www.acanx.com</url>
-        <!-- <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo> -->
     </organization>
     <developers>
         <developer>
             <name>ACANX</name>
             <email>acanx@qq.com</email>
             <organization>ACANX</organization>
-            <!-- <logo>https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png</logo> -->
         </developer>
     </developers>
     <licenses>
@@ -37,14 +34,14 @@
             <distribution>repo</distribution>
         </license>
     </licenses>
-
     <properties>
-        <project.release.version>0.0.2-SNAPSHOT</project.release.version>
+        <project.release.version>0.0.2</project.release.version>
+
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <java.version>8</java.version>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
@@ -53,7 +50,7 @@
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
         <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
-        <junit-jupiter.version>5.11.3</junit-jupiter.version>
+        <junit-jupiter.version>5.12.2</junit-jupiter.version>
     </properties>
 
     <dependencies>
@@ -104,7 +101,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.2</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -167,7 +164,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.2</project.release.version>
             </properties>
         </profile>
 
@@ -180,7 +177,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.0.2</project.release.version>
             </properties>
             <build>
                 <plugins>
