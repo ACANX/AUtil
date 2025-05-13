@@ -11,10 +11,10 @@
     <url>https://github.com/ACANX/AUtil</url>
     <inceptionYear>2019</inceptionYear>
     <scm>
-        <tag>master</tag>
-        <url>git@gitee.com:ACANX/AUtil.git</url>
-        <connection>scm:git:git@gitee.com:ACANX/AUtil.git</connection>
-        <developerConnection>scm:git:git@gitee.com:ACANX/AUtil.git</developerConnection>
+        <tag>main</tag>
+        <url>git@github.com:ACANX/AUtil.git</url>
+        <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>
+        <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>
     </scm>
     <organization>
         <name>ACANX</name>
