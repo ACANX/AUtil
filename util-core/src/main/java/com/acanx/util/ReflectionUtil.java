@@ -174,8 +174,8 @@ public class ReflectionUtil {
      * @param parameterTypes  方法参数类型
      * @param parameters      参数值
      * @return    调用对象方法返回的结果
-     * @throws InvocationTargetException
-     * @throws IllegalArgumentException
+     * @throws InvocationTargetException   反射调用方法异常
+     * @throws IllegalArgumentException    参数异常
      */
     @Alpha
     public static Object invokeMethod(Object object, String methodName, Class<?> [] parameterTypes,

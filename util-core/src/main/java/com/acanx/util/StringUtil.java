@@ -732,7 +732,8 @@ public class StringUtil {
      *    将驼峰字符串转换为下划线字符串
      *
      * @param camelCaseField 小驼峰字符串
-     * @return               下划线格式的字符串
+     * @param splitChar      分隔符
+     * @return       下划线格式的字符串
      */
     @Alpha
     public static String camelToSnakeCase(String camelCaseField, Character splitChar) {

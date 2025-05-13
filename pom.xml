@@ -2,19 +2,19 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.acanx</groupId>
-    <artifactId>acanx-utils</artifactId>
-    <version>0.0.2</version>
-    <packaging>jar</packaging>
-    <name>ACANX-Utils</name>
-    <description>ACANX-Utils 工具库</description>
-    <url>https://gitee.com/ACANX/acanx-utils</url>
+    <groupId>com.acanx.util</groupId>
+    <artifactId>acanx-util</artifactId>
+    <version>0.1.0-SNAPSHOT</version>
+    <packaging>pom</packaging>
+    <name>ACANX-Util</name>
+    <description>ACANX-Util 工具库</description>
+    <url>https://gitee.com/ACANX/acanx-util</url>
     <inceptionYear>2019</inceptionYear>
     <scm>
         <tag>master</tag>
-        <url>git@gitee.com:ACANX/acanx-utils.git</url>
-        <connection>scm:git:git@gitee.com:ACANX/acanx-utils.git</connection>
-        <developerConnection>scm:git:git@gitee.com:ACANX/acanx-utils.git</developerConnection>
+        <url>git@gitee.com:ACANX/acanx-util.git</url>
+        <connection>scm:git:git@gitee.com:ACANX/acanx-util.git</connection>
+        <developerConnection>scm:git:git@gitee.com:ACANX/acanx-util.git</developerConnection>
     </scm>
     <organization>
         <name>ACANX</name>
@@ -35,8 +35,7 @@
         </license>
     </licenses>
     <properties>
-        <project.release.version>0.0.2</project.release.version>
-
+        <project.release.version>0.1.0-SNAPSHOT</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
@@ -52,6 +51,12 @@
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <junit-jupiter.version>5.12.2</junit-jupiter.version>
     </properties>
+
+
+    <modules>
+        <module>util-core</module>
+        <module>util-json</module>
+    </modules>
 
     <dependencies>
         <dependency>
