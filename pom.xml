@@ -11,7 +11,7 @@
     <url>https://github.com/ACANX/AUtil</url>
     <inceptionYear>2019</inceptionYear>
     <scm>
-        <tag>main</tag>
+        <tag>V0.1.x</tag>
         <url>git@github.com:ACANX/AUtil.git</url>
         <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>
         <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>
@@ -55,7 +55,7 @@
 
     <modules>
         <module>autil-core</module>
-        <!-- <module>autil-json</module>-->
+        <!-- <module>autil-json</module> -->
     </modules>
 
     <dependencies>
