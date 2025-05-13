@@ -1,10 +1,10 @@
 <p align="center">
 	<a href="https://docs.acanx.com/Java/ACANX-Utils/index.html"><img src="https://foruda.gitee.com/images/1745466198269588961/ed913b81_526602.png?t=1" width="20%"></a>
 </p>
-<h1 align="center">ACANX-Utils 工具库</h1>
+<h1 align="center">AUtil 工具库</h1>
 
 
-## 介绍
+## AUtil简介
 
 ACANX开源的工具库
 
