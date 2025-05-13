@@ -3,18 +3,18 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx.util</groupId>
-    <artifactId>acanx-util</artifactId>
+    <artifactId>autil</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>ACANX-Util</name>
-    <description>ACANX-Util 工具库</description>
-    <url>https://gitee.com/ACANX/acanx-util</url>
+    <name>AUtil</name>
+    <description>AUtil(ACANX-Util) 工具库</description>
+    <url>https://github.com/ACANX/AUtil</url>
     <inceptionYear>2019</inceptionYear>
     <scm>
         <tag>master</tag>
-        <url>git@gitee.com:ACANX/acanx-util.git</url>
-        <connection>scm:git:git@gitee.com:ACANX/acanx-util.git</connection>
-        <developerConnection>scm:git:git@gitee.com:ACANX/acanx-util.git</developerConnection>
+        <url>git@gitee.com:ACANX/AUtil.git</url>
+        <connection>scm:git:git@gitee.com:ACANX/AUtil.git</connection>
+        <developerConnection>scm:git:git@gitee.com:ACANX/AUtil.git</developerConnection>
     </scm>
     <organization>
         <name>ACANX</name>
@@ -54,8 +54,8 @@
 
 
     <modules>
-        <module>util-core</module>
-        <module>util-json</module>
+        <module>autil-core</module>
+        <module>autil-json</module>
     </modules>
 
     <dependencies>

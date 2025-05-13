@@ -4,31 +4,30 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.acanx.util</groupId>
-        <artifactId>util-json</artifactId>
+        <artifactId>autil-json</artifactId>
         <version>0.1.0-SNAPSHOT</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
-    <artifactId>util-json-fastjson</artifactId>
+    <artifactId>json-core</artifactId>
     <version>0.1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Util-JSON-Fastjson</name>
-    <description>Util-JSON-Fastjson 工具库</description>
+    <name>JSON-Core</name>
+    <description>Util-JSON 工具库</description>
+
+
+    <modules>
+
+    </modules>
 
 
     <dependencies>
         <dependency>
             <groupId>com.acanx.util</groupId>
-            <artifactId>util-core</artifactId>
+            <artifactId>autil-core</artifactId>
             <version>0.1.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.alibaba.fastjson2</groupId>
-            <artifactId>fastjson2</artifactId>
-            <version>2.0.54</version>
-        </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
