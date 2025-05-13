@@ -1,17 +1,17 @@
 <p align="center">
 	<a href="https://docs.acanx.com/Java/AUtil/index.html"><img src="https://acanx.com/logo.png" width="20%" title="Logo"></a>
 </p>
-<h1 align="center">AUtil 工具库</h1>
+<h1 align="center">AUtil Library</h1>
 
 
-## AUtil简介
+## AUtil Library
 
-ACANX开源的工具库
+AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool methods related to strings, files, IO, collections, dates, times, HTTP/2, JSON, properties, IP addresses, URLs, threads, operating systems, images, message digests, encoding, and decoding
 
 
-### 安装
+### Install
 
-- Maven GAV坐标
+- AUtil Maven Artifact GAV
 
 ```xml
 <!--  https://mvnrepository.com/artifact/com.acanx.util/autil-core   -->
@@ -20,17 +20,21 @@ ACANX开源的工具库
   <artifactId>autil-core</artifactId>
   <version>0.1.0</version>
 </dependency>
-
 ```
 
-### 在线文档
+### Java API Docs
 
-- 文档地址： https://docs.acanx.com/Java/AUtil/index.html
-- 备用JavaDoc文档地址： https://apidoc.gitee.com/ACANX/AUtil
+- [AUtil Online API Docs](https://docs.acanx.com/Java/AUtil/index.html) 
+- [Alternative Address](https://apidoc.gitee.com/ACANX/AUtil)
 
-- 分支： main、V0.1.x
+### Branch
+
+- V0.1.x  for JDK8
+
+- V0.2.x  for JDK11
 
 
-# 使用要求
+### Requirements
 
-- 最低要求JDK8，强烈建议升级到JDK11
+- Minimum JDK version requirement: JDK8
+- It is recommended to upgrade to JDK11 for better results
