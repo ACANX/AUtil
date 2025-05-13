@@ -8,6 +8,7 @@
 
 AUtil(ACANX-Util) ACANX开源的工具库，封装了字符串、文件、IO、集合、日期、时间、HTTP/2、JSON、properties、IP地址、URL、线程、操作系统、图像、消息摘要、编码、解码相关的通用工具方法
 
+[README.md](./README.md)
 
 ### Install
 

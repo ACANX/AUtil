@@ -8,6 +8,7 @@
 
 AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool methods related to strings, files, IO, collections, dates, times, HTTP/2, JSON, properties, IP addresses, URLs, threads, operating systems, images, message digests, encoding, and decoding
 
+[README_CN.md](./README_CN.md)
 
 ### Install
 
