@@ -14,6 +14,7 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 - AUtil Maven Artifact GAV
 
 ```xml
+<!--  https://repo1.maven.org/maven2/com/acanx/util/autil-core/      -->
 <!--  https://mvnrepository.com/artifact/com.acanx.util/autil-core   -->
 <dependency>
   <groupId>com.acanx.util</groupId>
