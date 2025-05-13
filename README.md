@@ -26,7 +26,7 @@ ACANX开源的工具库
 ### 在线文档
 
 - 文档地址： https://docs.acanx.com/Java/ACANX-Utils/index.html
-- 备用JavaDoc文档地址： https://apidoc.gitee.com/ACANX/acanx-utils
+- 备用JavaDoc文档地址： https://apidoc.gitee.com/ACANX/AUtil
 
 - 分支： main、V0.1.x
 
