@@ -8,7 +8,7 @@
     <packaging>pom</packaging>
     <name>AUtil</name>
     <description>AUtil(ACANX-Util) 工具库</description>
-    <url>https://github.com/ACANX/AUtil</url>
+    <url>https://acanx.com</url>
     <inceptionYear>2019</inceptionYear>
     <scm>
         <tag>V0.1.x</tag>
@@ -18,7 +18,7 @@
     </scm>
     <organization>
         <name>ACANX</name>
-        <url>https://www.acanx.com</url>
+        <url>https://acanx.com</url>
     </organization>
     <developers>
         <developer>
