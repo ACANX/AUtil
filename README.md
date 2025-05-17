@@ -35,6 +35,11 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 
 - V0.2.x  for JDK11
 
+- V0.3.x  for JDK17
+
+- V0.4.x  for JDK21
+
+- V0.5.x  for JDK25
 
 ### Requirements
 
