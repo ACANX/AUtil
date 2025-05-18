@@ -261,7 +261,7 @@
                         <version>${central-publishing-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <publishingServerId>sonatype-nexus-staging</publishingServerId>
+                            <publishingServerId>sonatype-nexus-snapshots</publishingServerId>
                             <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
