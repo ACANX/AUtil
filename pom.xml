@@ -4,14 +4,14 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx.util</groupId>
     <artifactId>autil</artifactId>
-    <version>0.1.0.2-SNAPSHOT</version>
+    <version>0.2.0-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>AUtil</name>
     <description>AUtil(ACANX-Util) 工具库</description>
     <url>https://acanx.com</url>
     <inceptionYear>2019</inceptionYear>
     <scm>
-        <tag>V0.1.x</tag>
+        <tag>V0.2.x</tag>
         <url>git@github.com:ACANX/AUtil.git</url>
         <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>
         <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>
@@ -35,12 +35,12 @@
         </license>
     </licenses>
     <properties>
-        <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+        <project.release.version>0.2.0-SNAPSHOT</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <java.version>8</java.version>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
+        <java.version>11</java.version>
+        <maven.compiler.source>11</maven.compiler.source>
+        <maven.compiler.target>11</maven.compiler.target>
         <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
         <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
@@ -76,8 +76,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
@@ -109,7 +109,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.2.0-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -172,7 +172,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.2.0-SNAPSHOT</project.release.version>
             </properties>
         </profile>
 
@@ -185,7 +185,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.2.0-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
