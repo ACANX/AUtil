@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil</artifactId>
-        <version>0.1.1-SNAPSHOT</version>
+        <version>0.1.0.1</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>autil-json</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.0.1</version>
     <packaging>pom</packaging>
     <name>AUtil-JSON</name>
     <description>AUtil-JSON 工具库</description>
@@ -18,10 +18,10 @@
 
 
     <modules>
-        <module>json-core</module>
+        <!-- <module>json-core</module> -->
         <module>json-fastjson</module>
-        <module>json-jackson</module>
-        <module>json-gson</module>
+        <!-- <module>json-jackson</module> -->
+        <!-- <module>json-gson</module> -->
     </modules>
 
 
@@ -29,7 +29,7 @@
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>0.1.0.1</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
