@@ -14,33 +14,6 @@ import java.util.List;
  */
 public class FastJSON2Util {
 
-
-    /**
-     *   JSON字符串 转Java对象
-     *
-     * @param text   JSON字符串
-     * @param objectClass  对象类型
-     * @return       对象
-     * @param <T>    对象类型
-     */
-    public static <T> T parseObject(String text, Class<T> objectClass) {
-        return JSON.parseObject(text, objectClass, JSONReader.Feature.SupportSmartMatch);
-    }
-
-
-    /**
-     *   JSON字符串 转List集合
-     *
-     * @param text       JSON字符串
-     * @param objectClass   对象类型
-     * @return          集合
-     * @param <T>         集合元素类型
-     */
-    public static <T> List<T> parseArray(String text, Class<T> objectClass) {
-        return JSON.parseArray(text, objectClass, JSONReader.Feature.SupportSmartMatch);
-    }
-
-
     /**
      *
      *     对象转（下划线命名风格，紧凑型）的JSON字符串
@@ -82,6 +55,36 @@ public class FastJSON2Util {
         String jsonString = JSON.toJSONString(object);
         return jsonString;
     }
+
+
+
+    /**
+     *   JSON字符串 转Java对象
+     *
+     * @param text   JSON字符串
+     * @param objectClass  对象类型
+     * @return       对象
+     * @param <T>    对象类型
+     */
+    public static <T> T parseObject(String text, Class<T> objectClass) {
+        return JSON.parseObject(text, objectClass, JSONReader.Feature.SupportSmartMatch);
+    }
+
+
+    /**
+     *   JSON字符串 转List集合
+     *
+     * @param text       JSON字符串
+     * @param objectClass   对象类型
+     * @return          集合
+     * @param <T>         集合元素类型
+     */
+    public static <T> List<T> parseArray(String text, Class<T> objectClass) {
+        return JSON.parseArray(text, objectClass, JSONReader.Feature.SupportSmartMatch);
+    }
+
+
+
 
 
 }

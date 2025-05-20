@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx.util</groupId>
     <artifactId>autil</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>0.1.0.1</version>
     <packaging>pom</packaging>
     <name>AUtil</name>
     <description>AUtil(ACANX-Util) 工具库</description>
@@ -35,7 +35,7 @@
         </license>
     </licenses>
     <properties>
-        <project.release.version>0.1.1-SNAPSHOT</project.release.version>
+        <project.release.version>0.1.0.1</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
@@ -47,6 +47,9 @@
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
+
+        <fastjson2.version>2.0.57</fastjson2.version>
+
         <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
         <junit-jupiter.version>5.12.2</junit-jupiter.version>
@@ -55,7 +58,7 @@
 
     <modules>
         <module>autil-core</module>
-        <!-- <module>autil-json</module> -->
+        <module>autil-json</module>
     </modules>
 
     <dependencies>
@@ -106,7 +109,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.1.1-SNAPSHOT</project.release.version>
+                <project.release.version>0.1.0.1</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -169,7 +172,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.1.1-SNAPSHOT</project.release.version>
+                <project.release.version>0.1.0.1</project.release.version>
             </properties>
         </profile>
 
@@ -182,7 +185,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.1.1-SNAPSHOT</project.release.version>
+                <project.release.version>0.1.0.1</project.release.version>
             </properties>
             <build>
                 <plugins>

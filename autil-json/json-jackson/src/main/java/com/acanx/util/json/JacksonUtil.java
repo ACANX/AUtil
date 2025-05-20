@@ -20,7 +20,6 @@ import java.time.format.DateTimeFormatter;
  *
  */
 public class JacksonUtil {
-
     /**
      *  线程安全的ObjectMapper
      *
