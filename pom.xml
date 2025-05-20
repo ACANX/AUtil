@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx.util</groupId>
     <artifactId>autil</artifactId>
-    <version>0.2.0-SNAPSHOT</version>
+    <version>0.2.0</version>
     <packaging>pom</packaging>
     <name>AUtil</name>
     <description>AUtil(ACANX-Util) 工具库</description>
