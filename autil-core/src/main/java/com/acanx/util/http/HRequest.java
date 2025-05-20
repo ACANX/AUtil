@@ -2,6 +2,7 @@ package com.acanx.util.http;
 
 import com.acanx.constant.HTTPC;
 
+import java.net.http.HttpClient;
 import java.util.Map;
 
 /**
@@ -9,6 +10,8 @@ import java.util.Map;
  */
 public class HRequest {
 
+    // 其他字段保持不变
+    private HttpClient.Version httpVersion = HttpClient.Version.HTTP_2;
     private String method = HTTPC.GET;
     private String url;
     private Map<String, String> params;
@@ -21,7 +24,10 @@ public class HRequest {
     public static Builder builder() {
         return new Builder();
     }
+
     // Getters
+
+    public HttpClient.Version getHttpVersion() {return httpVersion;}
     public String getMethod() { return method; }
     public String getUrl() { return url; }
     public Map<String, String> getParams() { return params; }
@@ -36,6 +42,11 @@ public class HRequest {
      */
     public static class Builder {
         private final HRequest config = new HRequest();
+
+        public Builder httpVersion(HttpClient.Version version) {
+            config.httpVersion = version;
+            return this;
+        }
 
         public Builder method(String method) {
             config.method = method.toUpperCase();

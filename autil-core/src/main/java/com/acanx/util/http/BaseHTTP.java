@@ -1,18 +1,18 @@
 package com.acanx.util.http;
 
+import com.acanx.annotation.Alpha;
 import com.acanx.constant.HTTPC;
 import com.acanx.constant.MIMEC;
 import com.acanx.util.URLUtil;
 import com.acanx.util.StringUtil;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.time.Duration;
 import java.util.Map;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
@@ -43,56 +43,56 @@ public class BaseHTTP {
      *
      * @param context 请求上下文
      */
+    @Alpha
     public static void execute(HContext context) {
         HttpURLConnection connection = null;
         HRequest config = context.getRequest();
         HResponse response = new HResponse();
         try {
-            // 1. 构建完整URL（带参数）
+            // 1. 构建完整URL
             String fullUrl = buildFullUrl(config.getUrl(), config.getParams());
-            URL url = new URL(fullUrl);
-            // 2. 创建连接
-            connection = (HttpURLConnection) url.openConnection();
-            connection.setRequestMethod(config.getMethod().toUpperCase());
-            connection.setConnectTimeout(config.getConnectTimeout() > 0 ?
-                    config.getConnectTimeout() : DEFAULT_CONNECT_TIMEOUT);
-            connection.setReadTimeout(config.getReadTimeout() > 0 ?
-                    config.getReadTimeout() : DEFAULT_READ_TIMEOUT);
-            // 3. 设置请求头
-            setHeaders(connection, config.getHeaders());
-            // 4. 设置 Cookie
+            // 2. 创建 HttpClient
+            HttpClient client = HttpClient.newBuilder()
+                    .connectTimeout(Duration.ofMillis(
+                            config.getConnectTimeout() > 0 ?
+                                    config.getConnectTimeout() : DEFAULT_CONNECT_TIMEOUT))
+                    .version(config.getHttpVersion()) // 默认使用HTTP/2（根据业务需求调整）
+                    .build();
+            // 3. 构建 HttpRequest
+            HttpRequest.Builder requestBuilder = HttpRequest.newBuilder()
+                    .uri(URI.create(fullUrl))
+                    .timeout(Duration.ofMillis(
+                            config.getReadTimeout() > 0 ?
+                                    config.getReadTimeout() : DEFAULT_READ_TIMEOUT));
+            // 4. 设置请求方法及请求体
+            String method = config.getMethod().toUpperCase();
+            boolean isBodyAllowed = (!HTTPC.GET.equalsIgnoreCase(method) && !HTTPC.DELETE.equalsIgnoreCase(method));
+            if (isBodyAllowed && StringUtil.isNotBlank(config.getBody())) {
+                requestBuilder.method(method, HttpRequest.BodyPublishers.ofString(config.getBody()));
+            } else {
+                requestBuilder.method(method, HttpRequest.BodyPublishers.noBody());
+            }
+            // 5. 设置请求头
+            config.getHeaders().forEach(requestBuilder::header);
+            // 6. 设置 Cookie
             if (config.getCookies() != null && !config.getCookies().isEmpty()) {
-                String cookieHeader = config.getCookies().entrySet().stream()
+                String cookies = config.getCookies().entrySet().stream()
                         .map(e -> URLUtil.encodeParameter(e))
                         .collect(Collectors.joining("; "));
-                connection.setRequestProperty(HTTPC.COOKIE, cookieHeader);
+                requestBuilder.header("Cookie", cookies);
             }
-            // 5. 处理请求体（POST/PUT/PATCH）
-            if (StringUtil.isNotBlank(config.getBody()) &&
-                    !HTTPC.GET.equalsIgnoreCase(config.getMethod()) && !HTTPC.DELETE.equalsIgnoreCase(config.getMethod())) {
-                connection.setDoOutput(true);
-                try (OutputStream os = connection.getOutputStream()) {
-                    byte[] input = config.getBody().getBytes(StandardCharsets.UTF_8);
-                    os.write(input, 0, input.length);
-                }
-            }
-            // 6. 获取响应状态码
-            response.setStatusCode(connection.getResponseCode());
-            // 7. 获取响应头
-            Map<String, List<String>> responseHeaders = connection.getHeaderFields();
-            response.setHeaders(responseHeaders);
-            // 8. 获取响应内容
-            try (BufferedReader br = new BufferedReader(
-                    new InputStreamReader(
-                            response.getStatusCode() < 400 ? connection.getInputStream() : connection.getErrorStream(),
-                            StandardCharsets.UTF_8))) {
-                String content = br.lines().collect(Collectors.joining("\n"));
-                response.setBody(content);
-            }
+            // 7. 发送请求并获取响应
+            HttpResponse<String> httpResponse = client.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
+            // 8. 处理响应数据
+            response.setStatusCode(httpResponse.statusCode());
+            response.setHeaders(httpResponse.headers().map());
+            response.setBody(httpResponse.body());
         } catch (IOException e) {
             response.setError(true);
             response.setErrorMessage(e.getMessage());
             response.setStackTrace(getStackTrace(e));
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
         } finally {
             if (connection != null) {
                 connection.disconnect();
@@ -108,6 +108,7 @@ public class BaseHTTP {
      * @param params    URL参数
      * @return
      */
+    @Alpha
     private static String buildFullUrl(String baseUrl, Map<String, String> params) {
         if (params == null || params.isEmpty()) {
             return baseUrl;
@@ -125,6 +126,7 @@ public class BaseHTTP {
      * @param connection      连接
      * @param headers         请求头
      */
+    @Deprecated
     private static void setHeaders(HttpURLConnection connection, Map<String, String> headers) {
         if (headers != null) {
             for (Map.Entry<String, String> entry : headers.entrySet()) {
@@ -139,6 +141,7 @@ public class BaseHTTP {
      * @param e     异常
      * @return      堆栈跟踪
      */
+    @Alpha
     private static String getStackTrace(Exception e) {
         StringBuilder sb = new StringBuilder();
         for (StackTraceElement element : e.getStackTrace()) {
@@ -158,6 +161,7 @@ public class BaseHTTP {
      * @param url 资源地址
      * @return    响应
      */
+    @Alpha
     public static HResponse get(String url) {
         return getHttpResponse(HRequest.builder().url(url).build());
     }
@@ -169,6 +173,7 @@ public class BaseHTTP {
      * @param params     URL参数
      * @return           响应
      */
+    @Alpha
     public static HResponse get(String url, Map<String, String> params) {
         return getHttpResponse(HRequest.builder().url(url).params(params).build());
     }
@@ -180,6 +185,7 @@ public class BaseHTTP {
      * @param body    请求体
      * @return        响应
      */
+    @Alpha
     public static HResponse post(String url, String body) {
         return post(url, null,null, null, body);
     }
@@ -192,6 +198,7 @@ public class BaseHTTP {
      * @param body    请求体
      * @return        响应
      */
+    @Alpha
     public static HResponse post(String url, Map<String, String> headers, String body) {
         return post(url, null,null, headers, body);
     }
@@ -205,6 +212,7 @@ public class BaseHTTP {
      * @param body      请求体
      * @return          响应
      */
+    @Alpha
     public static HResponse post(String url, Map<String, String> params, Map<String, String> headers, String body) {
         return post(url, params, null, headers, body);
     }
@@ -219,6 +227,7 @@ public class BaseHTTP {
      * @param body    请求体
      * @return        响应
      */
+    @Alpha
     public static HResponse post(String url, Map<String, String> params, Map<String, String> cookie, Map<String, String> headers, String body) {
         return getHttpResponse(HRequest.builder().method(HTTPC.POST).url(url).params(params).contentType(MIMEC.JSON).cookies(cookie).headers(headers).body(body).build());
     }
@@ -231,6 +240,7 @@ public class BaseHTTP {
      * @param formData    表单数据
      * @return            响应
      */
+    @Alpha
     public static HResponse postForm(String url, Map<String, String> formData) {
         String formBody = formData.entrySet().stream()
                 .map(e -> URLUtil.encodeParameter(e.getKey(), e.getValue()))
@@ -244,6 +254,7 @@ public class BaseHTTP {
      * @param request   请求对象
      * @return          响应
      */
+    @Alpha
     public static HResponse getHttpResponse(HRequest request) {
         HContext context = new HContext(request);
         execute(context);
