@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.1.0.1</version>
+        <version>0.1.0.2-SNAPSHOT</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-gson</artifactId>
-    <version>0.1.0.1</version>
+    <version>0.1.0.2-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>JSON-Gson</name>
     <description>JSON-Gson 工具库</description>
@@ -20,7 +20,7 @@
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>0.1.0.1</version>
+            <version>0.1.0.2-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>

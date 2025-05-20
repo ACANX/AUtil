@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx.util</groupId>
     <artifactId>autil</artifactId>
-    <version>0.1.0.1</version>
+    <version>0.1.0.2-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>AUtil</name>
     <description>AUtil(ACANX-Util) 工具库</description>
@@ -35,7 +35,7 @@
         </license>
     </licenses>
     <properties>
-        <project.release.version>0.1.0.1</project.release.version>
+        <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
@@ -109,7 +109,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.1.0.1</project.release.version>
+                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -172,7 +172,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.1.0.1</project.release.version>
+                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
             </properties>
         </profile>
 
@@ -185,7 +185,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.1.0.1</project.release.version>
+                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
