@@ -1,5 +1,6 @@
 package com.acanx.util.json;
 
+import com.acanx.annotation.Alpha;
 import com.alibaba.fastjson2.JSON;
 import com.alibaba.fastjson2.JSONReader;
 import com.alibaba.fastjson2.JSONWriter;
@@ -12,6 +13,7 @@ import java.util.List;
  * FastJSON2Util
  *
  */
+@Alpha
 public class FastJSON2Util {
 
     /**
@@ -21,6 +23,7 @@ public class FastJSON2Util {
      * @param object  对象
      * @return    小下划线格式的JSON字符串
      */
+    @Alpha
     public static String toJSONString(Object object){
         JSONWriter.Context context = new JSONWriter.Context();
         NameFilter nf= NameFilter.of(PropertyNamingStrategy.SnakeCase);
@@ -36,6 +39,7 @@ public class FastJSON2Util {
      * @param object 对象
      * @return  下划线格式的美化过格式化输出展示的JSON字符串
      */
+    @Alpha
     public static String toJSONStringPrettyFormat(Object object){
         JSONWriter.Context context = new JSONWriter.Context();
         NameFilter nf= NameFilter.of(PropertyNamingStrategy.SnakeCase);
@@ -51,6 +55,7 @@ public class FastJSON2Util {
      * @param object  对象
      * @return        小驼峰格式的JSON字符串
      */
+    @Alpha
     public static String toJSONStringForStorage(Object object){
         String jsonString = JSON.toJSONString(object);
         return jsonString;
@@ -66,6 +71,7 @@ public class FastJSON2Util {
      * @return       对象
      * @param <T>    对象类型
      */
+    @Alpha
     public static <T> T parseObject(String text, Class<T> objectClass) {
         return JSON.parseObject(text, objectClass, JSONReader.Feature.SupportSmartMatch);
     }
@@ -79,6 +85,7 @@ public class FastJSON2Util {
      * @return          集合
      * @param <T>         集合元素类型
      */
+    @Alpha
     public static <T> List<T> parseArray(String text, Class<T> objectClass) {
         return JSON.parseArray(text, objectClass, JSONReader.Feature.SupportSmartMatch);
     }
