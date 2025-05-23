@@ -1,6 +1,6 @@
 package com.acanx.util.json;
 
- import com.acanx.utils.incubator.json.provider.JSONProvider;
+ import com.acanx.util.json.JSONProvider;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
@@ -17,6 +17,7 @@ import java.util.Map;
  * @since 0.0.1
  */
 public class JSONUtil {
+
 
     /**
      *   Java对象序列化为JSON字符串

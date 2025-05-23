@@ -41,6 +41,34 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 
 - V0.5.x  for JDK25
 
+- V0.6.x  for JDK29
+
+- V0.7.x  for JDK33
+
+- V0.8.x  for JDK37
+
+- V0.9.x  for JDK41
+
+- V1.0.x  for JDK8
+
+- V1.1.x  for JDK11
+
+- V1.2.x  for JDK17
+
+- V1.3.x  for JDK21
+
+- V1.4.x  for JDK25
+
+- V1.5.x  for JDK29
+
+- V1.6.x  for JDK33
+
+- V1.7.x  for JDK37
+
+- V1.8.x  for JDK41
+
+- V1.9.x  for JDK45
+
 ### Requirements
 
 - Minimum JDK version requirement: JDK8

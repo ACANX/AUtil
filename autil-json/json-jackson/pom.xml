@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-jackson</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>JSON-Jackson</name>
     <description>JSON-Jackson 工具库</description>
@@ -25,7 +25,13 @@
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.acanx</groupId>
+            <artifactId>acanx-utils</artifactId>
+            <version>0.2.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -44,6 +50,7 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+
 
     </dependencies>
 

@@ -5,22 +5,53 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-fastjson</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>JSON-Fastjson</name>
     <description>JSON-Fastjson 工具库</description>
     <url>https://acanx.com</url>
 
+    <scm>
+        <tag>V0.2.x</tag>
+        <url>git@github.com:ACANX/AUtil.git</url>
+        <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>
+        <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>
+    </scm>
+    <organization>
+        <name>ACANX</name>
+        <url>https://acanx.com</url>
+    </organization>
+    <developers>
+        <developer>
+            <name>ACANX</name>
+            <email>acanx@qq.com</email>
+            <organization>ACANX</organization>
+        </developer>
+    </developers>
+    <licenses>
+        <license>
+            <name>The Apache Software License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
     <dependencies>
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>0.2.0</version>
+            <version>0.2.0.1-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.acanx</groupId>
+            <artifactId>acanx-utils</artifactId>
+            <version>0.2.1-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -28,7 +59,6 @@
             <artifactId>fastjson2</artifactId>
             <version>${fastjson2.version}</version>
         </dependency>
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>

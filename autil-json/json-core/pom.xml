@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.2.0</version>
+        <version>0.2.0.1-SNAPSHOT</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-core</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.0.1-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>JSON-Core</name>
     <description>Util-JSON 工具库</description>
@@ -23,12 +23,6 @@
 
 
     <dependencies>
-        <dependency>
-            <groupId>com.acanx.util</groupId>
-            <artifactId>autil-core</artifactId>
-            <version>0.2.0</version>
-            <scope>compile</scope>
-        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -43,8 +37,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
