@@ -71,7 +71,7 @@ public class JacksonUtil {
      * @return      Java对象
      * @param <T>   类型
      */
-    public static <T> T parse(String json, Class<T> clazz) {
+    public static <T> T parseObject(String json, Class<T> clazz) {
         try {
             return MAPPER.readValue(json, clazz);
         } catch (IOException e) {
@@ -89,7 +89,7 @@ public class JacksonUtil {
      * @return        Java对象
      * @param <T>     类型
      */
-    public static <T> T parse(String json, TypeReference<T> typeReference) {
+    public static <T> T parseObject(String json, TypeReference<T> typeReference) {
         try {
             return MAPPER.readValue(json, typeReference);
         } catch (IOException e) {
