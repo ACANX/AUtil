@@ -1,5 +1,6 @@
 package com.acanx.util.json;
 
+import com.acanx.annotation.Alpha;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -55,6 +56,7 @@ public class JacksonUtil {
      * @param object   对象
      * @return         序列化后的字符串
      */
+    @Alpha
     public static String toJSONString(Object object) {
         try {
             return MAPPER.writeValueAsString(object);
@@ -71,6 +73,7 @@ public class JacksonUtil {
      * @return      Java对象
      * @param <T>   类型
      */
+    @Alpha
     public static <T> T parseObject(String json, Class<T> clazz) {
         try {
             return MAPPER.readValue(json, clazz);
@@ -89,6 +92,7 @@ public class JacksonUtil {
      * @return        Java对象
      * @param <T>     类型
      */
+    @Alpha
     public static <T> T parseObject(String json, TypeReference<T> typeReference) {
         try {
             return MAPPER.readValue(json, typeReference);
