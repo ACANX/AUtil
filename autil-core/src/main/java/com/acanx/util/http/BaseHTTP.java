@@ -45,7 +45,7 @@ public class BaseHTTP {
      */
     @Alpha
     public static void execute(HContext context) {
-        HttpURLConnection connection = null;
+        // HttpURLConnection connection = null;
         HRequest config = context.getRequest();
         HResponse response = new HResponse();
         try {
@@ -93,11 +93,12 @@ public class BaseHTTP {
             response.setStackTrace(getStackTrace(e));
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
-        } finally {
-            if (connection != null) {
-                connection.disconnect();
-            }
         }
+        // finally {
+            // if (connection != null) {
+            //    connection.disconnect();
+            // }
+        // }
         context.setResponse(response);
     }
 
@@ -109,7 +110,7 @@ public class BaseHTTP {
      * @return
      */
     @Alpha
-    private static String buildFullUrl(String baseUrl, Map<String, String> params) {
+    public static String buildFullUrl(String baseUrl, Map<String, String> params) {
         if (params == null || params.isEmpty()) {
             return baseUrl;
         }
