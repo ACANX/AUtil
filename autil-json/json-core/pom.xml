@@ -5,12 +5,12 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.2.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-core</artifactId>
-    <version>0.2.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>JSON-Core</name>
     <description>Util-JSON 工具库</description>

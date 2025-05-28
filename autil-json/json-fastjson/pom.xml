@@ -5,12 +5,13 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.2.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath> <!-- 指定父POM路径 -->
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-fastjson</artifactId>
-    <version>0.2.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>JSON-Fastjson</name>
     <description>JSON-Fastjson 工具库</description>
@@ -45,14 +46,13 @@
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>0.2.0.1-SNAPSHOT</version>
+            <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.acanx</groupId>
             <artifactId>acanx-utils</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${acanx-utils.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>

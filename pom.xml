@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx.util</groupId>
     <artifactId>autil</artifactId>
-    <version>0.2.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>AUtil</name>
     <description>AUtil(ACANX-Util) 工具库</description>
@@ -35,7 +35,8 @@
         </license>
     </licenses>
     <properties>
-        <project.release.version>0.2.0.1-SNAPSHOT</project.release.version>
+        <!-- <project.release.version>0.2.0.1</project.release.version> -->
+        <revision>0.2.0.1</revision>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>11</java.version>
@@ -48,7 +49,10 @@
         <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
 
+        <acanx-utils.version>0.2.0.1</acanx-utils.version>
         <fastjson2.version>2.0.57</fastjson2.version>
+        <jackson.version>2.19.0</jackson.version>
+        <gson.version>2.11.0</gson.version>
 
         <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
@@ -64,7 +68,7 @@
     <dependencies>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
@@ -101,6 +105,32 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <configuration>
+                    <!--  是否更新pom文件，此处还有更高级的用法-->
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 
@@ -108,9 +138,9 @@
         <!--本地发布-->
         <profile>
             <id>dev</id>
-            <properties>
-                <project.release.version>0.2.0.1-SNAPSHOT</project.release.version>
-            </properties>
+<!--            <properties>-->
+<!--                <project.release.version>0.2.0.1</project.release.version>-->
+<!--            </properties>-->
             <build>
                 <plugins>
                     <plugin>
@@ -122,6 +152,32 @@
                             <source>${maven.compiler.source}</source>
                             <target>${maven.compiler.target}</target>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>flatten-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <configuration>
+                            <!--  是否更新pom文件，此处还有更高级的用法-->
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>flatten</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>flatten</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>flatten.clean</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
@@ -171,9 +227,9 @@
         <!-- 发布到本地仓库 -->
         <profile>
             <id>product</id>
-            <properties>
-                <project.release.version>0.2.0.1-SNAPSHOT</project.release.version>
-            </properties>
+            <!--            <properties>-->
+            <!--                <project.release.version>0.2.0.1</project.release.version>-->
+            <!--            </properties>-->
         </profile>
 
         <!-- 发布到 Maven中央仓库 -->
@@ -184,9 +240,9 @@
                 <activeByDefault>true</activeByDefault>
             </activation>
             <!-- 设为默认profile 结束 -->
-            <properties>
-                <project.release.version>0.2.0.1-SNAPSHOT</project.release.version>
-            </properties>
+            <!--            <properties>-->
+            <!--                <project.release.version>0.2.0.1</project.release.version>-->
+            <!--            </properties>-->
             <build>
                 <plugins>
                     <plugin>
@@ -197,6 +253,32 @@
                             <source>${maven.compiler.source}</source>
                             <target>${maven.compiler.target}</target>
                         </configuration>
+                    </plugin>
+                    <plugin>
+                        <groupId>org.codehaus.mojo</groupId>
+                        <artifactId>flatten-maven-plugin</artifactId>
+                        <version>1.6.0</version>
+                        <configuration>
+                            <!--  是否更新pom文件，此处还有更高级的用法-->
+                            <updatePomFile>true</updatePomFile>
+                            <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                        </configuration>
+                        <executions>
+                            <execution>
+                                <id>flatten</id>
+                                <phase>process-resources</phase>
+                                <goals>
+                                    <goal>flatten</goal>
+                                </goals>
+                            </execution>
+                            <execution>
+                                <id>flatten.clean</id>
+                                <phase>clean</phase>
+                                <goals>
+                                    <goal>clean</goal>
+                                </goals>
+                            </execution>
+                        </executions>
                     </plugin>
                     <!-- 生成Source jar文件 -->
                     <plugin>

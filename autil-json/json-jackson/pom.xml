@@ -5,12 +5,13 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.2.0.1-SNAPSHOT</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath> <!-- 指定父POM路径 -->
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-jackson</artifactId>
-    <version>0.2.0.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>JSON-Jackson</name>
     <description>JSON-Jackson 工具库</description>
@@ -25,28 +26,27 @@
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>0.2.0.1-SNAPSHOT</version>
+            <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.acanx</groupId>
             <artifactId>acanx-utils</artifactId>
-            <version>0.2.1-SNAPSHOT</version>
-            <scope>compile</scope>
+            <version>${acanx-utils.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.17.1</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.17.1</version>
+            <version>${jackson.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
+            <artifactId>junit-jupiter-api</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
@@ -60,8 +60,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>11</source>
+                    <target>11</target>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
