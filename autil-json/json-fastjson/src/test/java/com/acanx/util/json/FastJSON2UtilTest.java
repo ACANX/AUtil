@@ -1,6 +1,7 @@
 package com.acanx.util.json;
 
 import com.acanx.util.json.model.SecurityMetaData;
+import com.alibaba.fastjson2.JSON;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -9,6 +10,23 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class FastJSON2UtilTest {
+
+
+    @Test
+    void toJSONStringDefault() {
+        SecurityMetaData securityMetaData = new SecurityMetaData();
+        securityMetaData.setSymbol("NVDA");
+        securityMetaData.setSecurityName("英伟达");
+        securityMetaData.setMarket("NSDQ");
+        securityMetaData.setSecurityType("Stock");
+        securityMetaData.setCurrPb(23.54);
+        securityMetaData.setCurrPe(5.21);
+        securityMetaData.setRegion("US");
+        securityMetaData.setYearIpo(2005);
+        securityMetaData.setCurrPrice(135.26);
+        String jsonStr = JSON.toJSONString(securityMetaData);
+        System.out.println(jsonStr);
+    }
 
     @Test
     void toJSONString() {

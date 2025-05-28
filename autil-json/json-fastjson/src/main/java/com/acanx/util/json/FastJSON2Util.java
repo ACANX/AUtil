@@ -18,13 +18,27 @@ public class FastJSON2Util {
 
     /**
      *
-     *     对象转（下划线命名风格，紧凑型）的JSON字符串
+     *     对象转（小驼峰命名风格，紧凑型）的JSON字符串
      *
      * @param object  对象
      * @return    小下划线格式的JSON字符串
      */
     @Alpha
     public static String toJSONString(Object object){
+        String jsonString = JSON.toJSONString(object);
+        return jsonString;
+    }
+
+
+    /**
+     *
+     *     对象转（下划线命名风格，紧凑型）的JSON字符串
+     *
+     * @param object  对象
+     * @return    小下划线格式的JSON字符串
+     */
+    @Alpha
+    public static String toJSONStringSnake(Object object){
         JSONWriter.Context context = new JSONWriter.Context();
         NameFilter nf= NameFilter.of(PropertyNamingStrategy.SnakeCase);
         context.setNameFilter(nf);
