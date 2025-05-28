@@ -1,8 +1,8 @@
 package com.acanx.util.json.impl;
 
+import com.acanx.util.json.GsonUtil;
 import com.acanx.util.json.JSONProvider;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.Map;
@@ -42,7 +42,7 @@ public class GsonProvider implements JSONProvider {
      */
     @Override
     public String toJSONString(Object object) {
-        return gson.toJson(object);
+        return GsonUtil.toJSONString(object);
     }
 
     /**
@@ -54,12 +54,12 @@ public class GsonProvider implements JSONProvider {
      */
     @Override
     public String toJSONString(Object object, Map<String, Object> config) {
-        return gson.toJson(object);
+        return GsonUtil.toJSONString(object);
     }
 
     @Override
     public <T> T parseObject(String json, Class<T> clazz) {
-        return gson.fromJson(json, clazz);
+        return GsonUtil.parseObject(json, clazz);
     }
 
     /**
@@ -72,13 +72,13 @@ public class GsonProvider implements JSONProvider {
      */
     @Override
     public <T> T parseObject(String jsonStr, Class<T> clazz, Map<String, Object> config) {
-        return gson.fromJson(jsonStr, clazz);
+        return GsonUtil.parseObject(jsonStr, clazz);
     }
 
     @Override
     @SuppressWarnings("unchecked")
     public <T> T parseObject(String json, Type type) {
-        return gson.fromJson(json, TypeToken.get(type).getType());
+        return GsonUtil.parseObject(json, type);
     }
 
 }
