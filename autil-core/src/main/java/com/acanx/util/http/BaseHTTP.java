@@ -107,7 +107,7 @@ public class BaseHTTP {
      *
      * @param baseUrl   Base资源链接
      * @param params    URL参数
-     * @return
+     * @return          完整的URL
      */
     @Alpha
     public static String buildFullUrl(String baseUrl, Map<String, String> params) {

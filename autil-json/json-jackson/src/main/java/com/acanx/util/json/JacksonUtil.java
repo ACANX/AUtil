@@ -4,6 +4,7 @@ import com.acanx.annotation.Alpha;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -12,6 +13,7 @@ import com.fasterxml.jackson.datatype.jsr310.deser.LocalDateTimeDeserializer;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateTimeSerializer;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -74,7 +76,27 @@ public class JacksonUtil {
     @Alpha
     public static String toJSONStringForStorage(Object object) {
         try {
-            return MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE).writeValueAsString(object);
+            return MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
+//                    .enable(SerializationFeature.INDENT_OUTPUT)  // 全局配置
+                    .writerWithDefaultPrettyPrinter() // 单次生效
+                    .writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Object to JSON conversion failed", e);
+        }
+    }
+
+    /**
+     * 对象转JSON字符串（下划线风格）
+     *
+     * @param object   对象
+     * @return         序列化后的字符串
+     */
+    @Alpha
+    public static String toJSONStringPrettyFormat(Object object) {
+        try {
+            return MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE)
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Object to JSON conversion failed", e);
         }
@@ -135,6 +157,27 @@ public class JacksonUtil {
             throw new RuntimeException("JSON to Object conversion failed", e);
         }
     }
+
+
+    /**
+     *    处理复杂类型转换（如泛型类型）
+     *
+     * @param json  字符串
+     * @param type  类型
+     * @return      Java对象
+     * @param <T>   类型
+     */
+    @Alpha
+    public static <T> T parseObject(String json, Type type) {
+        try {
+            JavaType javaType = MAPPER.getTypeFactory().constructType(type);
+            return MAPPER.readValue(json, javaType);
+        } catch (IOException e) {
+            throw new RuntimeException("JSON to Object conversion failed", e);
+        }
+    }
+
+
 
 
 

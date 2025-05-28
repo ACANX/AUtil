@@ -18,8 +18,6 @@ import java.time.temporal.TemporalAccessor;
 /**
  * Iso8601Adapter
  *
- * @Author: ACANX
- * @CreatedAt: 2025-05-28
  */
 public class Iso8601Adapter  implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
 
@@ -45,8 +43,6 @@ public class Iso8601Adapter  implements JsonSerializer<LocalDateTime>, JsonDeser
     @Override
     public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
         String formatted = src.format(SERIALIZER);
-               // .replaceAll("(\\.\\d{1,6}?)", "$100000"); // 补足6位小数
-        //  System.out.println("pppppppppp"+formatted);
         return new JsonPrimitive(formatted);
     }
 

@@ -3,7 +3,6 @@ package com.acanx.util.json.impl;
 import com.acanx.annotation.Alpha;
 import com.acanx.util.json.JSONProvider;
 import com.acanx.util.json.JacksonUtil;
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.Type;
@@ -20,7 +19,7 @@ public class JacksonProvider implements JSONProvider {
     /**
      *   可用性判断
      *
-     * @return
+     * @return      可用性标识
      */
     @Override
     public boolean isAvailable() {
@@ -46,16 +45,12 @@ public class JacksonProvider implements JSONProvider {
     /**
      *   对象转JSON字符串
      *
-     * @param object
-     * @return
+     * @param object   对象
+     * @return         JSON字符串
      */
     @Override
     public String toJSONString(Object object) {
-        try {
-            return mapper.writeValueAsString(object);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return JacksonUtil.toJSONString(object);
     }
 
     /**
@@ -75,8 +70,8 @@ public class JacksonProvider implements JSONProvider {
      *
      * @param json   json字符串
      * @param clazz  对象类型
-     * @return
-     * @param <T>
+     * @return       反序列化后的对象
+     * @param <T>    对象类型
      */
     @Override
     public <T> T parseObject(String json, Class<T> clazz) {
@@ -100,14 +95,14 @@ public class JacksonProvider implements JSONProvider {
      *
      * @param json   json字符串
      * @param type   对象类型
-     * @return
-     * @param <T>
+     * @return       反序列化后的对象
+     * @param <T>    对象类型
      */
     @Alpha
     @Override
     @SuppressWarnings("unchecked")
     public <T> T parseObject(String json, Type type) {
-        return JacksonUtil.parseObject(json, new TypeReference<T>() {});
+        return JacksonUtil.parseObject(json, type);
     }
 
 

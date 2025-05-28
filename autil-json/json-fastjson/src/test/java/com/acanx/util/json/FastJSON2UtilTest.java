@@ -40,9 +40,10 @@ class FastJSON2UtilTest {
         securityMetaData.setRegion("US");
         securityMetaData.setYearIpo(2005);
         securityMetaData.setCurrPrice(135.26);
-        String jsonStr =FastJSON2Util.toJSONString(securityMetaData);
+        String jsonStr =FastJSON2Util.toJSONStringSnake(securityMetaData);
         System.out.println(jsonStr);
         String json = "{\"curr_pb\":23.54,\"curr_pe\":5.21,\"curr_price\":135.26,\"market\":\"NSDQ\",\"region\":\"US\",\"security_name\":\"英伟达\",\"security_type\":\"Stock\",\"symbol\":\"NVDA\",\"year_ipo\":2005}";
+        System.out.println(json);
         Assertions.assertTrue(json.equals(jsonStr));
     }
 

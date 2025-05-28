@@ -14,6 +14,16 @@ public class User {
     private String userName;
     private LocalDateTime createTime;
 
+
+    public User() {
+    }
+
+    public User(Integer userId, String userName, LocalDateTime createTime) {
+        this.userId = userId;
+        this.userName = userName;
+        this.createTime = createTime;
+    }
+
     public Integer getUserId() {
         return userId;
     }

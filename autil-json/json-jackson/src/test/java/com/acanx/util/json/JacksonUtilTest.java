@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 class JacksonUtilTest {
 
-    private static final String jsonCamel = "{\"userId\":123,\"userName\":\"john\",\"createTime\":\"2023-01-01T12:00:00.000000\"}";
+    private static final String jsonCamel = "{\"userId\":123,\"userName\":\"john\",\"createTime\":\"2023-01-01T12:00:00.000100\"}";
     private static final String jsonSnake = "{\"user_id\":123,\"user_name\":\"john\",\"create_time\":\"2023-01-01T12:00:00.000000\"}";
 
 
@@ -47,6 +47,14 @@ class JacksonUtilTest {
         System.out.println(newUser2.getUserId());
         System.out.println(newUser2.getUserName());
         System.out.println(newUser2.getCreateTime());
+
+        System.out.println("-----------------------------");
+        // jsonCamel
+        System.out.println(jsonCamel);
+        User newUser3 = JacksonUtil.parseObject(jsonCamel, User.class);
+        System.out.println(newUser3.getUserId());
+        System.out.println(newUser3.getUserName());
+        System.out.println(newUser3.getCreateTime());
     }
 
     @Test

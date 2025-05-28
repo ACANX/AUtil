@@ -23,7 +23,7 @@ public class HContext {
     /**
      *  构造函数
      *
-     * @param request
+     * @param request  请求对象
      */
     public HContext(HRequest request) {
         this.request = request;

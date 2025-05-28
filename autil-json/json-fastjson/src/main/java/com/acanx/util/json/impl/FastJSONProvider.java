@@ -1,5 +1,6 @@
 package com.acanx.util.json.impl;
 
+import com.acanx.annotation.Alpha;
 import com.acanx.util.json.FastJSON2Util;
 import com.acanx.util.json.JSONProvider;
 import com.alibaba.fastjson2.JSON;
@@ -93,10 +94,11 @@ public class FastJSONProvider implements JSONProvider {
      * @param type 反序列化的对象类型
      * @return 结果
      */
+    @Alpha
     @Override
     @SuppressWarnings("unchecked")
     public <T> T parseObject(String json, Type type) {
-        return (T) JSON.parseObject(json, new com.alibaba.fastjson2.TypeReference<T>(type) {});
+        return (T) JSON.parseObject(json, type);
     }
 
 
