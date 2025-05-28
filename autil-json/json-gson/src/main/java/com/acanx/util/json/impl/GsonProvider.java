@@ -1,5 +1,6 @@
 package com.acanx.util.json.impl;
 
+import com.acanx.annotation.Alpha;
 import com.acanx.util.json.GsonUtil;
 import com.acanx.util.json.JSONProvider;
 import com.google.gson.Gson;
@@ -14,6 +15,7 @@ import java.util.Map;
 public class GsonProvider implements JSONProvider {
     private final Gson gson = new Gson();
 
+    @Alpha
     @Override
     public boolean isAvailable() {
         try {
@@ -29,6 +31,7 @@ public class GsonProvider implements JSONProvider {
      *
      * @return 提供者名称
      */
+    @Alpha
     @Override
     public String getProviderName() {
         return "Gson";
@@ -40,9 +43,10 @@ public class GsonProvider implements JSONProvider {
      * @param object Java对象
      * @return 序列化后的JSON字符串
      */
+    @Alpha
     @Override
     public String toJSONString(Object object) {
-        return GsonUtil.toJSONString(object);
+        return GsonUtil.toJSONStringForStorage(object);
     }
 
     /**
@@ -52,14 +56,16 @@ public class GsonProvider implements JSONProvider {
      * @param config 序列化配置
      * @return 序列化后的JSON字符串
      */
+    @Alpha
     @Override
     public String toJSONString(Object object, Map<String, Object> config) {
         return GsonUtil.toJSONString(object);
     }
 
+    @Alpha
     @Override
     public <T> T parseObject(String json, Class<T> clazz) {
-        return GsonUtil.parseObject(json, clazz);
+        return GsonUtil.parseObjectFromCamel(json, clazz);
     }
 
     /**
@@ -70,11 +76,13 @@ public class GsonProvider implements JSONProvider {
      * @param config  反序列化配置
      * @return 反序列化后的Java对象
      */
+    @Alpha
     @Override
     public <T> T parseObject(String jsonStr, Class<T> clazz, Map<String, Object> config) {
-        return GsonUtil.parseObject(jsonStr, clazz);
+        return GsonUtil.parseObjectFromCamel(jsonStr, clazz);
     }
 
+    @Alpha
     @Override
     @SuppressWarnings("unchecked")
     public <T> T parseObject(String json, Type type) {

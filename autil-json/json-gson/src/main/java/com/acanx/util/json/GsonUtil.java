@@ -17,12 +17,22 @@ public class GsonUtil {
     private static Gson gson = new GsonBuilder().create();
 
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     @Alpha
     public static String toJSONString(Object value) {
         return gson.toJson(value);
     }
 
 
+    /**
+     *
+     * @param value
+     * @return
+     */
     @Alpha
     public static String toJSONStringSnake(Object value) {
         Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
@@ -62,13 +72,28 @@ public class GsonUtil {
     }
 
 
-
+    /**
+     *
+     * @param json
+     * @param clazz
+     * @return
+     * @param <T>
+     * @throws JsonParseException
+     */
     @Alpha
     public static <T> T parseObject(String json, Class<T> clazz) throws JsonParseException {
         Gson gson = new GsonBuilder().create();
         return gson.fromJson(json, clazz);
     }
 
+    /**
+     *
+     * @param json
+     * @param clazz
+     * @return
+     * @param <T>
+     * @throws JsonParseException
+     */
     @Alpha
     public static <T> T parseObjectFromCamel(String json, Class<T> clazz) throws JsonParseException {
         Gson gson = new GsonBuilder()
@@ -77,6 +102,14 @@ public class GsonUtil {
         return gson.fromJson(json, clazz);
     }
 
+    /**
+     *
+     * @param json
+     * @param clazz
+     * @return
+     * @param <T>
+     * @throws JsonParseException
+     */
     @Alpha
     public static <T> T parseObjectFromSnake(String json, Class<T> clazz) throws JsonParseException {
         Gson gson = new GsonBuilder()
@@ -86,6 +119,14 @@ public class GsonUtil {
         return gson.fromJson(json, clazz);
     }
 
+    /**
+     *
+     * @param json
+     * @param type
+     * @return
+     * @param <T>
+     * @throws JsonParseException
+     */
     @Alpha
     public static <T> T parseObject(String json, Type type) throws JsonParseException {
         Gson gson = new GsonBuilder()

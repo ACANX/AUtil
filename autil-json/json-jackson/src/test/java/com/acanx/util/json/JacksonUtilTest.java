@@ -7,19 +7,34 @@ import java.time.LocalDateTime;
 
 class JacksonUtilTest {
 
-    private static final String json = "{\"user_id\":123,\"user_name\":\"john\",\"create_time\":\"2023-01-01 12:00:00\"}";
+    private static final String jsonCamel = "{\"userId\":123,\"userName\":\"john\",\"createTime\":\"2023-01-01T12:00:00.000000\"}";
+    private static final String jsonSnake = "{\"user_id\":123,\"user_name\":\"john\",\"create_time\":\"2023-01-01T12:00:00.000000\"}";
+
 
     @Test
     void toJSONString() {
-        // 反序列化
-        User user = JacksonUtil.parseObject(json, User.class);
-        System.out.println(user.getUserId());  // 输出: john
-        System.out.println(user.getUserName());  // 输出: john
-        System.out.println(user.getCreateTime()); //
+        // 序列化
+        User newUser = new User();
+        newUser.setUserId(456);
+        newUser.setUserName("mary");
+        newUser.setCreateTime(LocalDateTime.now());
+        // 序列化
+        System.out.println(JacksonUtil.toJSONString(newUser));
     }
 
     @Test
-    void parseATest() {
+    void toJSONStringForStorageTest() {
+        // 序列化
+        User newUser = new User();
+        newUser.setUserId(456);
+        newUser.setUserName("mary");
+        newUser.setCreateTime(LocalDateTime.now());
+        String newJson = JacksonUtil.toJSONStringForStorage(newUser);
+        System.out.println(newJson);
+    }
+
+    @Test
+    void parseObjectTest() {
         // 序列化
         User newUser = new User();
         newUser.setUserId(456);
@@ -27,12 +42,22 @@ class JacksonUtilTest {
         newUser.setCreateTime(LocalDateTime.now());
         String newJson = JacksonUtil.toJSONString(newUser);
         System.out.println(newJson);
-        // 输出: {"user_id":456,"user_name":"mary","create_time":null}
+        // 输出: {"userId":456,"userName":"mary","createTime":"2025-05-28T18:46:27.436080"}
         User newUser2 = JacksonUtil.parseObject(newJson, User.class);
         System.out.println(newUser2.getUserId());
         System.out.println(newUser2.getUserName());
         System.out.println(newUser2.getCreateTime());
+    }
 
+    @Test
+    void parseObjectFromSnake() {
+        // 反序列化
+        System.out.println(jsonSnake);
+        User user = JacksonUtil.parseObjectFromSnake(jsonSnake, User.class);
+        System.out.println(user.getUserId());  // 输出: john
+        System.out.println(user.getUserName());  // 输出: john
+        System.out.println(user.getCreateTime()); //
+        System.out.println(JacksonUtil.toJSONString(user));
     }
 
     @Test

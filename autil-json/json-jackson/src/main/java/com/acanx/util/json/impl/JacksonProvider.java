@@ -1,6 +1,9 @@
 package com.acanx.util.json.impl;
 
+import com.acanx.annotation.Alpha;
 import com.acanx.util.json.JSONProvider;
+import com.acanx.util.json.JacksonUtil;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.lang.reflect.Type;
@@ -10,7 +13,7 @@ import java.util.Map;
  * JacksonProvider
  *
  */
-public class JacksonProvider  implements JSONProvider {
+public class JacksonProvider implements JSONProvider {
 
     private final ObjectMapper mapper = new ObjectMapper();
 
@@ -64,11 +67,7 @@ public class JacksonProvider  implements JSONProvider {
      */
     @Override
     public String toJSONString(Object object, Map<String, Object> config) {
-        try {
-            return mapper.writeValueAsString(object);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return JacksonUtil.toJSONStringForStorage(object);
     }
 
     /**
@@ -81,11 +80,20 @@ public class JacksonProvider  implements JSONProvider {
      */
     @Override
     public <T> T parseObject(String json, Class<T> clazz) {
-        try {
-            return mapper.readValue(json, clazz);
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return JacksonUtil.parseObject(json, clazz);
+    }
+
+    /**
+     * JSON字符串反序列化为Java对象
+     *
+     * @param jsonStr JSON字符串
+     * @param clazz       对象类型
+     * @param config  反序列化配置
+     * @return 反序列化后的Java对象
+     */
+    @Override
+    public <T> T parseObject(String jsonStr, Class<T> clazz, Map<String, Object> config) {
+        return JacksonUtil.parseObject(jsonStr, clazz);
     }
 
     /**
@@ -95,33 +103,12 @@ public class JacksonProvider  implements JSONProvider {
      * @return
      * @param <T>
      */
+    @Alpha
     @Override
     @SuppressWarnings("unchecked")
     public <T> T parseObject(String json, Type type) {
-        try {
-            return mapper.readValue(json, mapper.getTypeFactory().constructType(type));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+        return JacksonUtil.parseObject(json, new TypeReference<T>() {});
     }
 
 
-
-
-    /**
-     * JSON字符串反序列化为Java对象
-     *
-     * @param jsonStr JSON字符串
-     * @param type       对象类型
-     * @param config  反序列化配置
-     * @return 反序列化后的Java对象
-     */
-    @Override
-    public <T> T parseObject(String jsonStr, Class<T> type, Map<String, Object> config) {
-        try {
-            return mapper.readValue(jsonStr, mapper.getTypeFactory().constructType(type));
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

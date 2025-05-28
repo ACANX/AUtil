@@ -42,13 +42,12 @@ public class JacksonUtil {
     // 自定义日期时间格式
     private static JavaTimeModule createJavaTimeModule() {
         JavaTimeModule module = new JavaTimeModule();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        // 配置序列化和反序列化规则
+        // 配置LocalDateTime序列化和反序列化规则
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
         module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
         return module;
     }
-
 
     /**
      * 对象转JSON字符串（下划线风格）
@@ -58,8 +57,24 @@ public class JacksonUtil {
      */
     @Alpha
     public static String toJSONString(Object object) {
+        ObjectMapper mapper = new ObjectMapper().registerModule(createJavaTimeModule());
         try {
-            return MAPPER.writeValueAsString(object);
+            return mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("Object to JSON conversion failed", e);
+        }
+    }
+
+    /**
+     * 对象转JSON字符串（下划线风格）
+     *
+     * @param object   对象
+     * @return         序列化后的字符串
+     */
+    @Alpha
+    public static String toJSONStringForStorage(Object object) {
+        try {
+            return MAPPER.setPropertyNamingStrategy(PropertyNamingStrategies.LOWER_CAMEL_CASE).writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Object to JSON conversion failed", e);
         }
@@ -76,11 +91,31 @@ public class JacksonUtil {
     @Alpha
     public static <T> T parseObject(String json, Class<T> clazz) {
         try {
-            return MAPPER.readValue(json, clazz);
+            return new ObjectMapper().registerModule(createJavaTimeModule()).readValue(json, clazz);
         } catch (IOException e) {
             throw new RuntimeException("JSON to Object conversion failed", e);
         }
     }
+
+    /**
+     * JSON字符串转对象（下划线转驼峰）
+     *
+     * @param json JSON字符串
+     * @param clazz 目标类型
+     * @return      Java对象
+     * @param <T>   类型
+     */
+    @Alpha
+    public static <T> T parseObjectFromSnake(String json, Class<T> clazz) {
+        try {
+            return MAPPER.registerModule(createJavaTimeModule())
+                    .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+                    .readValue(json, clazz);
+        } catch (IOException e) {
+            throw new RuntimeException("JSON to Object conversion failed", e);
+        }
+    }
+
 
     /**
      *  处理复杂类型转换（如泛型类型）

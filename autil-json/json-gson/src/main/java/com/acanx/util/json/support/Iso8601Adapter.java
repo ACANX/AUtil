@@ -1,5 +1,6 @@
 package com.acanx.util.json.support;
 
+import com.acanx.annotation.Alpha;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
@@ -40,6 +41,7 @@ public class Iso8601Adapter  implements JsonSerializer<LocalDateTime>, JsonDeser
     };
 
     // 序列化：LocalDateTime -> ISO字符串（强制6位小数秒）
+    @Alpha
     @Override
     public JsonElement serialize(LocalDateTime src, Type typeOfSrc, JsonSerializationContext context) {
         String formatted = src.format(SERIALIZER);
@@ -49,6 +51,7 @@ public class Iso8601Adapter  implements JsonSerializer<LocalDateTime>, JsonDeser
     }
 
     // 反序列化：ISO字符串 -> LocalDateTime（支持多格式解析）
+    @Alpha
     @Override
     public LocalDateTime deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context) {
         String dateStr = json.getAsString();
