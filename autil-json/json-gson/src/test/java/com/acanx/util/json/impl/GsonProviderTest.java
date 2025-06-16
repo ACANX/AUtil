@@ -1,8 +1,8 @@
 package com.acanx.util.json.impl;
 
+import com.acanx.meta.model.test.json.model.User;
 import com.acanx.util.JSONUtil;
 import com.acanx.util.json.GsonUtil;
-import com.acanx.util.json.model.User;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
 
@@ -74,5 +74,58 @@ class GsonProviderTest {
         Map<String, List<User>> result = JSONUtil.parseObject(jsonStr, complexType);
         System.out.println(result.toString());
         System.out.println(GsonUtil.toJSONStringPrettyFormat(result));
+    }
+
+    @Test
+    void toJSONStringSnake() {
+        User a = new User(11, "Alice", LocalDateTime.now());
+        System.out.println(GsonUtil.toJSONStringSnake(a));
+    }
+
+    @Test
+    void toJSONStringPrettyFormat() {
+        User a = new User(11, "Alice", LocalDateTime.now());
+        System.out.println(GsonUtil.toJSONStringPrettyFormat(a));
+    }
+
+    @Test
+    void toJSONStringLarge() {
+        List<User> userList = new ArrayList<>();
+        for (int i = 0; i < 1000000; i++) {
+            User a = new User(11, "Alice", LocalDateTime.now());
+            userList.add(a);
+        }
+        String jsonStr = GsonUtil.toJSONString(userList);
+        System.out.println(jsonStr);
+    }
+
+    @Test
+    void toJSONStringForStorage() {
+        User a = new User(11, "Alice", LocalDateTime.now());
+        System.out.println(GsonUtil.toJSONStringForStorage(a));
+    }
+
+    @Test
+    void parseObjectSnake() {
+        String json = "{\"user_id\":11,\"user_name\":\"Alice\",\"create_time\":\"2025-06-08T06:07:02.212523\"}";
+        System.out.println(json);
+        User user = GsonUtil.parseObjectSnake(json, User.class);
+        System.out.println(user.toString());
+    }
+
+    @Test
+    void parseArray() {
+        String json = "[{\"userId\":11,\"userName\":\"Alice\",\"createTime\":\"2025-06-08T06:07:02.212523\"},{\"userId\":11,\"userName\":\"Alice\",\"createTime\":\"2025-06-08T06:07:02.212523\"}]";
+        System.out.println(json);
+        List<User> userList = GsonUtil.parseArray(json, User.class);
+        System.out.println(userList.toString());
+    }
+
+    @Test
+    void parseArraySnake() {
+        String json = "[{\"user_id\":11,\"user_name\":\"Alice\",\"create_time\":\"2025-06-08T06:07:02.212523\"},{\"user_id\":11,\"user_name\":\"Alice\",\"create_time\":\"2025-06-08T06:07:02.212523\"}]";
+        System.out.println(json);
+        List<User> userList = GsonUtil.parseArraySnake(json, User.class);
+        System.out.println(userList.toString());
     }
 }

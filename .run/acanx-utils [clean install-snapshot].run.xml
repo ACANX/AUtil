@@ -28,7 +28,7 @@
             <list>
               <option value="clean" />
               <option value="install" />
-              <option value="-Drevision=0.2.0.2-SNAPSHOT" />
+              <option value="-Drevision=0.2.0.3" />
             </list>
           </option>
           <option name="multimoduleDir" />

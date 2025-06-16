@@ -6,6 +6,7 @@ import com.acanx.util.json.JSONProvider;
 import com.alibaba.fastjson2.JSON;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -101,5 +102,83 @@ public class FastJSONProvider implements JSONProvider {
         return (T) JSON.parseObject(json, type);
     }
 
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringSnake(Object object) {
+        return FastJSON2Util.toJSONStringSnake(object);
+    }
 
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringPrettyFormat(Object object) {
+        return FastJSON2Util.toJSONStringPrettyFormat(object);
+    }
+
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringLarge(Object object) {
+        return FastJSON2Util.toJSONStringLarge(object);
+    }
+
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringForStorage(Object object) {
+        return FastJSON2Util.toJSONStringForStorage(object);
+    }
+
+    /**
+     * 将JSON字符串反序列化为JSON对象
+     *
+     * @param jsonStr JSON字符串
+     * @param t       反序列化的对象类型
+     * @return 结果
+     */
+    @Override
+    public <T> T parseObjectSnake(String jsonStr, Class<T> t) {
+        return FastJSON2Util.parseObject(jsonStr, t);
+    }
+
+    /**
+     * JSON字符串 转List集合
+     *
+     * @param text        JSON字符串
+     * @param objectClass 对象类型
+     * @return 集合
+     */
+    @Override
+    public <T> List<T> parseArray(String text, Class<T> objectClass) {
+        return FastJSON2Util.parseArray(text, objectClass);
+    }
+
+    /**
+     * JSON字符串 转List集合
+     *
+     * @param text        JSON字符串
+     * @param objectClass 对象类型
+     * @return 集合
+     */
+    @Override
+    public <T> List<T> parseArraySnake(String text, Class<T> objectClass) {
+        return FastJSON2Util.parseArray(text, objectClass);
+    }
 }

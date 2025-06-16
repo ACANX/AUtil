@@ -6,6 +6,7 @@ import com.acanx.util.json.JSONProvider;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -14,6 +15,14 @@ import java.util.Map;
  */
 public class GsonProvider implements JSONProvider {
     private final Gson gson = new Gson();
+
+    /**
+     * Constructs a new object.
+     */
+    public GsonProvider() {
+        super();
+    }
+
 
     @Alpha
     @Override
@@ -65,7 +74,7 @@ public class GsonProvider implements JSONProvider {
     @Alpha
     @Override
     public <T> T parseObject(String json, Class<T> clazz) {
-        return GsonUtil.parseObjectFromCamel(json, clazz);
+        return GsonUtil.parseObject(json, clazz);
     }
 
     /**
@@ -79,7 +88,7 @@ public class GsonProvider implements JSONProvider {
     @Alpha
     @Override
     public <T> T parseObject(String jsonStr, Class<T> clazz, Map<String, Object> config) {
-        return GsonUtil.parseObjectFromCamel(jsonStr, clazz);
+        return GsonUtil.parseObject(jsonStr, clazz);
     }
 
     @Alpha
@@ -89,4 +98,83 @@ public class GsonProvider implements JSONProvider {
         return GsonUtil.parseObject(json, type);
     }
 
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringSnake(Object object) {
+        return GsonUtil.toJSONStringSnake(object);
+    }
+
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringPrettyFormat(Object object) {
+        return GsonUtil.toJSONStringPrettyFormat(object);
+    }
+
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringLarge(Object object) {
+        return GsonUtil.toJSONString(object);
+    }
+
+    /**
+     * Java对象序列化为JSON字符串
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    @Override
+    public String toJSONStringForStorage(Object object) {
+        return GsonUtil.toJSONStringForStorage(object);
+    }
+
+    /**
+     * 将JSON字符串反序列化为JSON对象
+     *
+     * @param jsonStr JSON字符串
+     * @param t       反序列化的对象类型
+     * @return 结果
+     */
+    @Override
+    public <T> T parseObjectSnake(String jsonStr, Class<T> t) {
+        return GsonUtil.parseObjectSnake(jsonStr, t);
+    }
+
+    /**
+     * JSON字符串 转List集合
+     *
+     * @param text        JSON字符串
+     * @param objectClass 对象类型
+     * @return 集合
+     */
+    @Override
+    public <T> List<T> parseArray(String text, Class<T> objectClass) {
+        return GsonUtil.parseArray(text, objectClass);
+    }
+
+    /**
+     * JSON字符串(下划线) 转List集合
+     *
+     * @param text        JSON字符串
+     * @param objectClass 对象类型
+     * @return 集合
+     */
+    // @Override
+    public <T> List<T> parseArraySnake(String text, Class<T> objectClass) {
+        return GsonUtil.parseArraySnake(text, objectClass);
+    }
 }

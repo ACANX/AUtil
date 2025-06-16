@@ -1,9 +1,10 @@
 package com.acanx.util.json;
 
-import com.acanx.util.json.model.User;
+import com.acanx.meta.model.test.json.model.User;
 import org.junit.jupiter.api.Test;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 class JacksonUtilTest {
 
@@ -61,7 +62,7 @@ class JacksonUtilTest {
     void parseObjectFromSnake() {
         // 反序列化
         System.out.println(jsonSnake);
-        User user = JacksonUtil.parseObjectFromSnake(jsonSnake, User.class);
+        User user = JacksonUtil.parseObjectSnake(jsonSnake, User.class);
         System.out.println(user.getUserId());  // 输出: john
         System.out.println(user.getUserName());  // 输出: john
         System.out.println(user.getCreateTime()); //
@@ -71,5 +72,60 @@ class JacksonUtilTest {
     @Test
     void parseBTest() {
         // TypeReference<List<User>> type = new TypeReference<List<User>>() {};
+    }
+
+    @Test
+    void toJSONStringSnake() {
+        // 序列化
+        User newUser = new User();
+        newUser.setUserId(456);
+        newUser.setUserName("mary");
+        newUser.setCreateTime(LocalDateTime.now());
+        System.out.println(JacksonUtil.toJSONStringSnake(newUser));
+    }
+
+    @Test
+    void toJSONStringForStorage() {
+        // 序列化
+        User newUser = new User();
+        newUser.setUserId(456);
+        newUser.setUserName("mary");
+        newUser.setCreateTime(LocalDateTime.now());
+        System.out.println(JacksonUtil.toJSONStringForStorage(newUser));
+    }
+
+    @Test
+    void toJSONStringPrettyFormat() {
+        // 序列化
+        User newUser = new User();
+        newUser.setUserId(456);
+        newUser.setUserName("mary");
+        newUser.setCreateTime(LocalDateTime.now());
+        System.out.println(JacksonUtil.toJSONStringPrettyFormat(newUser));
+    }
+
+    @Test
+    void parseObjectSnake() {
+        String json = "{\"user_id\":456,\"user_name\":\"mary\",\"create_time\":\"2025-06-08T06:51:46.234643\"}";
+        User newUser = JacksonUtil.parseObjectSnake(json, User.class);
+        System.out.println(newUser.toString());
+    }
+
+    @Test
+    void parseArray() {
+        String json = "[{\"userId\":456,\"userName\":\"mary\",\"createTime\":\"2025-06-08T06:56:02.358308\"},{\"userId\":456,\"userName\":\"mary\",\"createTime\":\"2025-06-08T06:56:02.358308\"}]";
+        List<User> userList = JacksonUtil.parseArray(json, User.class);
+        for (User user : userList) {
+            System.out.println(user.toString());
+        }
+    }
+
+    @Test
+    void parseArraySnake() {
+        String json = "[{\"user_id\":456,\"user_name\":\"mary\",\"create_time\":\"2025-06-08T06:51:46.234643\"},{\"user_id\":123,\"user_name\":\"mary\",\"create_time\":\"2025-06-08T06:51:46.234643\"}]";
+        List<User> userList = JacksonUtil.parseArraySnake(json, User.class);
+        for (User user : userList) {
+            System.out.println(user.toString());
+        }
     }
 }

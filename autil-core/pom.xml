@@ -17,30 +17,30 @@
     <description>AUtil-Core 核心工具库</description>
     <url>https://acanx.com</url>
 
-    <scm>
-        <tag>V0.2.x</tag>
-        <url>git@github.com:ACANX/AUtil.git</url>
-        <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>
-        <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>
-    </scm>
-    <organization>
-        <name>ACANX</name>
-        <url>https://acanx.com</url>
-    </organization>
-    <developers>
-        <developer>
-            <name>ACANX</name>
-            <email>acanx@qq.com</email>
-            <organization>ACANX</organization>
-        </developer>
-    </developers>
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
-            <distribution>repo</distribution>
-        </license>
-    </licenses>
+<!--    <scm>-->
+<!--        <tag>V0.2.x</tag>-->
+<!--        <url>git@github.com:ACANX/AUtil.git</url>-->
+<!--        <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>-->
+<!--        <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>-->
+<!--    </scm>-->
+<!--    <organization>-->
+<!--        <name>ACANX</name>-->
+<!--        <url>https://acanx.com</url>-->
+<!--    </organization>-->
+<!--    <developers>-->
+<!--        <developer>-->
+<!--            <name>ACANX</name>-->
+<!--            <email>acanx@qq.com</email>-->
+<!--            <organization>ACANX</organization>-->
+<!--        </developer>-->
+<!--    </developers>-->
+<!--    <licenses>-->
+<!--        <license>-->
+<!--            <name>The Apache Software License, Version 2.0</name>-->
+<!--            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>-->
+<!--            <distribution>repo</distribution>-->
+<!--        </license>-->
+<!--    </licenses>-->
 
     <dependencies>
         <dependency>

@@ -1,8 +1,8 @@
 package com.acanx.util.json.impl;
 
+import com.acanx.meta.model.test.json.model.User;
 import com.acanx.util.JSONUtil;
 import com.acanx.util.json.JacksonUtil;
-import com.acanx.util.json.model.User;
 import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
 

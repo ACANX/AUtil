@@ -1,6 +1,7 @@
 package com.acanx.util.json;
 
-import com.acanx.util.json.model.User;
+
+import com.acanx.meta.model.test.json.model.User;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -52,10 +53,12 @@ class GsonUtilTest {
         String newJson = GsonUtil.toJSONString(newUser);
         System.out.println(newJson);
         // 输出: {"userId":456,"userName":"mary","createTime":{"date":{"year":2025,"month":5,"day":28},"time":{"hour":16,"minute":2,"second":19,"nano":489359700}}}
-        User newUser2 = GsonUtil.parseObject(newJson, User.class);
-        System.out.println(newUser2.getUserId());
-        System.out.println(newUser2.getUserName());
-        System.out.println(newUser2.getCreateTime());
+
+        // 直接反序列化JSON字符串会失败，因为Gson默认的LocalDateTime字段序列化是一个复杂对象，与其他的JSON框架不太一样
+        // User newUser2 = GsonUtil.parseObject(newJson, User.class);
+        // System.out.println(newUser2.getUserId());
+        // System.out.println(newUser2.getUserName());
+        // System.out.println(newUser2.getCreateTime());
     }
 
     @Test
@@ -103,7 +106,7 @@ class GsonUtilTest {
     @Test
     void parseObjectFromStorage() {
         System.out.println("【Original】:"+ jsonStr);
-        User user = GsonUtil.parseObjectFromCamel(jsonStr, User.class);
+        User user = GsonUtil.parseObject(jsonStr, User.class);
         System.out.println(user.getUserId()+" "+user.getUserName() + " "+user.getCreateTime().toString());
         System.out.println(GsonUtil.toJSONStringPrettyFormat(user));
         System.out.println(" ");
@@ -111,7 +114,7 @@ class GsonUtilTest {
 
     @Test
     void parseObjectFromSnake() {
-        User user = GsonUtil.parseObjectFromSnake(json, User.class);
+        User user = GsonUtil.parseObjectSnake(json, User.class);
         System.out.println(user.getUserId());
         System.out.println(user.getUserName());
         System.out.println(user.getCreateTime());
@@ -123,7 +126,7 @@ class GsonUtilTest {
         List<String> list = Arrays.asList(json, json1, json2, json3, json4, json5);
         for (String json: list){
             System.out.println("【Original】:"+json);
-            User user = GsonUtil.parseObjectFromSnake(json, User.class);
+            User user = GsonUtil.parseObjectSnake(json, User.class);
             System.out.println(user.getUserId()+" "+user.getUserName() + " "+user.getCreateTime().toString());
             System.out.println(GsonUtil.toJSONStringPrettyFormat(user));
             System.out.println(" ");

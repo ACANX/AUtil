@@ -75,6 +75,15 @@ public class FastJSON2Util {
         return jsonString;
     }
 
+    /**
+     * Java对象序列化为JSON字符串(大对象)
+     *
+     * @param object Java对象
+     * @return 序列化后的JSON字符串
+     */
+    public static String toJSONStringLarge(Object object) {
+        return JSON.toJSONString(object, JSONWriter.Feature.LargeObject);
+    }
 
 
     /**
@@ -89,6 +98,8 @@ public class FastJSON2Util {
     public static <T> T parseObject(String text, Class<T> objectClass) {
         return JSON.parseObject(text, objectClass, JSONReader.Feature.SupportSmartMatch);
     }
+
+
 
 
     /**

@@ -1,6 +1,6 @@
 package com.acanx.util.json;
 
-import com.acanx.util.json.model.SecurityMetaData;
+import com.acanx.meta.model.test.json.model.SecurityMetaData;
 import com.alibaba.fastjson2.JSON;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
