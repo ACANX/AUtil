@@ -9,7 +9,7 @@
 
     <groupId>com.acanx.util</groupId>
     <artifactId>incubator-annotation</artifactId>
-    <version>0.2.0.3-SNAPSHOT</version>
+    <version>0.1.0.0</version>
     <packaging>jar</packaging>
     <name>Incubator-Annotation</name>
     <description>AUtil Incubator Annotation Module</description>
