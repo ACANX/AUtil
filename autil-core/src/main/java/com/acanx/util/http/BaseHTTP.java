@@ -3,6 +3,7 @@ package com.acanx.util.http;
 import com.acanx.annotation.Alpha;
 import com.acanx.constant.HTTPC;
 import com.acanx.constant.MIMEC;
+import com.acanx.util.CollectionUtil;
 import com.acanx.util.URLUtil;
 import com.acanx.util.StringUtil;
 
@@ -73,7 +74,9 @@ public class BaseHTTP {
                 requestBuilder.method(method, HttpRequest.BodyPublishers.noBody());
             }
             // 5. 设置请求头
-            config.getHeaders().forEach(requestBuilder::header);
+            if (null != config.getHeaders() && !config.getHeaders().isEmpty()){
+                config.getHeaders().forEach(requestBuilder::header);
+            }
             // 6. 设置 Cookie
             if (config.getCookies() != null && !config.getCookies().isEmpty()) {
                 String cookies = config.getCookies().entrySet().stream()
