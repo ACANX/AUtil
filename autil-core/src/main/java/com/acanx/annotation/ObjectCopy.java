@@ -33,9 +33,16 @@ public @interface ObjectCopy {
     FieldMapping[] fieldMappings() default {};
 
     @interface FieldMapping {
-        String source();
-
-        String target();
+        /**
+         *  source
+         * @return 源头对象
+         */
+        String s();
+        /**
+         *  target
+         * @return 目标对象
+         */
+        String t();
     }
 
 
