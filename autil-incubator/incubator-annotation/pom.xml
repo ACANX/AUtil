@@ -27,36 +27,36 @@
             <artifactId>javapoet</artifactId>
             <version>1.13.0</version>
         </dependency>
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm</artifactId>
-            <version>9.5</version>
-        </dependency>
-        <dependency>
-            <groupId>org.ow2.asm</groupId>
-            <artifactId>asm-commons</artifactId>
-            <version>9.5</version>
-        </dependency>
-        <dependency>
-            <groupId>com.google.auto.service</groupId>
-            <artifactId>auto-service</artifactId>
-            <version>1.1.1</version>
-            <!-- 编译时使用，无需传递到运行时 -->
-            <scope>provided</scope>
-            <!-- 或 -->
-            <optional>true</optional>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.ow2.asm</groupId>-->
+<!--            <artifactId>asm</artifactId>-->
+<!--            <version>9.5</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>org.ow2.asm</groupId>-->
+<!--            <artifactId>asm-commons</artifactId>-->
+<!--            <version>9.5</version>-->
+<!--        </dependency>-->
+<!--        <dependency>-->
+<!--            <groupId>com.google.auto.service</groupId>-->
+<!--            <artifactId>auto-service</artifactId>-->
+<!--            <version>1.1.1</version>-->
+<!--            &lt;!&ndash; 编译时使用，无需传递到运行时 &ndash;&gt;-->
+<!--            <scope>provided</scope>-->
+<!--            &lt;!&ndash; 或 &ndash;&gt;-->
+<!--            <optional>true</optional>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
             <version>${revision}</version>
         </dependency>
         <!-- 注解处理器支持 -->
-        <dependency>
-            <groupId>org.apache.maven.plugins</groupId>
-            <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.14.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.apache.maven.plugins</groupId>-->
+<!--            <artifactId>maven-compiler-plugin</artifactId>-->
+<!--            <version>3.14.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>

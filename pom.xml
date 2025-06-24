@@ -5,7 +5,7 @@
   <version>${revision}</version>
   <packaging>pom</packaging>
   <name>AUtil</name>
-  <description>AUtil(ACANX-Util) 工具库</description>
+  <description>AUtil(ACANX-Util) POM</description>
   <url>https://github.com:ACANX/AUtil</url>
   <inceptionYear>2019</inceptionYear>
   <scm>
@@ -33,7 +33,7 @@
     </license>
   </licenses>
   <properties>
-    <revision>0.2.0.3</revision>
+    <revision>0.2.0.3-SNAPSHOT</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>11</java.version>

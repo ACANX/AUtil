@@ -14,7 +14,7 @@
     <version>${revision}</version>
     <packaging>pom</packaging>
     <name>AUtil-JSON</name>
-    <description>AUtil-JSON 工具库</description>
+    <description>AUtil-JSON POM</description>
     <url>https://acanx.com</url>
 
 
