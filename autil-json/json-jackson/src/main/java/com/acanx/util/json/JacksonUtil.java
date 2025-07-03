@@ -239,6 +239,7 @@ public class JacksonUtil {
      * @param json        JSON字符串
      * @param objectClass 对象类型
      * @return 集合
+     * @param <T>  类型
      */
     @Alpha
     public static <T> List<T> parseArray(String json, Class<T> objectClass) {

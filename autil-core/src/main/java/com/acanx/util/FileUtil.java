@@ -692,4 +692,40 @@ public class FileUtil {
         }
     }
 
+
+    /**
+     *    清空目录下的文件(不包括目录本省)
+     *
+     * @param dir  目录
+     * @return     删除结果
+     */
+    public static boolean cleanDirectory(File dir) {
+        boolean flag = false;
+        if (!dir.exists()) {
+            return flag;
+        } else if (!dir.isDirectory()) {
+            return flag;
+        } else {
+            String[] tempList = dir.list();
+            File temp = null;
+            for(int i = 0; i < tempList.length; ++i) {
+                String path = dir.getPath();
+                if (path.endsWith(File.separator)) {
+                    temp = new File(path + tempList[i]);
+                } else {
+                    temp = new File(path + File.separator + tempList[i]);
+                }
+                if (temp.isFile()) {
+                    temp.delete();
+                }
+                if (temp.isDirectory()) {
+                    cleanDirectory(temp);
+                    temp.delete();
+                    flag = true;
+                }
+            }
+            return flag;
+        }
+    }
+
 }

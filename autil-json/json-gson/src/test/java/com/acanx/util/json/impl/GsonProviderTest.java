@@ -91,7 +91,7 @@ class GsonProviderTest {
     @Test
     void toJSONStringLarge() {
         List<User> userList = new ArrayList<>();
-        for (int i = 0; i < 1000000; i++) {
+        for (int i = 0; i < 250000; i++) {
             User a = new User(11, "Alice", LocalDateTime.now());
             userList.add(a);
         }

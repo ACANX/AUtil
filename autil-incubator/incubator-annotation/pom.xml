@@ -9,13 +9,14 @@
 
     <groupId>com.acanx.util</groupId>
     <artifactId>incubator-annotation</artifactId>
-    <version>0.1.0.0</version>
+    <version>0.2.0.0-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Incubator-Annotation</name>
     <description>AUtil Incubator Annotation Module</description>
     <url>https://acanx.com</url>
 
     <properties>
+        <java.version>11</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.release>11</maven.compiler.release>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
@@ -85,7 +86,7 @@
                         <path>
                             <groupId>com.acanx.util</groupId>
                             <artifactId>incubator-annotation</artifactId>
-                            <version>${revision}</version>
+                            <version>0.2.0.0-SNAPSHOT</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>

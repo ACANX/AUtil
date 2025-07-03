@@ -3,16 +3,16 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.acanx.util</groupId>
-        <artifactId>autil</artifactId>
+        <artifactId>autil-incubator</artifactId>
         <version>${revision}</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
-    <artifactId>autil-incubator</artifactId>
-    <version>${revision}</version>
-    <packaging>pom</packaging>
-    <name>AUtil-Incubator</name>
-    <description>AUtil Incubator Module</description>
+    <artifactId>incubator-core</artifactId>
+    <version>0.1.0.0</version>
+    <packaging>jar</packaging>
+    <name>Incubator-Core</name>
+    <description>AUtil Incubator Core Module</description>
     <url>https://acanx.com</url>
 
     <properties>
@@ -21,12 +21,13 @@
         <maven.compiler.release>11</maven.compiler.release>
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     </properties>
-    <modules>
-        <module>incubator-core</module>
-<!--        <module>incubator-annotation</module>-->
-    </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>autil-core</artifactId>
+            <version>${revision}</version>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
@@ -34,6 +35,8 @@
             <scope>test</scope>
         </dependency>
     </dependencies>
+
+
 
     <dependencyManagement>
     </dependencyManagement>

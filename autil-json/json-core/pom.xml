@@ -10,7 +10,7 @@
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-core</artifactId>
-    <version>${revision}</version>
+    <version>0.1.0.0</version>
     <packaging>jar</packaging>
     <name>JSON-Core</name>
     <description>Util-JSON 工具库</description>
@@ -24,6 +24,12 @@
 
     <dependencies>
         <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>autil-core</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
             <version>${junit-jupiter.version}</version>
@@ -36,7 +42,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.14.0</version>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
@@ -56,9 +62,9 @@
                         <configuration>
                             <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
                             <!-- <aggregate>true</aggregate>-->
-                            <charset>${project.build.sourceEncoding}</charset> <!-- utf-8读取文件 -->
-                            <encoding>${project.build.sourceEncoding}</encoding> <!-- utf-8进行编码代码 -->
-                            <docencoding>${project.build.sourceEncoding}</docencoding> <!-- utf-8进行编码文档 -->
+                            <charset>${project.build.sourceEncoding}</charset>
+                            <encoding>${project.build.sourceEncoding}</encoding>
+                            <docencoding>${project.build.sourceEncoding}</docencoding>
                         </configuration>
                     </execution>
                 </executions>

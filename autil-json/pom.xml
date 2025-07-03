@@ -6,7 +6,7 @@
         <groupId>com.acanx.util</groupId>
         <artifactId>autil</artifactId>
         <version>${revision}</version>
-        <relativePath>../pom.xml</relativePath> <!-- 指定父POM路径 -->
+        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>com.acanx.util</groupId>
@@ -19,7 +19,7 @@
 
 
     <modules>
-        <!-- <module>json-core</module> -->
+        <module>json-core</module>
         <module>json-fastjson</module>
         <module>json-jackson</module>
         <module>json-gson</module>
