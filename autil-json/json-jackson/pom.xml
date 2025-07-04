@@ -29,9 +29,9 @@
             <version>${revision}</version>
         </dependency>
         <dependency>
-            <groupId>com.acanx</groupId>
-            <artifactId>acanx-utils</artifactId>
-            <version>${acanx-utils.version}</version>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>json-core</artifactId>
+            <version>${revision}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>

@@ -22,7 +22,7 @@
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     </properties>
     <modules>
-        <module>incubator-core</module>
+<!--        <module>incubator-core</module>-->
 <!--        <module>incubator-annotation</module>-->
     </modules>
 

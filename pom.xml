@@ -33,7 +33,7 @@
     </license>
   </licenses>
   <properties>
-    <revision>0.2.0.6</revision>
+    <revision>0.2.1.0</revision>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     <java.version>11</java.version>
@@ -45,7 +45,7 @@
     <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
     <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
-    <acanx-utils.version>0.2.0.6</acanx-utils.version>
+    <acanx-utils.version>0.2.1.0</acanx-utils.version>
     <fastjson2.version>2.0.57</fastjson2.version>
     <jackson.version>2.19.1</jackson.version>
     <gson.version>2.11.0</gson.version>
@@ -55,7 +55,7 @@
   <modules>
     <module>autil-core</module>
     <module>autil-json</module>
-    <module>autil-incubator</module>
+    <!-- <module>autil-incubator</module> -->
   </modules>
   <dependencies>
     <dependency>
