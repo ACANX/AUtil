@@ -5,15 +5,17 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil</artifactId>
-        <version>0.1.0</version>
+        <version>${revision}</version>
+        <relativePath>../pom.xml</relativePath> <!-- 指定父POM路径 -->
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>autil-core</artifactId>
-    <version>0.1.0</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>AUtil-Core</name>
-    <description>AUtil-Core 核心工具库</description>
+    <description>AUtil工具库核心</description>
+    <url>https://acanx.com</url>
 
     <dependencies>
         <dependency>
@@ -30,8 +32,8 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <configuration>
-                    <source>8</source>
-                    <target>8</target>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->

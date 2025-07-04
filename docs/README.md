@@ -12,3 +12,9 @@
 - 2.  https://blog.csdn.net/alinyua/article/details/83687250
 
 - 3. https://www.cnblogs.com/alterhu/p/5790266.html?utm_source=itdadao&utm_medium=referral
+
+
+
+
+
+mvn archetype:generate -DarchetypeGroupId=com.acanx.java.tool  -DarchetypeArtifactId=tool-archetype -DarchetypeVersion=0.2.0 -DgroupId=com.acanx.util -DartifactId=autil- -Dversion=0.1.0

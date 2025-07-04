@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.common.model.PropertyItem;
+import com.acanx.common.model.property.Property;
 import com.acanx.constant.Constant;
 
 import java.io.File;
@@ -105,7 +105,7 @@ public class PropertiesUtil {
      */
     public static void modifyProperties(File file, String key, String value) {
         if (StringUtil.isNotBlank(key) && StringUtil.isNotBlank(value) && null != getPropertiesFileConfigValue(file, key)){
-            Map<String, PropertyItem> configMap = new HashMap<String, PropertyItem>();
+            Map<String, Property> configMap = new HashMap<String, Property>();
             List<String> configList;
             try {
                 configList = FileUtil.readLines(file, Constant.UTF_8);
@@ -113,7 +113,7 @@ public class PropertiesUtil {
                     String line = configList.get(i);
                     String[] keyValue = line.split("=");
                     if (StringUtil.isNotBlank(line) && !line.startsWith("#") && keyValue.length == 2) {
-                        PropertyItem item = new PropertyItem(keyValue[0], keyValue[1], i);
+                        Property item = new Property(keyValue[0], keyValue[1], i);
                         configMap.put(keyValue[0], item);
                     }
                 }
@@ -121,7 +121,7 @@ public class PropertiesUtil {
                 // TODO
                 throw new RuntimeException(e);
             }
-            PropertyItem qItem = configMap.get(key);
+            Property qItem = configMap.get(key);
             if(null != qItem) {
                 // 存在
                 String newValue = qItem.getKey() + "=" + value;
@@ -151,7 +151,7 @@ public class PropertiesUtil {
      */
     public static void modifyProperties(File file, Map<String, String> needModPropMap, boolean allowAddProp) {
         // 构建配置文件数据结构
-        Map<String, PropertyItem> propMap = new HashMap<String, PropertyItem>();
+        Map<String, Property> propMap = new HashMap<String, Property>();
         List<String> propList;
         List<String> montagedPropList = new ArrayList<>();
         try {
@@ -181,7 +181,7 @@ public class PropertiesUtil {
                 String line = montagedPropList.get(i);
                 String[] keyValue = line.split("=");
                 if (StringUtil.isNotBlank(line) && !line.startsWith("#") && keyValue.length == 2) {
-                    PropertyItem item = new PropertyItem(keyValue[0], keyValue[1], i);
+                    Property item = new Property(keyValue[0], keyValue[1], i);
                     propMap.put(keyValue[0], item);
                 }
             }
@@ -194,7 +194,7 @@ public class PropertiesUtil {
         for (String key : needModPropMap.keySet()) {
             String value = needModPropMap.get(key);
             if (StringUtil.isNotBlank(key) && StringUtil.isNotBlank(value)) {
-                PropertyItem pItem = propMap.get(key);
+                Property pItem = propMap.get(key);
                 if (null != pItem) {
                     // 存在 修改
                     String newLine = pItem.getKey() + "=" + value;
@@ -205,7 +205,7 @@ public class PropertiesUtil {
                     // 不存在 追加到文件最后面
                     String newLine = key + "=" + value;
                     montagedPropList.add(newLine);
-                    pItem = new PropertyItem(key, value, montagedPropList.size() - 1);
+                    pItem = new Property(key, value, montagedPropList.size() - 1);
                     propMap.put(key, pItem);
                 }
             }

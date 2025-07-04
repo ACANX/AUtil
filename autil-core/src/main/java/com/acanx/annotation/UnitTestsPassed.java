@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
  *  已通过单元测试的孵化器包下的类或者方法可以使用此注解来标记
  *
  */
+@Deprecated
 @Alpha
 @Target({ElementType.TYPE, ElementType.METHOD})
 @Retention(RetentionPolicy.RUNTIME)
