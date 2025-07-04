@@ -1,4 +1,4 @@
-package com.acanx.util.incubator;
+package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
 

@@ -1,8 +1,8 @@
 package com.acanx.util.json.impl;
 
 import com.acanx.meta.model.test.json.model.User;
-import com.acanx.util.JSONUtil;
 import com.acanx.util.json.GsonUtil;
+import com.acanx.util.json.JSONUtil;
 import com.google.gson.reflect.TypeToken;
 import org.junit.jupiter.api.Test;
 

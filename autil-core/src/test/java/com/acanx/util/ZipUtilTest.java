@@ -1,6 +1,5 @@
-package com.acanx.meta.model;
+package com.acanx.util;
 
-import com.acanx.util.incubator.ZipUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

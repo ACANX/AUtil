@@ -2,21 +2,19 @@ package com.acanx.util.json.impl;
 
 import com.acanx.common.model.property.Entry;
 import com.acanx.meta.model.test.json.model.SecurityMetaData;
-import com.acanx.util.JSONUtil;
 import com.acanx.util.StringUtil;
 import com.acanx.util.json.FastJSON2Util;
+import com.acanx.util.json.JSONUtil;
 import com.alibaba.fastjson2.TypeReference;
 import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.lang.reflect.Type;
 import java.util.Map;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class FastJSONProviderTest {
 

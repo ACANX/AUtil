@@ -1,4 +1,4 @@
-package com.acanx.util.incubator;
+package com.acanx.util;
 
 import java.lang.reflect.Array;
 import java.lang.reflect.GenericArrayType;
