@@ -13,7 +13,7 @@
     <packaging>pom</packaging>
     <name>AUtil-Incubator</name>
     <description>AUtil Incubator Module</description>
-    <url>https://acanx.com</url>
+    <url>https://github.com/ACANX/AUtil</url>
 
     <properties>
         <java.version>11</java.version>
@@ -22,7 +22,7 @@
         <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
     </properties>
     <modules>
-<!--        <module>incubator-core</module>-->
+        <module>incubator-core</module>
 <!--        <module>incubator-annotation</module>-->
     </modules>
 

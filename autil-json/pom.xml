@@ -15,7 +15,7 @@
     <packaging>pom</packaging>
     <name>AUtil-JSON</name>
     <description>AUtil-JSON POM</description>
-    <url>https://acanx.com</url>
+    <url>https://github.com/ACANX/AUtil</url>
 
 
     <modules>
