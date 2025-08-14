@@ -169,6 +169,27 @@ public class StringUtil {
         }
     }
 
+    /**
+     *  字符串相同判断
+     *
+     * @param str1  字符串1
+     * @param str2  字符串2
+     * @return      判断结果
+     * @since 0.0.1.10
+     */
+    @Alpha
+    public static boolean equalsIgnoreCase(String str1, String str2) {
+        if (null == str1) {
+            // 只有两个都为null才判断相等
+            return str2 == null;
+        }
+        if (null == str2) {
+            // 字符串2空，字符串1非空，直接false
+            return false;
+        }
+        return str1.toString().equalsIgnoreCase(str2.toString());
+    }
+
 
     /**
      * Joins the elements of the provided array into a single String

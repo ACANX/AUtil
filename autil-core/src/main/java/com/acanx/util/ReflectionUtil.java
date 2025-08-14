@@ -15,6 +15,7 @@ import java.util.Date;
  *
  * @since 0.0.1.11
  */
+@Alpha
 public class ReflectionUtil {
     /**
      *  构造方法
@@ -76,6 +77,8 @@ public class ReflectionUtil {
         }
         return null;
     }
+
+
 
     /**
      * 直接读取对象的属性值, 忽略 private/protected 修饰符, 也不经过 getter
@@ -243,8 +246,56 @@ public class ReflectionUtil {
 
 
 
+    /**
+     * 获得一个类中所有字段列表，包括其父类中的字段<br>
+     * 如果子类与父类中存在同名字段，则这两个字段同时存在，子类字段在前，父类字段在后。
+     *
+     * @param beanClass 类
+     * @return 字段列表
+     * @throws SecurityException 安全检查异常
+     * @since 0.2.2.0
+     */
+    @Alpha
+    public static Field[] getFields(Class<?> beanClass) throws SecurityException {
+        // Assert.notNull(beanClass);
+        return getFieldsDirectly(beanClass, true);
+    }
 
-
-
+    /**
+     * 获得一个类中所有字段列表，直接反射获取，无缓存<br>
+     * 如果子类与父类中存在同名字段，则这两个字段同时存在，子类字段在前，父类字段在后。
+     *
+     * @param beanClass            类
+     * @param withSuperClassFields 是否包括父类的字段列表
+     * @return 字段列表
+     * @throws SecurityException 安全检查异常
+     * @since 0.2.2.0
+     */
+    @Alpha
+    public static Field[] getFieldsDirectly(Class<?> beanClass, boolean withSuperClassFields) throws SecurityException {
+        // Assert.notNull(beanClass);
+        Field[] allFields = null;
+        Class<?> searchType = beanClass;
+        Field[] declaredFields;
+        while (searchType != null) {
+            declaredFields = searchType.getDeclaredFields();
+            if (null == allFields) {
+                allFields = declaredFields;
+            } else {
+                if (declaredFields != null && declaredFields.length > 0){
+                    if (null == allFields){
+                        allFields = declaredFields;
+                    } else {
+                        Field[] newFields = new Field[allFields.length + declaredFields.length];
+                        System.arraycopy(allFields, 0, newFields, 0, allFields.length);
+                        System.arraycopy(declaredFields, 0, newFields, allFields.length, declaredFields.length);
+                        allFields = newFields;
+                    }
+                }
+            }
+            searchType = withSuperClassFields ? searchType.getSuperclass() : null;
+        }
+        return allFields;
+    }
 
 }
