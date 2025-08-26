@@ -55,7 +55,8 @@
   <modules>
     <module>autil-core</module>
     <module>autil-json</module>
-     <module>autil-incubator</module>
+    <module>autil-incubator</module>
+    <module>autil-test</module>
   </modules>
   <dependencies>
     <dependency>

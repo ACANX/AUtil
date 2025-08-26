@@ -138,4 +138,61 @@ public class ObjectUtil {
 
 
 
+
+
+
+    /**
+     * 比较字段值是否匹配
+     */
+    public static boolean isValueMatch(Object fieldValue, Object targetValue) {
+        if (fieldValue == null) {
+            return targetValue == null;
+        }
+        if (targetValue == null) {
+            return false;
+        }
+        // 类型相同直接比较
+        if (fieldValue.getClass().equals(targetValue.getClass())) {
+            return fieldValue.equals(targetValue);
+        }
+        // 尝试类型转换后比较
+        try {
+            // 处理数字类型转换
+            if (fieldValue instanceof Number && targetValue instanceof Number) {
+                return ((Number) fieldValue).doubleValue() == ((Number) targetValue).doubleValue();
+            }
+            // 处理字符串与其他类型的转换
+            if (fieldValue instanceof String) {
+                return fieldValue.equals(targetValue.toString());
+            }
+            if (targetValue instanceof String) {
+                return convertStringToType((String) targetValue, fieldValue.getClass()).equals(fieldValue);
+            }
+            // 其他类型不匹配
+            return false;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    /**
+     * 将字符串转换为指定类型
+     */
+    private static Object convertStringToType(String value, Class<?> targetType) {
+        if (targetType == Integer.class || targetType == int.class) {
+            return Integer.parseInt(value);
+        } else if (targetType == Long.class || targetType == long.class) {
+            return Long.parseLong(value);
+        } else if (targetType == Double.class || targetType == double.class) {
+            return Double.parseDouble(value);
+        } else if (targetType == Float.class || targetType == float.class) {
+            return Float.parseFloat(value);
+        } else if (targetType == Boolean.class || targetType == boolean.class) {
+            return Boolean.parseBoolean(value);
+        } else if (targetType == String.class) {
+            return value;
+        } else {
+            throw new IllegalArgumentException("不支持的类型转换: " + targetType);
+        }
+    }
 }

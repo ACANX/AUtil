@@ -4,9 +4,11 @@ import com.acanx.annotation.Alpha;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 /**
  * EnumUtil
@@ -16,6 +18,66 @@ import java.util.Map;
  */
 @Alpha
 public class EnumUtil {
+
+    /**
+     * 指定获取对应的枚举项，调用{@link Enum#valueOf(Class, String)}
+     *
+     * @param <E>       枚举类型泛型
+     * @param enumClass 枚举类
+     * @param fieldName 字段名
+     * @param fieldValue     值
+     * @return 枚举值
+     * @since 0.2.2.0
+     */
+    @Alpha
+    public static <E extends Enum<E>> E of(Class<E> enumClass, String fieldName, String fieldValue) {
+        // 参数校验
+        Objects.requireNonNull(enumClass, "枚举类不能为空");
+        Objects.requireNonNull(fieldName, "字段名不能为空");
+        // 获取所有枚举常量
+        E[] enumConstants = enumClass.getEnumConstants();
+        if (enumConstants == null || enumConstants.length == 0) {
+            return null;
+        }
+        // 获取指定字段
+        Field field;
+        try {
+            field = enumClass.getDeclaredField(fieldName);
+        } catch (NoSuchFieldException e) {
+            throw new IllegalArgumentException("枚举类 " + enumClass.getSimpleName() + " 中不存在字段: " + fieldName, e);
+        }
+        // 设置字段可访问
+        field.setAccessible(true);
+        // 遍历枚举项查找匹配的字段值
+        return Arrays.stream(enumConstants)
+                .filter(enumConstant -> {
+                    try {
+                        Object value = field.get(enumConstant);
+                        return ObjectUtil.isValueMatch(value, fieldValue);
+                    } catch (IllegalAccessException e) {
+                        throw new RuntimeException("无法访问字段: " + fieldName, e);
+                    }
+                })
+                .findFirst()
+                .orElse(null);
+    }
+
+
+    /**
+     *  指定获取对应的枚举项，调用{@link Enum#valueOf(Class, String)}
+     *
+     * @param <E>       枚举类型泛型
+     * @param enumClass 枚举类
+     * @param value     值
+     * @param defaultValue 无对应枚举值返回的默认值
+     * @return 枚举值
+     * @since 0.2.2.0
+     */
+    @Alpha
+    public static <E extends Enum<E>> E of(Class<E> enumClass, String fieldName, String value, E defaultValue) {
+        return  ObjectUtil.defaultIfNull(of(enumClass, fieldName, value), defaultValue);
+    }
+
 
     /**
      * 字符串转枚举，调用{@link Enum#valueOf(Class, String)}
