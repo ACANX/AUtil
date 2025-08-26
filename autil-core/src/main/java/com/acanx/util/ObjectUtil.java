@@ -143,6 +143,10 @@ public class ObjectUtil {
 
     /**
      * 比较字段值是否匹配
+     *
+     * @param fieldValue    字段值
+     * @param targetValue   比较的字段值
+     * @return   比较的结果
      */
     public static boolean isValueMatch(Object fieldValue, Object targetValue) {
         if (fieldValue == null) {
@@ -177,6 +181,10 @@ public class ObjectUtil {
 
     /**
      * 将字符串转换为指定类型
+     *
+     * @param value           值
+     * @param targetType      目标类型
+     * @return                指定类型的目标值
      */
     private static Object convertStringToType(String value, Class<?> targetType) {
         if (targetType == Integer.class || targetType == int.class) {
