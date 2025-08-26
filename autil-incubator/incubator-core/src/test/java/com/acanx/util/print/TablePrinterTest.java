@@ -7,7 +7,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class TablePrinterTest {
 
     @Test
-    void main() {
+   public void mainTest() {
 
         // 1. 简单对齐示例
         String[] names = {"张三", "李四", "王小明", "John Smith", "Tom"};
