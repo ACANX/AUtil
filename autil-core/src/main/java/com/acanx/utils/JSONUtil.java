@@ -16,6 +16,7 @@ import java.util.Map;
  * @author ACANX
  * @since 0.0.1
  */
+@Deprecated
 public class JSONUtil {
 
     /**
@@ -24,6 +25,7 @@ public class JSONUtil {
      * @param obj  需要序列化的对象
      * @return    序列化后的JSON字符串
      */
+    @Deprecated
     public static String toJsonString(Object obj) {
         return toJsonString(obj,new HashMap<>());
     }
@@ -35,6 +37,7 @@ public class JSONUtil {
      * @param config 序列化配置
      * @return  对象序列化后的JSON字符串
      */
+    @Deprecated
     public static String toJsonString(Object obj, Map<String, Object> config) {
         return JSONProvider.toJsonString(obj, config);
     }
@@ -52,6 +55,7 @@ public class JSONUtil {
      * @throws InstantiationException InstantiationException
      * @throws IllegalAccessException IllegalAccessException
      */
+    @Deprecated
     public static <T> T parseObject(String json, Class<T> t)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return parseObject(json, t, new HashMap<>());
@@ -70,6 +74,7 @@ public class JSONUtil {
      * @throws InstantiationException InstantiationException
      * @throws IllegalAccessException IllegalAccessException
      */
+    @Deprecated
     public static <T> T parseObject(String json, Class<T> t, Map<String, Object> config)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return JSONProvider.parseObject(json, t, config);

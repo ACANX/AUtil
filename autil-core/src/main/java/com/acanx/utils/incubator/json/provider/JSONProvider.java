@@ -9,6 +9,7 @@ import java.util.Map;
  *
  * @since 0.0.1.10
  */
+@Deprecated
 public class JSONProvider {
 
     /**
@@ -18,6 +19,7 @@ public class JSONProvider {
      * @param config  序列化配置
      * @return        序列化后的JSON字符串
      */
+    @Deprecated
     public static String toJsonString(Object obj, Map<String, Object> config) {
         // TODO
         return null;
@@ -37,6 +39,7 @@ public class JSONProvider {
      * @throws InstantiationException InstantiationException
      * @throws IllegalAccessException IllegalAccessException
      */
+    @Deprecated
     public static <T> T parseObject(String jsonStr, Class<T> t, Map<String, Object> config)
             throws NoSuchMethodException, InvocationTargetException, InstantiationException, IllegalAccessException {
         return t.getDeclaredConstructor().newInstance();
