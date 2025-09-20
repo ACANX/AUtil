@@ -11,7 +11,8 @@ import java.util.Map;
 import java.util.Random;
 
 /**
- * ACANX-Util-parent / com.acanx.utils.image / CAPTCHAUtil.java
+ *   <p>CAPTCHAUtil.java</p>
+ *
  * 文件由 ACANXX 创建于 2020/4/5 - 18:48
  * Description  CAPTCHAUtil:
  * 补充说明：
@@ -23,11 +24,11 @@ import java.util.Random;
  * 由于计算机无法解答CAPTCHA的问题，所以回答出问题的用户就可以被认为是人类。
  * <p>
  * 实现参考：
- * https://www.cnblogs.com/nanyangke-cjz/p/7049281.html
+ * <a href="https://www.cnblogs.com/nanyangke-cjz/p/7049281.html">实现参考</a>
  *        2020/4/5  18:48
  *
  * @author ACANXX
- * @version 0.0.1.0
+ * @version 0.2.0.7
  * @since 0.0.1.8
  */
 public class CaptchaUtil {
@@ -35,34 +36,34 @@ public class CaptchaUtil {
     /**
      * 定义图片的width
      */
-    private static int width = 200;
+    private static final int width = 200;
 
     /**
      * 定义图片的height
      */
-    private static int height = 50;
+    private static final int height = 50;
 
     /**
      * 定义图片上显示验证码的个数
      */
-    private static int codeCount = 6;
+    private static final int codeCount = 6;
 
 
     /**
      * 生成字符水平间距
      */
-    private static int xx = 28;
+    private static final int xx = 28;
 
     /**
      * 生成字符的高度
      */
-    private static int fontHeight = 48;
+    private static final int fontHeight = 48;
 
     /**
      * 生成是字符与顶部的距离
      */
-    private static int codeY = 45;
-    private static char[] codeSequence = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
+    private static final int codeY = 45;
+    private static final char[] codeSequence = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R',
             'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 
     /**
