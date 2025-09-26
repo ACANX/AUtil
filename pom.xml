@@ -43,7 +43,7 @@
     <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
     <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
     <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
+    <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
     <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
     <fastjson2.version>2.0.59</fastjson2.version>
     <jackson.version>2.20.0</jackson.version>
