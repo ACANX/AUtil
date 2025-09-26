@@ -102,7 +102,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <version>1.6.0</version>
+        <version>1.7.3</version>
         <configuration>
           <!--  是否更新pom文件，此处还有更高级的用法-->
           <updatePomFile>true</updatePomFile>
@@ -146,7 +146,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>flatten-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.3</version>
             <configuration>
               <!--  是否更新pom文件，此处还有更高级的用法-->
               <updatePomFile>true</updatePomFile>
@@ -241,7 +241,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>flatten-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <version>1.7.3</version>
             <configuration>
               <!--  是否更新pom文件，此处还有更高级的用法-->
               <updatePomFile>true</updatePomFile>
