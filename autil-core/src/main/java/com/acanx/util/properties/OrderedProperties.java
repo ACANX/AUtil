@@ -20,7 +20,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * OrderedProperties类用于维护属性键值对的插入顺序
+ * 该类继承自Properties类，提供了有序的属性存储和访问功能
+ */
 public class OrderedProperties {
+
 
     private final List<Entry> entries = new ArrayList<>();
     private final Map<String, Entry> propertyMap = new HashMap<>();
@@ -144,18 +149,20 @@ public class OrderedProperties {
 
 
     /**
-     *
-     * @param out   输出流
-     * @throws IOException 异常
+     * 将条目数据存储到指定的输出流中
+     * @param out   输出流，用于写入条目数据
+     * @throws IOException 当IO操作发生错误时抛出异常
      */
     public void store(OutputStream out) throws IOException {
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(out, StandardCharsets.ISO_8859_1));
+        // 遍历所有条目并写入输出流
         for (Entry entry : entries) {
             writer.write(entry.toString());
             writer.newLine();
         }
         writer.flush();
     }
+
 
 
     /**

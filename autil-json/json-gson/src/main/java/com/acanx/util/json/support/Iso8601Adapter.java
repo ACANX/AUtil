@@ -19,7 +19,7 @@ import java.time.temporal.TemporalAccessor;
  * Iso8601Adapter
  *
  */
-public class Iso8601Adapter  implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
+public class Iso8601Adapter implements JsonSerializer<LocalDateTime>, JsonDeserializer<LocalDateTime> {
 
     // 序列化格式：强制固定6位微秒（不足补0）
     private static final DateTimeFormatter SERIALIZER = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
@@ -37,6 +37,9 @@ public class Iso8601Adapter  implements JsonSerializer<LocalDateTime>, JsonDeser
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"), // 无小数秒
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm") // 仅时分
     };
+
+
+
 
     // 序列化：LocalDateTime -> ISO字符串（强制6位小数秒）
     @Alpha

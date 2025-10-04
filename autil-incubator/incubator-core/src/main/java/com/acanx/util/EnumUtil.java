@@ -68,6 +68,7 @@ public class EnumUtil {
      *
      * @param <E>       枚举类型泛型
      * @param enumClass 枚举类
+     * @param fieldName 字段名
      * @param value     值
      * @param defaultValue 无对应枚举值返回的默认值
      * @return 枚举值

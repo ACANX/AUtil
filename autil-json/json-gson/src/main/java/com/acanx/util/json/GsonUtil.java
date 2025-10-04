@@ -13,12 +13,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 /**
- * Json工具类.
+ * GsonUtil
+ * 提供 Gson 相关的工具方法，用于 JSON 的序列化和反序列化操作
  */
 public class GsonUtil {
 
     private static Gson gson = new GsonBuilder().create();
 
+    /**
+     * 构造函数
+     * 初始化 GsonUtil 实例
+     */
+    public GsonUtil() {
+        // 默认构造函数
+    }
 
     /**
      * 缺省的序列化
