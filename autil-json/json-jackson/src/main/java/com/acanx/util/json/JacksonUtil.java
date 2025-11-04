@@ -1,6 +1,7 @@
 package com.acanx.util.json;
 
 import com.acanx.annotation.Alpha;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -106,6 +107,8 @@ public class JacksonUtil {
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     // 空对象不报错
                     .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                    // 通过setSerializationInclusion方法设置全局忽略null值
+                    .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                     // 日期格式（按需设置）
                     .findAndRegisterModules();
             return mapper.writeValueAsString(object);
