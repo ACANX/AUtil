@@ -1,6 +1,6 @@
 package com.acanx.util.properties;
 
-import com.acanx.common.model.property.Entry;
+import com.acanx.util.model.property.Entry;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;

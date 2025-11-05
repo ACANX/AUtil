@@ -1,4 +1,4 @@
-package com.acanx.constant;
+package com.acanx.c;
 
 /**
  *  文件相关常量定义类
@@ -6,8 +6,7 @@ package com.acanx.constant;
  *   @since 0.0.1.10
  *
  */
-@Deprecated
-public class FileConstant {
+public class FileConst {
 
 
     /**
@@ -155,7 +154,7 @@ public class FileConstant {
      *
      * @hidden
      */
-    private FileConstant() {
+    private FileConst() {
     }
 
 }

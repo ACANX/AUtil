@@ -1,15 +1,16 @@
-package com.acanx.constant;
+package com.acanx.c;
 
 import java.time.format.DateTimeFormatter;
 
 /**
- *  格式化输出模式定义
+ * PatternConst
  *
- *   @since 0.0.1.10
- *
+ * @author ACANX
+ * @since 20251105
  */
-@Deprecated
-public class PatternConstant {
+public class PatternConst {
+
+
     /**
      *  日期时间 格式化
      */
@@ -73,11 +74,6 @@ public class PatternConstant {
     /**  FORMATTER_TIME3   */
     public static final DateTimeFormatter FORMATTER_TIME3 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_TIME3);
 
-    /**
-     * 构造函数
-     * @hidden
-     */
-    private PatternConstant() {
-    }
+
 
 }

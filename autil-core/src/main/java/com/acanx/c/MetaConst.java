@@ -1,4 +1,4 @@
-package com.acanx.constant;
+package com.acanx.c;
 
 /**
  *  Meta项目常量定义
@@ -7,14 +7,13 @@ package com.acanx.constant;
  * @since 0.0.1.10
  *
  */
-@Deprecated
-public class MetaConstant {
+public class MetaConst {
 
     /**
      * 构造函数
      * @hidden
      */
-    private MetaConstant() {
+    private MetaConst() {
     }
 
 
