@@ -1,15 +1,11 @@
-package com.acanx.constant;
-
-import com.acanx.annotation.Alpha;
+package com.acanx.c;
 
 /**
  *  常量定义类
  *
- *   @since 0.0.1.10
+ *   @since 0.4.3
  */
-@Alpha
-@Deprecated
-public class Constant {
+public class Const {
 
     /*************** 整型常量 *************************/
     /**  INT_0  */
@@ -482,6 +478,6 @@ public class Constant {
      *  构造方法
      * @hidden
      */
-    private Constant() {
+    private Const() {
     }
 }
