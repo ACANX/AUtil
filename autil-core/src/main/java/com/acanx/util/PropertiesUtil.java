@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.common.model.property.Property;
+import com.acanx.util.model.property.Property;
 import com.acanx.constant.Constant;
 
 import java.io.File;

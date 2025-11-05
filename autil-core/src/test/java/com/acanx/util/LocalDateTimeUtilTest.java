@@ -1,6 +1,5 @@
-package com.acanx.utils;
+package com.acanx.util;
 
-import com.acanx.util.LocalDateTimeUtil;
 import org.junit.jupiter.api.Test;
 
 import java.time.format.DateTimeFormatter;

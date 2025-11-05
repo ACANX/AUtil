@@ -1,4 +1,4 @@
-package com.acanx.common.model.property;
+package com.acanx.util.model.property;
 
 public class Entry {
 
