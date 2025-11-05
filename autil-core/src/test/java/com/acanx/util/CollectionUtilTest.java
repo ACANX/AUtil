@@ -1,4 +1,4 @@
-package com.acanx.utils.incubator;
+package com.acanx.util;
 
 import org.junit.jupiter.api.Test;
 

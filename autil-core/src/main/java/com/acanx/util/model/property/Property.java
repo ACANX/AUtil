@@ -1,8 +1,6 @@
-package com.acanx.common.model.property;
+package com.acanx.util.model.property;
 
-
-@Deprecated
-public class PropertyItem {
+public class Property {
 
     private String key;
 
@@ -10,7 +8,7 @@ public class PropertyItem {
 
     private Integer line;
 
-    public PropertyItem(String key, String value, Integer line) {
+    public Property(String key, String value, Integer line) {
         this.key = key;
         this.value = value;
         this.line = line;
@@ -42,7 +40,7 @@ public class PropertyItem {
 
     @Override
     public String toString() {
-        return "PropertyItem{" +
+        return "Property{" +
                 "key='" + key + '\'' +
                 ", value='" + value + '\'' +
                 ", line=" + line +

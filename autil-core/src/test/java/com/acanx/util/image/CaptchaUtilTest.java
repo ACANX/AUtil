@@ -1,4 +1,4 @@
-package com.acanx.utils.image;
+package com.acanx.util.image;
 
 import com.acanx.util.image.CaptchaUtil;
 import com.acanx.util.FileUtil;

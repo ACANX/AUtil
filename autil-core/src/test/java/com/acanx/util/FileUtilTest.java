@@ -1,7 +1,6 @@
-package com.acanx.utils;
+package com.acanx.util;
 
 import com.acanx.constant.Constant;
-import com.acanx.util.FileUtil;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;

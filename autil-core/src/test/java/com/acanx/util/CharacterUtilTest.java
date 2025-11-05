@@ -1,6 +1,5 @@
-package com.acanx.utils.incubator;
+package com.acanx.util;
 
-import com.acanx.util.CharacterUtil;
 import org.junit.jupiter.api.Test;
 
 class CharacterUtilTest {
