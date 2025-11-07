@@ -1,6 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.c.PatternConst;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -11,15 +12,7 @@ import java.time.format.DateTimeFormatter;
 @Alpha
 public class DateTimeUtil {
 
-    public static final DateTimeFormatter DATE_TIME_FMT_YYYYMM = DateTimeFormatter.ofPattern("yyyyMM");
-    public static final DateTimeFormatter DATE_TIME_FMT_YYYYWW = DateTimeFormatter.ofPattern("yyyyMM");
 
-    public static final DateTimeFormatter DATE_TIME_FMT_HMS = DateTimeFormatter.ofPattern("HHmmss");
-    public static final DateTimeFormatter DATE_TIME_FMT_YMD_HMS = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss");
-
-    public static final DateTimeFormatter YMD_HMS_S3 = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSS");
-    public static final DateTimeFormatter YMD_HMS_S6 = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSSSSS");
-    public static final DateTimeFormatter YMD_HMS_S9 = DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss_SSSSSSSSS");
 
 
     /**
@@ -89,36 +82,7 @@ public class DateTimeUtil {
 
 
 
-    /**
-     *   获取当前的 日期 时间    yyyyMM
-     *
-     * @return  当前的整形年月
-     */
-    @Alpha
-    public static Integer getCurrYearMonth() {
-        return getYearMonthInt(LocalDateTime.now());
-    }
 
-    /**
-     *   日期时间  yyyyMM
-     *
-     * @param ldt  时间
-     * @return   整形年月
-     */
-    @Alpha
-    public static Integer getYearMonthInt(LocalDateTime ldt) {
-        return Integer.parseInt(ldt.format(DATE_TIME_FMT_YYYYMM));
-    }
-
-    /**
-     *   日期时间
-     *
-     * @return   整形年周
-     */
-    @Alpha
-    public static Integer getCurrentYearWeekInt() {
-        return Integer.parseInt(LocalDateTime.now().format(DATE_TIME_FMT_YYYYWW));
-    }
 
     /**
      *   yyyyMMdd_HHmmss  秒
@@ -126,7 +90,7 @@ public class DateTimeUtil {
      */
     @Alpha
     public static String getCurrentTime() {
-        return LocalDateTime.now().format(DATE_TIME_FMT_HMS); //
+        return LocalDateTime.now().format(PatternConst.FORMATTER_TIME2); //
     }
 
     /**
@@ -135,7 +99,7 @@ public class DateTimeUtil {
      */
     @Alpha
     public static String getCurrentDateTime() {
-        return LocalDateTime.now().format(DATE_TIME_FMT_YMD_HMS); //
+        return LocalDateTime.now().format(PatternConst.DATE_TIME_FMT_YMD_HMS); //
     }
 
     /**
@@ -144,7 +108,7 @@ public class DateTimeUtil {
      */
     @Alpha
     public static String getCurrentDateTimeMs() {
-        return LocalDateTime.now().format(YMD_HMS_S3); //
+        return LocalDateTime.now().format(PatternConst.FMT_YMD_HMS_S3); //
     }
 
     /**
@@ -153,7 +117,7 @@ public class DateTimeUtil {
      */
     @Alpha
     public static String getCurrentDateTimeUs() {
-        return LocalDateTime.now().format(YMD_HMS_S6); //
+        return LocalDateTime.now().format(PatternConst.FMT_YMD_HMS_S6); //
     }
 
     /**
@@ -162,7 +126,7 @@ public class DateTimeUtil {
      */
     @Alpha
     public static String getCurrentDateTimeNs() {
-        return LocalDateTime.now().format(YMD_HMS_S9); //
+        return LocalDateTime.now().format(PatternConst.FMT_YMD_HMS_S9); //
     }
 
 
