@@ -201,14 +201,16 @@ public class FileUtil {
     @Alpha
     public static List<URI> getFileList(URI dirUri) {
         List<URI> list = new ArrayList<URI>();
-        File dir = new File(dirUri);
-        if (dir.isDirectory() && null != dir.listFiles() && dir.listFiles().length > 0) {
-            for (File file : dir.listFiles()) {
-                if (file.isDirectory()){
-                    List<URI> fileList = getFileList(file.toPath().toUri());
-                    list.addAll(fileList);
-                } else {
-                    list.add(file.toPath().toUri());
+        File dir = new File(dirUri.getPath());
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (null != files) {
+                for(File file : files){
+                    if (file.isFile()){
+                        list.add(file.toURI());
+                    } else {
+                        list.addAll(getFileList(file.toURI()));
+                    }
                 }
             }
         }
@@ -226,13 +228,47 @@ public class FileUtil {
     @Alpha
     public static List<File> getFilteredFileList(File dir, FileFilter fileFilter){
         List<File> fileList = new ArrayList<File>();
-        for(File file : dir.listFiles()){
-            if (file.isFile()){
-                if(fileFilter.accept(file)){
-                    fileList.add(file);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles(fileFilter);
+            if (null != files) {
+                for(File file : files){
+                    if (file.isFile()){
+                        if(fileFilter.accept(file)){
+                            fileList.add(file);
+                        }
+                    } else {
+                        fileList.addAll(getFilteredFileList(file, fileFilter));
+                    }
                 }
-            } else {
-                fileList.addAll(getFilteredFileList(file, fileFilter));
+            }
+        }
+        return fileList;
+    }
+
+
+    /**
+     *   获取过滤后的文件列表
+     *
+     * @param dirPath          入口文件
+     * @param fileFilter   过滤器实现类
+     * @return             过滤后的文件集合
+     */
+    @Alpha
+    public static List<String> getFilteredFileList(String dirPath, FileFilter fileFilter){
+        List<String> fileList = new ArrayList<String>();
+        File dir = new File(dirPath);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles(fileFilter);
+            if (null != files) {
+                for(File file : files){
+                    if (file.isFile()){
+                        if(fileFilter.accept(file)){
+                            fileList.add(file.getAbsolutePath());
+                        }
+                    } else {
+                        fileList.addAll(getFilteredFileList(file.getAbsolutePath(), fileFilter));
+                    }
+                }
             }
         }
         return fileList;
