@@ -53,7 +53,6 @@ jobs:
 #        shell: bash
 
       - name: PublishToMavenCentral
-        working-directory: os-dependencies # 设置工作目录为 os-dependencies
         run: mvn clean install -U
 #        env:
 #          # 假设你的 Maven GPG 插件配置或 settings.xml 使用这些变量
