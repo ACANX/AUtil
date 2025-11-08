@@ -204,7 +204,7 @@ public class FileUtil {
         File dir = new File(dirUri.getPath());
         if (dir.exists() && dir.isDirectory()) {
             File[] files = dir.listFiles();
-            if (null != files) {
+            if (null != files && files.length > 0) {
                 for(File file : files){
                     if (file.isFile()){
                         list.add(file.toURI());
@@ -230,7 +230,7 @@ public class FileUtil {
         List<File> fileList = new ArrayList<File>();
         if (dir.exists() && dir.isDirectory()) {
             File[] files = dir.listFiles(fileFilter);
-            if (null != files) {
+            if (null != files && files.length > 0) {
                 for(File file : files){
                     if (file.isFile()){
                         if(fileFilter.accept(file)){
@@ -259,7 +259,7 @@ public class FileUtil {
         File dir = new File(dirPath);
         if (dir.exists() && dir.isDirectory()) {
             File[] files = dir.listFiles(fileFilter);
-            if (null != files) {
+            if (null != files && files.length > 0) {
                 for(File file : files){
                     if (file.isFile()){
                         if(fileFilter.accept(file)){

@@ -48,7 +48,7 @@ public class PatternConst {
     public static final String PATTERN_FORMAT_TIME3 = "HHmmssSSS";
 
     public static final String PATTERN_FORMAT_YYYY_MM = "yyyyMM";
-    public static final String PATTERN_FORMAT_YYYY_WW = "yyyyWW";
+    public static final String PATTERN_FORMAT_YYYY_WW = "yyyyww";
 
     /**  PATTERN_FORMAT_RFC822   */
     public static final String PATTERN_FORMAT_DATETIME_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
