@@ -56,20 +56,37 @@
       <junit-jupiter.version>6.0.1</junit-jupiter.version>
   </properties>
 
-  <modules>
-    <module>autil-core</module>
-    <module>autil-json</module>
-    <module>autil-incubator</module>
-    <module>autil-test</module>
-  </modules>
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit-jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <modules>
+        <module>autil-core</module>
+        <module>autil-json</module>
+        <module>autil-incubator</module>
+        <module>autil-test</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+    <repositories>
+        <repository>
+            <id>sonatype-snapshots</id>
+            <name>Sonatype Snapshot Repository</name>
+            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+            <releases>
+                <enabled>false</enabled> <!-- 如果不需RELEASE版本，可禁用 -->
+            </releases>
+            <snapshots>
+                <enabled>true</enabled> <!-- 启用SNAPSHOT版本下载 -->
+                <updatePolicy>always</updatePolicy> <!-- 可选：每次构建都检查更新 -->
+            </snapshots>
+        </repository>
+    </repositories>
+
   <build>
     <plugins>
       <plugin>
