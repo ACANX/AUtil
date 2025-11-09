@@ -1,15 +1,16 @@
-package com.acanx.constant;
+package com.acanx.c;
 
 import java.time.format.DateTimeFormatter;
 
 /**
- *  格式化输出模式定义
+ * PatternConst
  *
- *   @since 0.0.1.10
- *
+ * @author ACANX
+ * @since 20251105
  */
-@Deprecated
-public class PatternConstant {
+public class PatternConst {
+
+
     /**
      *  日期时间 格式化
      */
@@ -25,8 +26,11 @@ public class PatternConstant {
     public static final String PATTERN_FORMAT_DATETIME4 = "yyyyMMddHHmmssSSSSSS";
     /**  PATTERN_FORMAT_DATETIME5   */
     public static final String PATTERN_FORMAT_DATETIME5 = "yyyyMMddHHmmssSSSSSSSSS";
-    /**  PATTERN_FORMAT_RFC822   */
-    public static final String PATTERN_FORMAT_DATETIME_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
+
+    public static final String UL_YMD_HMS = "yyyyMMdd_HHmmss";
+    public static final String UL_YMD_HMS_S3 = "yyyyMMdd_HHmmss_SSS";
+    public static final String UL_YMD_HMS_S6 = "yyyyMMdd_HHmmss_SSSSSS";
+    public static final String UL_YMD_HMS_S9 = "yyyyMMdd_HHmmss_SSSSSSSSS";
 
     /**  PATTERN_FORMAT_DATE   */
     public static final String PATTERN_FORMAT_DATE = "yyyy-MM-dd";
@@ -42,6 +46,12 @@ public class PatternConstant {
     public static final String PATTERN_FORMAT_TIME2 = "HHmmss";
     /**  PATTERN_FORMAT_TIME3   */
     public static final String PATTERN_FORMAT_TIME3 = "HHmmssSSS";
+
+    public static final String PATTERN_FORMAT_YYYY_MM = "yyyyMM";
+    public static final String PATTERN_FORMAT_YYYY_WW = "yyyyww";
+
+    /**  PATTERN_FORMAT_RFC822   */
+    public static final String PATTERN_FORMAT_DATETIME_RFC822 = "EEE, dd MMM yyyy HH:mm:ss 'GMT'";
 
     /**  FORMATTER_DATETIME   */
     public static final DateTimeFormatter FORMATTER_DATETIME = DateTimeFormatter.ofPattern(PATTERN_FORMAT_DATETIME);
@@ -73,11 +83,16 @@ public class PatternConstant {
     /**  FORMATTER_TIME3   */
     public static final DateTimeFormatter FORMATTER_TIME3 = DateTimeFormatter.ofPattern(PATTERN_FORMAT_TIME3);
 
-    /**
-     * 构造函数
-     * @hidden
-     */
-    private PatternConstant() {
-    }
+    public static final DateTimeFormatter DATE_TIME_FMT_YMD_HMS = DateTimeFormatter.ofPattern(UL_YMD_HMS);
+
+    public static final DateTimeFormatter FMT_DATETIME_YYYYMM = DateTimeFormatter.ofPattern(PATTERN_FORMAT_YYYY_MM);
+
+    public static final DateTimeFormatter FMT_DATETIME_YYYYWW = DateTimeFormatter.ofPattern(PATTERN_FORMAT_YYYY_WW);
+
+    public static final DateTimeFormatter FMT_YMD_HMS_S3 = DateTimeFormatter.ofPattern(UL_YMD_HMS_S3);
+    public static final DateTimeFormatter FMT_YMD_HMS_S6 = DateTimeFormatter.ofPattern(UL_YMD_HMS_S6);
+    public static final DateTimeFormatter FMT_YMD_HMS_S9 = DateTimeFormatter.ofPattern(UL_YMD_HMS_S9);
+
+
 
 }

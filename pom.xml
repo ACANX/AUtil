@@ -33,24 +33,28 @@
     </license>
   </licenses>
   <properties>
-    <revision>0.4.2</revision>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>21</java.version>
-    <maven.compiler.source>21</maven.compiler.source>
-    <maven.compiler.target>21</maven.compiler.target>
-    <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-    <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
-    <maven-surefire-plugin.version>3.5.4</maven-surefire-plugin.version>
-    <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
-    <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
-    <fastjson2.version>2.0.60</fastjson2.version>
-    <jackson.version>2.20.1</jackson.version>
-    <gson.version>2.13.2</gson.version>
-    <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
-    <junit-jupiter.version>6.0.1</junit-jupiter.version>
+      <revision>0.4.3-SNAPSHOT</revision>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+      <java.version>21</java.version>
+      <maven.compiler.source>21</maven.compiler.source>
+      <maven.compiler.target>21</maven.compiler.target>
+      <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
+      <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
+      <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
+      <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
+      <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
+      <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
+      <central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
+
+      <meta-open.version>0.5.5</meta-open.version>
+
+      <fastjson2.version>2.0.60</fastjson2.version>
+      <jackson.version>2.20.1</jackson.version>
+      <gson.version>2.13.2</gson.version>
+      <junit-jupiter.version>6.0.1</junit-jupiter.version>
   </properties>
+
   <modules>
     <module>autil-core</module>
     <module>autil-json</module>
@@ -318,7 +322,7 @@
             </executions>
             <configuration>
               <!-- 改成你自己的路径 -->
-              <executable>D:\ProgramExt\GnuPG\bin\gpg.exe</executable>
+                <executable>gpg</executable>
             </configuration>
           </plugin>
           <plugin>

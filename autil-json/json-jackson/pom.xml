@@ -46,7 +46,7 @@
         <dependency>
             <groupId>com.acanx.meta.model</groupId>
             <artifactId>model-test</artifactId>
-            <version>0.5.6</version>
+            <version>${meta-open.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

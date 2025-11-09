@@ -1,17 +1,17 @@
-package com.acanx.constant;
+package com.acanx.c;
 
 /**
+ * MimeConst
  *
- *  MIME常量
- *
+ * @author ACANX
+ * @since 20251105
  */
-@Deprecated
-public class MIMEC {
-
+public class MimeConst {
 
     /**  JSON  */
     public static final String JSON = "application/json";
     /**  X_WWW_FORM_URLENCODED  */
     public static final String X_WWW_FORM_URLENCODED = "application/x-www-form-urlencoded";
+
 
 }
