@@ -81,7 +81,7 @@
                         <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
                     </compilerArgs>
                     <annotationProcessors>
-                        <annotationProcessor>com.acanx.util.incubator.annotation.ann.ObjectCopierProcessor</annotationProcessor>
+                        <annotationProcessor>com.acanx.util.incubator.annotation.CopierProcessor</annotationProcessor>
                     </annotationProcessors>
                     <generatedSourcesDirectory>${project.build.directory}/generated-sources/annotations</generatedSourcesDirectory>
                     <annotationProcessorPaths>

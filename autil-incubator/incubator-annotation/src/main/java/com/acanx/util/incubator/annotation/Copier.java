@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface ObjectCopier {
+public @interface Copier {
 
     /**
      * 拷贝策略，默认为浅拷贝

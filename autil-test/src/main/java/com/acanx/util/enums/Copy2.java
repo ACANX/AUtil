@@ -3,7 +3,7 @@ package com.acanx.util.enums;
 
 import com.acanx.meta.model.test.annotation.model.MessageFlex;
 import com.acanx.meta.model.test.annotation.model.MessageStable;
-import com.acanx.util.incubator.annotation.ObjectCopier;
+import com.acanx.util.incubator.annotation.Copier;
 
 /**
  * CopyTest
@@ -15,11 +15,11 @@ public class Copy2 {
 
 
 
-    @ObjectCopier
+    @Copier
     private void flexToStable(MessageFlex flex, MessageStable stable) {};
 
 
-    @ObjectCopier
+    @Copier
     private void flex2ToStable(MessageFlex flex, MessageStable stable) {};
 
 

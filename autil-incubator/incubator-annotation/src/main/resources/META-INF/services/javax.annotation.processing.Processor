@@ -1,2 +1,1 @@
-#com.acanx.util.incubator.annotation.ObjectCopyProcessor
-com.acanx.util.incubator.annotation.ann.ObjectCopierProcessor
+com.acanx.util.incubator.annotation.CopierProcessor

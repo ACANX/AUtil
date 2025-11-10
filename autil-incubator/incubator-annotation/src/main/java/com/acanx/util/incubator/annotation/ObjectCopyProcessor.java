@@ -44,7 +44,7 @@
 // * @since 202506
 // */
 //@SupportedAnnotationTypes("com.acanx.annotation.ObjectCopy")
-//@SupportedSourceVersion(SourceVersion.RELEASE_25)
+//@SupportedSourceVersion(SourceVersion.RELEASE_17)
 //@SupportedOptions({"incremental"}) // 支持增量编译
 //public class ObjectCopyProcessor extends AbstractProcessor {
 //

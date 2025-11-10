@@ -1,6 +1,5 @@
-package com.acanx.util.incubator.annotation.ann;
+package com.acanx.util.incubator.annotation;
 
-import com.acanx.util.incubator.annotation.ObjectCopier;
 import javax.annotation.processing.AbstractProcessor;
 import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
@@ -29,9 +28,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-@SupportedAnnotationTypes("com.acanx.util.incubator.annotation.ObjectCopier")
+@SupportedAnnotationTypes("com.acanx.util.incubator.annotation.Copier")
 @SupportedSourceVersion(SourceVersion.RELEASE_17)
-public class ObjectCopierProcessor extends AbstractProcessor {
+public class CopierProcessor extends AbstractProcessor {
 
     private Types typeUtils;
     private Elements elementUtils;
@@ -53,8 +52,9 @@ public class ObjectCopierProcessor extends AbstractProcessor {
 
         note("开始处理 @ObjectCopier 注解", null);
 
+        // 按被注解方法所在的类进行分组
         Map<TypeElement, List<ExecutableElement>> classMethodsMap = new HashMap<>();
-        for (Element element : roundEnv.getElementsAnnotatedWith(ObjectCopier.class)) {
+        for (Element element : roundEnv.getElementsAnnotatedWith(Copier.class)) {
             if (element.getKind() != ElementKind.METHOD) {
                 error("注解@ObjectCopier只能应用于方法", element, getAnnotationMirror(element));
                 continue;
@@ -66,15 +66,14 @@ public class ObjectCopierProcessor extends AbstractProcessor {
             note("找到被注解的方法: " + enclosingClass.getSimpleName() + "." + method.getSimpleName(), method);
         }
 
+        // 为每个包含被注解方法的类生成一个拷贝类
         for (Map.Entry<TypeElement, List<ExecutableElement>> entry : classMethodsMap.entrySet()) {
             TypeElement enclosingClass = entry.getKey();
             List<ExecutableElement> methods = entry.getValue();
-            for (ExecutableElement method : methods) {
-                try {
-                    generateCopierClass(method);
-                } catch (Exception e) {
-                    error("生成拷贝类时出错: " + e.getMessage(), method, getAnnotationMirror(method));
-                }
+            try {
+                generateCopierClass(enclosingClass, methods);
+            } catch (Exception e) {
+                error("生成拷贝类时出错: " + e.getMessage(), enclosingClass, null);
             }
         }
 
@@ -82,24 +81,18 @@ public class ObjectCopierProcessor extends AbstractProcessor {
         return true;
     }
 
-    private void generateCopierClass(ExecutableElement methodElement) throws IOException {
-        if (!validateMethod(methodElement)) {
-            return;
+    private void generateCopierClass(TypeElement enclosingClass, List<ExecutableElement> methods) throws IOException {
+        // 验证所有方法
+        List<ExecutableElement> validMethods = new ArrayList<>();
+        for (ExecutableElement method : methods) {
+            if (validateMethod(method)) {
+                validMethods.add(method);
+            }
         }
 
-        VariableElement sourceParam = methodElement.getParameters().get(0);
-        VariableElement targetParam = methodElement.getParameters().get(1);
-        TypeMirror sourceType = sourceParam.asType();
-        TypeMirror targetType = targetParam.asType();
-
-        if (!(sourceType instanceof DeclaredType) || !(targetType instanceof DeclaredType)) {
-            error("源类型和目标类型必须是类类型", methodElement, getAnnotationMirror(methodElement));
+        if (validMethods.isEmpty()) {
             return;
         }
-
-        TypeElement sourceElement = (TypeElement) ((DeclaredType) sourceType).asElement();
-        TypeElement targetElement = (TypeElement) ((DeclaredType) targetType).asElement();
-        TypeElement enclosingClass = (TypeElement) methodElement.getEnclosingElement();
 
         // 生成类名：使用被注解方法所在类的类名 + "Copier"
         String enclosingClassName = enclosingClass.getSimpleName().toString();
@@ -111,59 +104,108 @@ public class ObjectCopierProcessor extends AbstractProcessor {
         // 创建源文件
         JavaFileObject builderFile = filer.createSourceFile(
                 packageName + "." + copierClassName,
-                methodElement
+                enclosingClass
         );
 
-        note("生成拷贝类: " + packageName + "." + copierClassName, methodElement);
+        note("生成拷贝类: " + packageName + "." + copierClassName + "，包含 " + validMethods.size() + " 个方法", enclosingClass);
 
         try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
-            writeCopierClass(out, packageName, copierClassName, sourceElement, targetElement, methodElement, enclosingClass);
+            writeCopierClass(out, packageName, copierClassName, validMethods, enclosingClass);
         }
     }
 
     private void writeCopierClass(PrintWriter out, String packageName, String className,
-                                  TypeElement sourceElement, TypeElement targetElement,
-                                  ExecutableElement methodElement, TypeElement enclosingClass) {
+                                  List<ExecutableElement> methods, TypeElement enclosingClass) {
 
-        String sourceTypeName = sourceElement.getSimpleName().toString();
-        String targetTypeName = targetElement.getSimpleName().toString();
-        String sourceQualifiedName = sourceElement.getQualifiedName().toString();
-        String targetQualifiedName = targetElement.getQualifiedName().toString();
         String enclosingClassQualifiedName = enclosingClass.getQualifiedName().toString();
-        String methodName = methodElement.getSimpleName().toString();
 
         // 包声明
         out.println("package " + packageName + ";");
         out.println();
 
-        // 导入语句
-        out.println("import " + sourceQualifiedName + ";");
-        out.println("import " + targetQualifiedName + ";");
+        // 收集所有需要导入的类型
+        Set<String> imports = collectImports(methods);
+        for (String importLine : imports) {
+            out.println("import " + importLine + ";");
+        }
         out.println();
 
         // 类注释
         out.println("/**");
         out.println(" * 自动生成的拷贝类");
-        out.println(" * 将 " + sourceTypeName + " 对象的属性拷贝到 " + targetTypeName + " 对象");
-        out.println(" * 由 {@link " + enclosingClassQualifiedName + "#" + methodName + "(" + sourceTypeName + ", " + targetTypeName + ")} 方法生成");
+        out.println(" * 包含 " + methods.size() + " 个拷贝方法");
+        out.println(" * 由 {@link " + enclosingClassQualifiedName + "} 中的方法生成");
         out.println(" */");
 
         // 类声明
         out.println("public class " + className + " {");
         out.println();
 
-        // 拷贝方法
+        // 为每个方法生成拷贝方法
+        for (ExecutableElement method : methods) {
+            writeCopierMethod(out, method, enclosingClass);
+            out.println();
+        }
+
+        out.println("}");
+    }
+
+    private Set<String> collectImports(List<ExecutableElement> methods) {
+        Set<String> imports = new java.util.HashSet<>();
+        for (ExecutableElement method : methods) {
+            List<? extends VariableElement> parameters = method.getParameters();
+            if (parameters.size() >= 2) {
+                TypeMirror sourceType = parameters.get(0).asType();
+                TypeMirror targetType = parameters.get(1).asType();
+
+                if (sourceType instanceof DeclaredType) {
+                    TypeElement sourceElement = (TypeElement) ((DeclaredType) sourceType).asElement();
+                    imports.add(sourceElement.getQualifiedName().toString());
+                }
+
+                if (targetType instanceof DeclaredType) {
+                    TypeElement targetElement = (TypeElement) ((DeclaredType) targetType).asElement();
+                    imports.add(targetElement.getQualifiedName().toString());
+                }
+            }
+        }
+        return imports;
+    }
+
+    private void writeCopierMethod(PrintWriter out, ExecutableElement methodElement, TypeElement enclosingClass) {
+        VariableElement sourceParam = methodElement.getParameters().get(0);
+        VariableElement targetParam = methodElement.getParameters().get(1);
+        TypeMirror sourceType = sourceParam.asType();
+        TypeMirror targetType = targetParam.asType();
+
+        if (!(sourceType instanceof DeclaredType) || !(targetType instanceof DeclaredType)) {
+            return;
+        }
+
+        TypeElement sourceElement = (TypeElement) ((DeclaredType) sourceType).asElement();
+        TypeElement targetElement = (TypeElement) ((DeclaredType) targetType).asElement();
+
+        String sourceTypeName = sourceElement.getSimpleName().toString();
+        String targetTypeName = targetElement.getSimpleName().toString();
+        String enclosingClassQualifiedName = enclosingClass.getQualifiedName().toString();
+        String methodName = methodElement.getSimpleName().toString();
+
+        // 方法注释
         out.println("    /**");
         out.println("     * 执行属性拷贝");
+        out.println("     * 将 " + sourceTypeName + " 对象的属性拷贝到 " + targetTypeName + " 对象");
         out.println("     * 由 {@link " + enclosingClassQualifiedName + "#" + methodName + "(" + sourceTypeName + ", " + targetTypeName + ")} 方法生成");
         out.println("     * @param source 源对象");
         out.println("     * @param target 目标对象");
         out.println("     */");
+
+        // 方法声明
         out.println("    public static void " + methodName + "(" + sourceTypeName + " source, " + targetTypeName + " target) {");
         out.println("        if (source == null || target == null) {");
         out.println("            return;");
         out.println("        }");
         out.println();
+
         // 生成属性拷贝代码
         List<PropertyMapping> mappings = findPropertyMappings(sourceElement, targetElement);
         if (mappings.isEmpty()) {
@@ -175,7 +217,6 @@ public class ObjectCopierProcessor extends AbstractProcessor {
             }
         }
         out.println("    }");
-        out.println("}");
     }
 
     private List<PropertyMapping> findPropertyMappings(TypeElement sourceElement, TypeElement targetElement) {
@@ -183,18 +224,13 @@ public class ObjectCopierProcessor extends AbstractProcessor {
         List<GetterMethod> sourceGetters = findGetterMethods(sourceElement);
         List<SetterMethod> targetSetters = findSetterMethods(targetElement);
 
-        note("在 " + sourceElement.getSimpleName() + " 中找到 " + sourceGetters.size() + " 个getter方法", sourceElement);
-        note("在 " + targetElement.getSimpleName() + " 中找到 " + targetSetters.size() + " 个setter方法", targetElement);
-
         for (GetterMethod getter : sourceGetters) {
             SetterMethod setter = findMatchingSetter(targetSetters, getter.propertyName, getter.returnType);
             if (setter != null) {
                 mappings.add(new PropertyMapping(getter.propertyName, getter.methodCall, setter.methodCall));
-                note("属性映射: " + getter.propertyName + " (" + getSimpleTypeName(getter.returnType) + ")", sourceElement);
             }
         }
 
-        note("总共建立 " + mappings.size() + " 个属性映射", sourceElement);
         return mappings;
     }
 
@@ -334,7 +370,7 @@ public class ObjectCopierProcessor extends AbstractProcessor {
 
     private AnnotationMirror getAnnotationMirror(Element element) {
         for (AnnotationMirror mirror : element.getAnnotationMirrors()) {
-            if (mirror.getAnnotationType().toString().equals(ObjectCopier.class.getName())) {
+            if (mirror.getAnnotationType().toString().equals(Copier.class.getName())) {
                 return mirror;
             }
         }
