@@ -9,17 +9,18 @@
 
     <groupId>com.acanx.util</groupId>
     <artifactId>incubator-annotation</artifactId>
-    <version>0.2.0.0-SNAPSHOT</version>
+    <version>0.4.3-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Incubator-Annotation</name>
     <description>AUtil Incubator Annotation Module</description>
     <url>https://acanx.com</url>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>25</java.version>
+<!--        <maven.compiler.release>21</maven.compiler.release>-->
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <useIncrementalCompilation>false</useIncrementalCompilation>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
     </properties>
 
     <dependencies>
@@ -64,6 +65,12 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.acanx.meta.model</groupId>
+            <artifactId>model-test</artifactId>
+            <version>0.5.7-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
 
@@ -81,12 +88,27 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                    <compilerArgs>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                    </compilerArgs>
                     <annotationProcessorPaths>
-                        <!-- 确保注解处理器路径包含你的处理器 -->
                         <path>
                             <groupId>com.acanx.util</groupId>
                             <artifactId>incubator-annotation</artifactId>
-                            <version>0.2.0.0-SNAPSHOT</version>
+                            <version>${revision}</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
