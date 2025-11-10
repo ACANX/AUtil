@@ -1,4 +1,4 @@
-package com.acanx.util.annotation;
+package com.acanx.meta.model;
 
 import com.acanx.meta.model.test.annotation.model.MessageFlex;
 import com.acanx.meta.model.test.annotation.model.MessageStable;

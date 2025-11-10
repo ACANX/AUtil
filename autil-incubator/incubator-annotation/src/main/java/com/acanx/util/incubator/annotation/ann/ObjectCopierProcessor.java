@@ -1,355 +1,380 @@
 package com.acanx.util.incubator.annotation.ann;
 
-/**
- * ObjectCopierProcessor
- *
- * @author ACANX
- * @since 20251110
- */
-
-
 import com.acanx.util.incubator.annotation.ObjectCopier;
-import com.sun.source.tree.MethodTree;
-import com.sun.source.util.JavacTask;
-import com.sun.source.util.Trees;
-import com.sun.tools.javac.tree.JCTree;
-import com.sun.tools.javac.tree.TreeMaker;
-import com.sun.tools.javac.util.Context;
-import com.sun.tools.javac.util.List;
-import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Names;
-
-
 import javax.annotation.processing.AbstractProcessor;
-import javax.annotation.processing.ProcessingEnvironment;
+import javax.annotation.processing.Filer;
 import javax.annotation.processing.RoundEnvironment;
 import javax.annotation.processing.SupportedAnnotationTypes;
 import javax.annotation.processing.SupportedSourceVersion;
 import javax.lang.model.SourceVersion;
+import javax.lang.model.element.AnnotationMirror;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ElementKind;
 import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.element.VariableElement;
 import javax.lang.model.type.DeclaredType;
+import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
-import java.lang.reflect.Method;
+import javax.tools.JavaFileObject;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
-/**
- * 对象拷贝注解处理器
- * 通过修改AST在编译期增强被注解的方法
- */
 @SupportedAnnotationTypes("com.acanx.util.incubator.annotation.ObjectCopier")
-@SupportedSourceVersion(SourceVersion.RELEASE_25)
+@SupportedSourceVersion(SourceVersion.RELEASE_17)
 public class ObjectCopierProcessor extends AbstractProcessor {
 
-    private Trees trees;
-    private TreeMaker treeMaker;
-    private Names names;
+    private Types typeUtils;
+    private Elements elementUtils;
+    private Filer filer;
 
     @Override
-    public synchronized void init(ProcessingEnvironment processingEnv) {
+    public synchronized void init(javax.annotation.processing.ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
-        this.trees = Trees.instance(processingEnv);
-        try {
-            // 使用反射获取Context
-            Context context = getContext(processingEnv);
-            this.treeMaker = TreeMaker.instance(context);
-            this.names = Names.instance(context);
-        } catch (Exception e) {
-            processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR,
-                    "Failed to initialize compiler internals: " + e.getMessage()
-            );
-        }
+        typeUtils = processingEnv.getTypeUtils();
+        elementUtils = processingEnv.getElementUtils();
+        filer = processingEnv.getFiler();
     }
-
-
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment roundEnv) {
         if (roundEnv.processingOver()) {
             return false;
         }
+
+        note("开始处理 @ObjectCopier 注解", null);
+
+        Map<TypeElement, List<ExecutableElement>> classMethodsMap = new HashMap<>();
         for (Element element : roundEnv.getElementsAnnotatedWith(ObjectCopier.class)) {
             if (element.getKind() != ElementKind.METHOD) {
-                processingEnv.getMessager().printMessage(
-                        Diagnostic.Kind.ERROR,
-                        "@ObjectCopier can only be applied to methods",
-                        element
-                );
+                error("注解@ObjectCopier只能应用于方法", element, getAnnotationMirror(element));
                 continue;
             }
-            ExecutableElement methodElement = (ExecutableElement) element;
-            // 验证方法参数
-            if (!validateMethod(methodElement)) {
-                continue;
-            }
-            // 获取方法对应的AST
-            MethodTree methodTree = trees.getTree(methodElement);
-            if (methodTree instanceof JCTree.JCMethodDecl) {
-                enhanceMethod((JCTree.JCMethodDecl) methodTree, methodElement);
+            ExecutableElement method = (ExecutableElement) element;
+            TypeElement enclosingClass = (TypeElement) method.getEnclosingElement();
+            classMethodsMap.computeIfAbsent(enclosingClass, k -> new ArrayList<>()).add(method);
+
+            note("找到被注解的方法: " + enclosingClass.getSimpleName() + "." + method.getSimpleName(), method);
+        }
+
+        for (Map.Entry<TypeElement, List<ExecutableElement>> entry : classMethodsMap.entrySet()) {
+            TypeElement enclosingClass = entry.getKey();
+            List<ExecutableElement> methods = entry.getValue();
+            for (ExecutableElement method : methods) {
+                try {
+                    generateCopierClass(method);
+                } catch (Exception e) {
+                    error("生成拷贝类时出错: " + e.getMessage(), method, getAnnotationMirror(method));
+                }
             }
         }
+
+        note("注解处理完成", null);
         return true;
     }
 
-    /**
-     * 通过反射获取Compiler Context
-     */
-    private Context getContext(ProcessingEnvironment processingEnv) throws Exception {
-        // 方法1: 通过JavacTask获取Context
-        if (processingEnv instanceof JavacTask) {
-            JavacTask javacTask = (JavacTask) processingEnv;
-            // 尝试通过getContext方法获取
-            try {
-                Method getContextMethod = javacTask.getClass().getMethod("getContext");
-                return (Context) getContextMethod.invoke(javacTask);
-            } catch (NoSuchMethodException e) {
-                // 如果getContext方法不存在，尝试其他方式
-                processingEnv.getMessager().printMessage(
-                        Diagnostic.Kind.NOTE,
-                        "getContext() method not found, trying alternative approach"
-                );
-            }
+    private void generateCopierClass(ExecutableElement methodElement) throws IOException {
+        if (!validateMethod(methodElement)) {
+            return;
         }
-        // 方法2: 通过Trees获取Context
-        try {
-            Method getContextMethod = trees.getClass().getMethod("getContext");
-            return (Context) getContextMethod.invoke(trees);
-        } catch (NoSuchMethodException e) {
-            processingEnv.getMessager().printMessage(
-                    Diagnostic.Kind.NOTE,
-                    "Trees.getContext() not available, trying field access"
-            );
+
+        VariableElement sourceParam = methodElement.getParameters().get(0);
+        VariableElement targetParam = methodElement.getParameters().get(1);
+        TypeMirror sourceType = sourceParam.asType();
+        TypeMirror targetType = targetParam.asType();
+
+        if (!(sourceType instanceof DeclaredType) || !(targetType instanceof DeclaredType)) {
+            error("源类型和目标类型必须是类类型", methodElement, getAnnotationMirror(methodElement));
+            return;
         }
-        // 方法3: 通过字段访问（最后的手段）
-        return getContextViaFieldAccess(processingEnv);
+
+        TypeElement sourceElement = (TypeElement) ((DeclaredType) sourceType).asElement();
+        TypeElement targetElement = (TypeElement) ((DeclaredType) targetType).asElement();
+        TypeElement enclosingClass = (TypeElement) methodElement.getEnclosingElement();
+
+        // 生成类名：使用被注解方法所在类的类名 + "Copier"
+        String enclosingClassName = enclosingClass.getSimpleName().toString();
+        String copierClassName = enclosingClassName + "Copier";
+
+        // 获取包名
+        String packageName = elementUtils.getPackageOf(enclosingClass).getQualifiedName().toString();
+
+        // 创建源文件
+        JavaFileObject builderFile = filer.createSourceFile(
+                packageName + "." + copierClassName,
+                methodElement
+        );
+
+        note("生成拷贝类: " + packageName + "." + copierClassName, methodElement);
+
+        try (PrintWriter out = new PrintWriter(builderFile.openWriter())) {
+            writeCopierClass(out, packageName, copierClassName, sourceElement, targetElement, methodElement, enclosingClass);
+        }
     }
 
-    /**
-     * 在类层次结构中查找字段
-     */
-    private java.lang.reflect.Field findField(Class<?> clazz, String fieldName) {
-        while (clazz != null) {
-            try {
-                java.lang.reflect.Field field = clazz.getDeclaredField(fieldName);
-                return field;
-            } catch (NoSuchFieldException e) {
-                clazz = clazz.getSuperclass();
+    private void writeCopierClass(PrintWriter out, String packageName, String className,
+                                  TypeElement sourceElement, TypeElement targetElement,
+                                  ExecutableElement methodElement, TypeElement enclosingClass) {
+
+        String sourceTypeName = sourceElement.getSimpleName().toString();
+        String targetTypeName = targetElement.getSimpleName().toString();
+        String sourceQualifiedName = sourceElement.getQualifiedName().toString();
+        String targetQualifiedName = targetElement.getQualifiedName().toString();
+        String enclosingClassQualifiedName = enclosingClass.getQualifiedName().toString();
+        String methodName = methodElement.getSimpleName().toString();
+
+        // 包声明
+        out.println("package " + packageName + ";");
+        out.println();
+
+        // 导入语句
+        out.println("import " + sourceQualifiedName + ";");
+        out.println("import " + targetQualifiedName + ";");
+        out.println();
+
+        // 类注释
+        out.println("/**");
+        out.println(" * 自动生成的拷贝类");
+        out.println(" * 将 " + sourceTypeName + " 对象的属性拷贝到 " + targetTypeName + " 对象");
+        out.println(" * 由 {@link " + enclosingClassQualifiedName + "#" + methodName + "(" + sourceTypeName + ", " + targetTypeName + ")} 方法生成");
+        out.println(" */");
+
+        // 类声明
+        out.println("public class " + className + " {");
+        out.println();
+
+        // 拷贝方法
+        out.println("    /**");
+        out.println("     * 执行属性拷贝");
+        out.println("     * 由 {@link " + enclosingClassQualifiedName + "#" + methodName + "(" + sourceTypeName + ", " + targetTypeName + ")} 方法生成");
+        out.println("     * @param source 源对象");
+        out.println("     * @param target 目标对象");
+        out.println("     */");
+        out.println("    public static void " + methodName + "(" + sourceTypeName + " source, " + targetTypeName + " target) {");
+        out.println("        if (source == null || target == null) {");
+        out.println("            return;");
+        out.println("        }");
+        out.println();
+        // 生成属性拷贝代码
+        List<PropertyMapping> mappings = findPropertyMappings(sourceElement, targetElement);
+        if (mappings.isEmpty()) {
+            out.println("        // 未找到可拷贝的属性");
+        } else {
+            out.println("        // 属性拷贝");
+            for (PropertyMapping mapping : mappings) {
+                out.println("        target." + mapping.setterCall.replace("(value)", "(" + "source." + mapping.getterCall + ")" + ";"));
+            }
+        }
+        out.println("    }");
+        out.println("}");
+    }
+
+    private List<PropertyMapping> findPropertyMappings(TypeElement sourceElement, TypeElement targetElement) {
+        List<PropertyMapping> mappings = new ArrayList<>();
+        List<GetterMethod> sourceGetters = findGetterMethods(sourceElement);
+        List<SetterMethod> targetSetters = findSetterMethods(targetElement);
+
+        note("在 " + sourceElement.getSimpleName() + " 中找到 " + sourceGetters.size() + " 个getter方法", sourceElement);
+        note("在 " + targetElement.getSimpleName() + " 中找到 " + targetSetters.size() + " 个setter方法", targetElement);
+
+        for (GetterMethod getter : sourceGetters) {
+            SetterMethod setter = findMatchingSetter(targetSetters, getter.propertyName, getter.returnType);
+            if (setter != null) {
+                mappings.add(new PropertyMapping(getter.propertyName, getter.methodCall, setter.methodCall));
+                note("属性映射: " + getter.propertyName + " (" + getSimpleTypeName(getter.returnType) + ")", sourceElement);
+            }
+        }
+
+        note("总共建立 " + mappings.size() + " 个属性映射", sourceElement);
+        return mappings;
+    }
+
+    private String extractPropertyName(String methodName) {
+        if (methodName.startsWith("get") || methodName.startsWith("set")) {
+            String baseName = methodName.substring(3);
+            if (!baseName.isEmpty()) {
+                return Character.toLowerCase(baseName.charAt(0)) + baseName.substring(1);
+            }
+        } else if (methodName.startsWith("is")) {
+            String baseName = methodName.substring(2);
+            if (!baseName.isEmpty()) {
+                return Character.toLowerCase(baseName.charAt(0)) + baseName.substring(1);
+            }
+        }
+        return methodName;
+    }
+
+    private List<GetterMethod> findGetterMethods(TypeElement element) {
+        List<GetterMethod> getters = new ArrayList<>();
+        TypeMirror currentType = element.asType();
+
+        while (currentType.getKind() == TypeKind.DECLARED) {
+            DeclaredType declaredType = (DeclaredType) currentType;
+            TypeElement currentElement = (TypeElement) declaredType.asElement();
+
+            for (Element enclosed : currentElement.getEnclosedElements()) {
+                if (enclosed.getKind() == ElementKind.METHOD && enclosed instanceof ExecutableElement) {
+                    ExecutableElement method = (ExecutableElement) enclosed;
+                    String methodName = method.getSimpleName().toString();
+
+                    if (isGetterMethod(method, methodName)) {
+                        String propertyName = extractPropertyName(methodName);
+                        String methodCall = methodName + "()";
+                        getters.add(new GetterMethod(propertyName, methodCall, method.getReturnType()));
+                    }
+                }
+            }
+
+            currentType = currentElement.getSuperclass();
+            if (currentType.getKind() == TypeKind.NONE) {
+                break;
+            }
+        }
+        return getters;
+    }
+
+    private boolean isGetterMethod(ExecutableElement method, String methodName) {
+        if (method.getModifiers().contains(Modifier.STATIC)) return false;
+        if (!method.getParameters().isEmpty()) return false;
+
+        if (methodName.startsWith("get") && methodName.length() > 3) return true;
+        return methodName.startsWith("is") && methodName.length() > 2 &&
+                method.getReturnType().getKind() == TypeKind.BOOLEAN;
+    }
+
+    private List<SetterMethod> findSetterMethods(TypeElement element) {
+        List<SetterMethod> setters = new ArrayList<>();
+        TypeMirror currentType = element.asType();
+
+        while (currentType.getKind() == TypeKind.DECLARED) {
+            DeclaredType declaredType = (DeclaredType) currentType;
+            TypeElement currentElement = (TypeElement) declaredType.asElement();
+
+            for (Element enclosed : currentElement.getEnclosedElements()) {
+                if (enclosed.getKind() == ElementKind.METHOD && enclosed instanceof ExecutableElement) {
+                    ExecutableElement method = (ExecutableElement) enclosed;
+                    String methodName = method.getSimpleName().toString();
+
+                    if (isSetterMethod(method, methodName)) {
+                        String propertyName = extractPropertyName(methodName);
+                        String methodCall = methodName + "(value)";
+                        setters.add(new SetterMethod(propertyName, methodCall, method.getParameters().get(0).asType()));
+                    }
+                }
+            }
+
+            currentType = currentElement.getSuperclass();
+            if (currentType.getKind() == TypeKind.NONE) {
+                break;
+            }
+        }
+        return setters;
+    }
+
+    private boolean isSetterMethod(ExecutableElement method, String methodName) {
+        if (method.getModifiers().contains(Modifier.STATIC)) return false;
+        return methodName.startsWith("set") && methodName.length() > 3 &&
+                method.getParameters().size() == 1;
+    }
+
+    private SetterMethod findMatchingSetter(List<SetterMethod> setters, String propertyName, TypeMirror getterType) {
+        for (SetterMethod setter : setters) {
+            if (setter.propertyName.equals(propertyName) && isTypeCompatible(getterType, setter.paramType)) {
+                return setter;
             }
         }
         return null;
     }
 
-    /**
-     * 通过字段反射获取Context
-     */
-    private Context getContextViaFieldAccess(ProcessingEnvironment processingEnv) throws Exception {
-        // 获取JavacTask实例
-        if (processingEnv instanceof JavacTask) {
-            JavacTask javacTask = (JavacTask) processingEnv;
-            // 尝试访问context字段
-            try {
-                java.lang.reflect.Field contextField = findField(javacTask.getClass(), "context");
-                if (contextField != null) {
-                    contextField.setAccessible(true);
-                    return (Context) contextField.get(javacTask);
-                }
-            } catch (Exception e) {
-                processingEnv.getMessager().printMessage(
-                        Diagnostic.Kind.WARNING,
-                        "Field access failed: " + e.getMessage()
-                );
-            }
-        }
-        throw new IllegalStateException("Unable to access compiler Context");
+    private boolean isTypeCompatible(TypeMirror sourceType, TypeMirror targetType) {
+        return typeUtils.isAssignable(sourceType, targetType) ||
+                typeUtils.isAssignable(targetType, sourceType);
     }
 
-
-    /**
-     * 验证方法是否符合要求
-     */
     private boolean validateMethod(ExecutableElement method) {
-        // 验证参数数量
         if (method.getParameters().size() != 2) {
-            processingEnv.getMessager().printMessage(
-                    Diagnostic.Kind.ERROR,
-                    "@ObjectCopier method must have exactly 2 parameters",
-                    method
-            );
+            error("@ObjectCopier注解的方法必须恰好有2个参数", method, getAnnotationMirror(method));
             return false;
         }
-        // 验证方法可见性
-        if (!method.getModifiers().contains(javax.lang.model.element.Modifier.PRIVATE)) {
-            processingEnv.getMessager().printMessage(
-                    Diagnostic.Kind.WARNING,
-                    "@ObjectCopier is recommended to be used on private methods for better encapsulation",
-                    method
-            );
-        }
-        // 验证返回类型为void
-        TypeMirror returnType = method.getReturnType();
-        if (!returnType.toString().equals("void")) {
-            processingEnv.getMessager().printMessage(
-                    Diagnostic.Kind.ERROR,
-                    "@ObjectCopier method must have void return type",
-                    method
-            );
+        if (!method.getReturnType().getKind().equals(TypeKind.VOID)) {
+            error("@ObjectCopier注解的方法必须返回void", method, getAnnotationMirror(method));
             return false;
         }
         return true;
     }
 
-    /**
-     * 增强方法，添加对象拷贝逻辑
-     */
-    private void enhanceMethod(JCTree.JCMethodDecl methodTree, ExecutableElement methodElement) {
-        ObjectCopier annotation = methodElement.getAnnotation(ObjectCopier.class);
-        // 获取源参数和目标参数
-        JCTree.JCVariableDecl sourceParam = methodTree.getParameters().get(0);
-        JCTree.JCVariableDecl targetParam = methodTree.getParameters().get(1);
-        // 创建拷贝语句
-        List<JCTree.JCStatement> copyStatements = createCopyStatements(
-                sourceParam,
-                targetParam,
-                annotation,
-                methodElement
-        );
-        // 替换方法体
-        JCTree.JCBlock newBody = treeMaker.Block(0, copyStatements);
-        methodTree.body = newBody;
-        processingEnv.getMessager().printMessage(
-                Diagnostic.Kind.NOTE,
-                "Enhanced @ObjectCopier method: " + methodElement.getSimpleName(),
-                methodElement
-        );
+    private String getSimpleTypeName(TypeMirror typeMirror) {
+        if (typeMirror instanceof DeclaredType) {
+            TypeElement typeElement = (TypeElement) ((DeclaredType) typeMirror).asElement();
+            return typeElement.getSimpleName().toString();
+        }
+        return typeMirror.toString();
     }
 
-    /**
-     * 创建拷贝语句
-     */
-    private List<JCTree.JCStatement> createCopyStatements(
-            JCTree.JCVariableDecl sourceParam,
-            JCTree.JCVariableDecl targetParam,
-            ObjectCopier annotation,
-            ExecutableElement methodElement) {
-        ListBuffer<JCTree.JCStatement> statements = new ListBuffer<>();
-        // 添加空值检查
-        statements.append(createNullCheckStatement(sourceParam, "Source object cannot be null"));
-        statements.append(createNullCheckStatement(targetParam, "Target object cannot be null"));
-        // 获取源对象类型的所有字段
-        TypeMirror sourceType = methodElement.getParameters().get(0).asType();
-        TypeElement sourceTypeElement = (TypeElement) ((DeclaredType) sourceType).asElement();
-        // 为每个字段生成赋值语句
-        for (Element field : sourceTypeElement.getEnclosedElements()) {
-            if (field.getKind() == ElementKind.FIELD &&
-                    !field.getModifiers().contains(javax.lang.model.element.Modifier.STATIC)) {
-                JCTree.JCStatement assignment = createFieldAssignment(
-                        sourceParam,
-                        targetParam,
-                        field,
-                        annotation
-                );
-                if (assignment != null) {
-                    statements.append(assignment);
-                }
+    private void error(String msg, Element element, AnnotationMirror annotationMirror) {
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.ERROR, msg, element, annotationMirror);
+    }
+
+    private void warn(String msg, Element element) {
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.WARNING, msg, element);
+    }
+
+    private void note(String msg, Element element) {
+        processingEnv.getMessager().printMessage(Diagnostic.Kind.NOTE, msg, element);
+    }
+
+    private AnnotationMirror getAnnotationMirror(Element element) {
+        for (AnnotationMirror mirror : element.getAnnotationMirrors()) {
+            if (mirror.getAnnotationType().toString().equals(ObjectCopier.class.getName())) {
+                return mirror;
             }
         }
-        return statements.toList();
+        return null;
     }
 
-    /**
-     * 创建空值检查语句
-     */
-    private JCTree.JCStatement createNullCheckStatement(JCTree.JCVariableDecl param, String message) {
-        // 创建条件表达式: param == null
-        JCTree.JCExpression nullCheck = treeMaker.Binary(
-                JCTree.Tag.EQ,
-                treeMaker.Ident(param.name),
-                treeMaker.Literal(null)
-        );
-        // 创建异常抛出语句
-        JCTree.JCExpression exceptionType = treeMaker.Ident(names.fromString("IllegalArgumentException"));
-        JCTree.JCNewClass newException = treeMaker.NewClass(
-                null,
-                List.nil(),
-                exceptionType,
-                List.of(treeMaker.Literal(message)),
-                null
-        );
-        JCTree.JCThrow throwStatement = treeMaker.Throw(newException);
-        // 创建if语句
-        return treeMaker.If(nullCheck, throwStatement, null);
+    // 内部类保持不变...
+    private static class PropertyMapping {
+        final String propertyName;
+        final String getterCall;
+        final String setterCall;
+
+        PropertyMapping(String propertyName, String getterCall, String setterCall) {
+            this.propertyName = propertyName;
+            this.getterCall = getterCall;
+            this.setterCall = setterCall;
+        }
     }
 
-    /**
-     * 创建字段赋值语句
-     */
-    private JCTree.JCStatement createFieldAssignment(
-            JCTree.JCVariableDecl sourceParam,
-            JCTree.JCVariableDecl targetParam,
-            Element field,
-            ObjectCopier annotation) {
-        String fieldName = field.getSimpleName().toString();
-        // 检查字段是否在排除列表中
-        if (isFieldExcluded(fieldName, annotation)) {
-            return null;
+    private static class GetterMethod {
+        final String propertyName;
+        final String methodCall;
+        final TypeMirror returnType;
+
+        GetterMethod(String propertyName, String methodCall, TypeMirror returnType) {
+            this.propertyName = propertyName;
+            this.methodCall = methodCall;
+            this.returnType = returnType;
         }
-        // 检查字段是否在包含列表中（如果设置了include）
-        if (annotation.include().length > 0 && !isFieldIncluded(fieldName, annotation)) {
-            return null;
-        }
-        // 创建字段访问表达式: target.field
-        JCTree.JCFieldAccess targetFieldAccess = treeMaker.Select(
-                treeMaker.Ident(targetParam.name),
-                names.fromString(fieldName)
-        );
-        // 创建字段访问表达式: source.field
-        JCTree.JCFieldAccess sourceFieldAccess = treeMaker.Select(
-                treeMaker.Ident(sourceParam.name),
-                names.fromString(fieldName)
-        );
-        JCTree.JCExpression assignmentExpression;
-        if (annotation.ignoreNull()) {
-            // 如果忽略空值，创建条件赋值: source.field != null ? source.field : target.field
-            JCTree.JCExpression nullCheck = treeMaker.Binary(
-                    JCTree.Tag.NE,
-                    sourceFieldAccess,
-                    treeMaker.Literal(null)
-            );
-            assignmentExpression = treeMaker.Conditional(
-                    nullCheck,
-                    sourceFieldAccess,
-                    treeMaker.Ident(targetParam.name) // 保持原值
-            );
-        } else {
-            // 直接赋值
-            assignmentExpression = sourceFieldAccess;
-        }
-        // 创建赋值语句: target.field = assignmentExpression
-        return treeMaker.Exec(
-                treeMaker.Assign(targetFieldAccess, assignmentExpression)
-        );
     }
 
-    private boolean isFieldExcluded(String fieldName, ObjectCopier annotation) {
-        for (String excluded : annotation.exclude()) {
-            if (excluded.equals(fieldName)) {
-                return true;
-            }
+    private static class SetterMethod {
+        final String propertyName;
+        final String methodCall;
+        final TypeMirror paramType;
+
+        SetterMethod(String propertyName, String methodCall, TypeMirror paramType) {
+            this.propertyName = propertyName;
+            this.methodCall = methodCall;
+            this.paramType = paramType;
         }
-        return false;
     }
-
-    private boolean isFieldIncluded(String fieldName, ObjectCopier annotation) {
-        for (String included : annotation.include()) {
-            if (included.equals(fieldName)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-
 }

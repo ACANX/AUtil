@@ -34,6 +34,13 @@ public @interface ObjectCopier {
     String[] include() default {};
 
     /**
+     * 是否使用getter/setter方法进行拷贝
+     *
+     * @return
+     */
+    boolean useAccessors () default true;
+
+    /**
      * 拷贝策略枚举
      */
     enum CopyStrategy {

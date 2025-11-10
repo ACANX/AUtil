@@ -47,7 +47,12 @@
             <groupId>com.acanx.meta.model</groupId>
             <artifactId>model-test</artifactId>
             <version>0.5.7-SNAPSHOT</version>
-            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>incubator-annotation</artifactId>
+            <version>0.4.3-SNAPSHOT</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>
@@ -75,6 +80,10 @@
                         <arg>--add-exports</arg>
                         <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
                     </compilerArgs>
+                    <annotationProcessors>
+                        <annotationProcessor>com.acanx.util.incubator.annotation.ann.ObjectCopierProcessor</annotationProcessor>
+                    </annotationProcessors>
+                    <generatedSourcesDirectory>${project.build.directory}/generated-sources/annotations</generatedSourcesDirectory>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>com.acanx.util</groupId>
