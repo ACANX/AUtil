@@ -72,20 +72,20 @@
     </dependencies>
 
 
-    <repositories>
-        <repository>
-            <id>sonatype-snapshots</id>
-            <name>Sonatype Snapshot Repository</name>
-            <url>https://central.sonatype.com/repository/maven-snapshots/</url>
-            <releases>
-                <enabled>false</enabled> <!-- 如果不需RELEASE版本，可禁用 -->
-            </releases>
-            <snapshots>
-                <enabled>true</enabled> <!-- 启用SNAPSHOT版本下载 -->
-                <updatePolicy>always</updatePolicy> <!-- 可选：每次构建都检查更新 -->
-            </snapshots>
-        </repository>
-    </repositories>
+<!--    <repositories>-->
+<!--        <repository>-->
+<!--            <id>sonatype-snapshots</id>-->
+<!--            <name>Sonatype Snapshot Repository</name>-->
+<!--            <url>https://central.sonatype.com/repository/maven-snapshots/</url>-->
+<!--            <releases>-->
+<!--                <enabled>false</enabled> &lt;!&ndash; 如果不需RELEASE版本，可禁用 &ndash;&gt;-->
+<!--            </releases>-->
+<!--            <snapshots>-->
+<!--                <enabled>true</enabled> &lt;!&ndash; 启用SNAPSHOT版本下载 &ndash;&gt;-->
+<!--                <updatePolicy>always</updatePolicy> &lt;!&ndash; 可选：每次构建都检查更新 &ndash;&gt;-->
+<!--            </snapshots>-->
+<!--        </repository>-->
+<!--    </repositories>-->
 
   <build>
     <plugins>
