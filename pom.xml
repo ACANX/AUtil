@@ -4,7 +4,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>com.acanx.util</groupId>
     <artifactId>autil</artifactId>
-    <version>0.1.0.2-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>pom</packaging>
     <name>AUtil</name>
     <description>AUtil(ACANX-Util) 工具库</description>
@@ -35,30 +35,33 @@
         </license>
     </licenses>
     <properties>
-        <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+        <revision>0.1.1-SNAPSHOT</revision>
+        <project.release.version>0.1.1-SNAPSHOT</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
-        <maven-compiler-plugin.version>3.13.0</maven-compiler-plugin.version>
+        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
         <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
         <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
         <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
         <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
+        <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
 
-        <fastjson2.version>2.0.57</fastjson2.version>
+        <fastjson2.version>2.0.60</fastjson2.version>
 
-        <central-publishing-maven-plugin.version>0.7.0</central-publishing-maven-plugin.version>
+        <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
         <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
-        <junit-jupiter.version>5.12.2</junit-jupiter.version>
+        <junit-jupiter.version>5.14.1</junit-jupiter.version>
     </properties>
 
 
     <modules>
         <module>autil-core</module>
         <module>autil-json</module>
+        <module>autil-incubator</module>
     </modules>
 
     <dependencies>
@@ -98,6 +101,33 @@
                             <encoding>${project.build.sourceEncoding}</encoding> <!-- utf-8进行编码代码 -->
                             <docencoding>${project.build.sourceEncoding}</docencoding> <!-- utf-8进行编码文档 -->
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>${flatten-maven-plugin.version}</version>
+                <configuration>
+                    <!--  是否更新pom文件，此处还有更高级的用法-->
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                    <execution>
+                        <id>flatten.clean</id>
+                        <phase>clean</phase>
+                        <goals>
+                            <goal>clean</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
