@@ -47,7 +47,7 @@
       <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
       <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
 
-      <meta-open.version>0.5.9</meta-open.version>
+      <meta-open.version>0.6.0</meta-open.version>
 
       <fastjson2.version>2.0.60</fastjson2.version>
       <jackson.version>2.20.1</jackson.version>
