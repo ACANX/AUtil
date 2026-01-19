@@ -48,7 +48,7 @@
       <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
       <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
 
-      <meta-open.version>0.6.1</meta-open.version>
+      <meta-open.version>0.6.2.2</meta-open.version>
 
       <fastjson2.version>2.0.60</fastjson2.version>
       <jackson.version>2.20.1</jackson.version>
