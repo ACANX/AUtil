@@ -29,7 +29,7 @@ import java.util.Map;
 import java.util.Set;
 
 @SupportedAnnotationTypes("com.acanx.util.incubator.annotation.Copier")
-@SupportedSourceVersion(SourceVersion.RELEASE_17)
+@SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class CopierProcessor extends AbstractProcessor {
 
     private Types typeUtils;
