@@ -9,7 +9,7 @@
 
     <groupId>com.acanx.util</groupId>
     <artifactId>incubator-annotation</artifactId>
-    <version>0.4.3-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>Incubator-Annotation</name>
     <description>AUtil Incubator Annotation Module</description>
@@ -23,11 +23,11 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
-            <version>1.13.0</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.squareup</groupId>-->
+<!--            <artifactId>javapoet</artifactId>-->
+<!--            <version>1.13.0</version>-->
+<!--        </dependency>-->
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
@@ -87,13 +87,13 @@
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
                     </compilerArgs>
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>com.acanx.util</groupId>-->
-<!--                            <artifactId>incubator-annotation</artifactId>-->
-<!--                            <version>${revision}</version>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.acanx.util</groupId>
+                            <artifactId>incubator-annotation</artifactId>
+                            <version>${revision}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
         </plugins>
