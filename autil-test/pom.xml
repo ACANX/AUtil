@@ -46,12 +46,12 @@
         <dependency>
             <groupId>com.acanx.meta.model</groupId>
             <artifactId>model-test</artifactId>
-            <version>0.5.7-SNAPSHOT</version>
+            <version>${meta-open.version}</version>
         </dependency>
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>incubator-annotation</artifactId>
-            <version>0.4.3-SNAPSHOT</version>
+            <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
 
