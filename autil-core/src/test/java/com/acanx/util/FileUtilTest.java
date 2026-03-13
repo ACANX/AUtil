@@ -1,6 +1,6 @@
 package com.acanx.util;
 
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -27,7 +27,7 @@ public class FileUtilTest {
         File file = new File(fullFilePath);
         // 写入：
         try {
-            FileUtil.write(file, content, Charset.forName(Constant.UTF_8));
+            FileUtil.write(file, content, Charset.forName(Const.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -48,7 +48,7 @@ public class FileUtilTest {
         File file = new File(fullFilePath);
         // 写入：
         try {
-            FileUtil.write(file, content, Charset.forName(Constant.UTF_8));
+            FileUtil.write(file, content, Charset.forName(Const.UTF_8));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -80,9 +80,9 @@ public class FileUtilTest {
         System.out.println("Java Test Write Content: " + content);
         try {
             // 写入：
-            FileUtil.write(file, content, Charset.forName(Constant.UTF_8));
+            FileUtil.write(file, content, Charset.forName(Const.UTF_8));
             // 读取
-            String str1 = FileUtil.readFileToString(file, Constant.UTF_8);
+            String str1 = FileUtil.readFileToString(file, Const.UTF_8);
             String str2 = FileUtil.readFileAsString(file.getAbsolutePath());
             System.out.println("Java Test File Reader1 Content（FileUtil.readFileToString）: " + str1);
             System.out.println("Java Test File Reader2 Content（FileUtil.readFileAsString）: " + str2);

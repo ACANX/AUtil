@@ -36,6 +36,25 @@
             <version>${revision}</version>
             <scope>test</scope>
         </dependency>
+
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>incubator-annotation</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.acanx.meta.model</groupId>
+            <artifactId>model-test</artifactId>
+            <version>${meta-open.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>incubator-annotation</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -47,7 +66,33 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <compilerArgs>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                    </compilerArgs>
+                    <annotationProcessors>
+                        <annotationProcessor>com.acanx.util.incubator.annotation.CopierProcessor</annotationProcessor>
+                    </annotationProcessors>
+                    <generatedSourcesDirectory>${project.build.directory}/generated-sources/annotations</generatedSourcesDirectory>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.acanx.util</groupId>
+                            <artifactId>incubator-annotation</artifactId>
+                            <version>${revision}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
+
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
             <plugin>

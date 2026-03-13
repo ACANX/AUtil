@@ -33,7 +33,7 @@
     </license>
   </licenses>
   <properties>
-      <revision>0.4.3-SNAPSHOT</revision>
+      <revision>0.4.4</revision>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
       <java.version>21</java.version>
@@ -55,20 +55,37 @@
       <junit-jupiter.version>6.0.3</junit-jupiter.version>
   </properties>
 
-  <modules>
-    <module>autil-core</module>
-    <module>autil-json</module>
-    <module>autil-incubator</module>
-    <module>autil-test</module>
-  </modules>
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit-jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+    <modules>
+        <module>autil-core</module>
+        <module>autil-json</module>
+        <module>autil-incubator</module>
+        <module>autil-test</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+   <repositories>
+       <repository>
+           <id>sonatype-snapshots</id>
+           <name>Sonatype Snapshot Repository</name>
+           <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+           <releases>
+               <enabled>false</enabled> 
+           </releases>
+           <snapshots>
+               <enabled>true</enabled>
+               <updatePolicy>always</updatePolicy> 
+           </snapshots>
+       </repository>
+    </repositories>
+
   <build>
     <plugins>
       <plugin>
@@ -106,7 +123,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <version>1.7.3</version>
+        <version>${flatten-maven-plugin.version}</version>
         <configuration>
           <!--  是否更新pom文件，此处还有更高级的用法-->
           <updatePomFile>true</updatePomFile>
@@ -150,7 +167,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>flatten-maven-plugin</artifactId>
-            <version>1.7.3</version>
+            <version>${flatten-maven-plugin.version}</version>
             <configuration>
               <!--  是否更新pom文件，此处还有更高级的用法-->
               <updatePomFile>true</updatePomFile>
@@ -245,7 +262,7 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>flatten-maven-plugin</artifactId>
-            <version>1.7.3</version>
+            <version>${flatten-maven-plugin.version}</version>
             <configuration>
               <!--  是否更新pom文件，此处还有更高级的用法-->
               <updatePomFile>true</updatePomFile>

@@ -229,7 +229,7 @@ public class FileUtil {
     public static List<File> getFilteredFileList(File dir, FileFilter fileFilter){
         List<File> fileList = new ArrayList<File>();
         if (dir.exists() && dir.isDirectory()) {
-            File[] files = dir.listFiles(fileFilter);
+            File[] files = dir.listFiles();
             if (null != files && files.length > 0) {
                 for(File file : files){
                     if (file.isFile()){
