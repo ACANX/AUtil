@@ -6,7 +6,7 @@ updates:
       interval: "daily"
       time: "03:00"         # 每天 UTC 时间 3:00 检查
       timezone: "Asia/Shanghai" # 时区设置
-    target-branch: "dependabot"
+    target-branch: "dependa"
     open-pull-requests-limit: 15  # 最大 PR 数量
     reviewers:                  # 自动添加审阅者
       - "ACANX"
