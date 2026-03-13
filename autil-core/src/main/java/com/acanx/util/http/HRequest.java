@@ -1,6 +1,6 @@
 package com.acanx.util.http;
 
-import com.acanx.constant.HTTPC;
+import com.acanx.c.HTTPConst;
 
 import java.net.http.HttpClient;
 import java.util.Map;
@@ -12,7 +12,7 @@ public class HRequest {
 
     // 其他字段保持不变
     private HttpClient.Version httpVersion = HttpClient.Version.HTTP_2;
-    private String method = HTTPC.GET;
+    private String method = HTTPConst.GET;
     private String url;
     private Map<String, String> params;
     private Map<String, String> headers;
@@ -92,7 +92,7 @@ public class HRequest {
             if (config.headers == null) {
                 config.headers = new java.util.HashMap<>();
             }
-            config.headers.put(HTTPC.AUTHORIZATION, token);
+            config.headers.put(HTTPConst.AUTHORIZATION, token);
             return this;
         }
 
@@ -100,7 +100,7 @@ public class HRequest {
             if (config.headers == null) {
                 config.headers = new java.util.HashMap<>();
             }
-            config.headers.put(HTTPC.CONTENT_TYPE, type);
+            config.headers.put(HTTPConst.CONTENT_TYPE, type);
             return this;
         }
 

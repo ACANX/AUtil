@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigInteger;
@@ -60,7 +60,7 @@ public class StringUtil {
      */
     @Alpha
     public static boolean isEmpty(String str) {
-        return str == null || Constant.STR_EMPTY.equals(str);
+        return str == null || Const.STR_EMPTY.equals(str);
     }
 
     /**
@@ -259,7 +259,7 @@ public class StringUtil {
             return null;
         }
         if (endIndex - startIndex <= 0) {
-            return Constant.STR_EMPTY;
+            return Const.STR_EMPTY;
         }
         final StringJoiner joiner = new StringJoiner(toStringOrEmpty(delimiter));
         for (int i = startIndex; i < endIndex; i++) {
@@ -345,7 +345,7 @@ public class StringUtil {
         }
         final int noOfItems = endIndex - startIndex;
         if (noOfItems <= 0) {
-            return Constant.STR_EMPTY;
+            return Const.STR_EMPTY;
         }
         final List<?> subList = list.subList(startIndex, endIndex);
         return join(subList.iterator(), separator);
@@ -371,7 +371,7 @@ public class StringUtil {
             return null;
         }
         if (!iterator.hasNext()) {
-            return Constant.STR_EMPTY;
+            return Const.STR_EMPTY;
         }
         final Object first = iterator.next();
         if (!iterator.hasNext()) {
@@ -465,7 +465,7 @@ public class StringUtil {
             return null;
         }
         if (endIndex - startIndex <= 0) {
-            return Constant.STR_EMPTY;
+            return Const.STR_EMPTY;
         }
         final StringJoiner joiner = newStringJoiner(delimiter);
         for (int i = startIndex; i < endIndex; i++) {
@@ -1007,7 +1007,7 @@ public class StringUtil {
             return null;
         }
         if (isEmpty(padStr)) {
-            padStr = Constant.STR_BLANK;
+            padStr = Const.STR_BLANK;
         }
         final int padLen = padStr.length();
         final int strLen = str.length();
@@ -1015,7 +1015,7 @@ public class StringUtil {
         if (pads <= 0) {
             return str; // returns original String when possible
         }
-        if (padLen == 1 && pads <= Constant.INT_8192) {
+        if (padLen == 1 && pads <= Const.INT_8192) {
             return rightPad(str, size, padStr.charAt(0));
         }
         if (pads == padLen) {
@@ -1087,7 +1087,7 @@ public class StringUtil {
             return null;
         }
         if (isEmpty(padStr)) {
-            padStr = Constant.STR_BLANK;
+            padStr = Const.STR_BLANK;
         }
         final int padLen = padStr.length();
         final int strLen = str.length();
@@ -1095,7 +1095,7 @@ public class StringUtil {
         if (pads <= 0) {
             return str; // returns original String when possible
         }
-        if (padLen == 1 && pads <= Constant.INT_8192) {
+        if (padLen == 1 && pads <= Const.INT_8192) {
             return leftPad(str, size, padStr.charAt(0));
         }
         if (pads == padLen) {
@@ -1267,7 +1267,7 @@ public class StringUtil {
         }
         // if start is greater than end, return ""
         if (start > end) {
-            return Constant.STR_EMPTY;
+            return Const.STR_EMPTY;
         }
         if (start < 0) {
             start = 0;
@@ -1332,21 +1332,21 @@ public class StringUtil {
      *   集合转字符串（以separator（如逗号）间隔）
      *
      * @param list   字符串集合
-     * @param wrappeFlag  首末是否需要添加间隔符
+     * @param wrapperFlag  首末是否需要添加间隔符
      * @param separator  间隔符
      * @return 结果字符串
      */
     @Alpha
-    public static String listToString(List<String> list, boolean wrappeFlag, char separator){
+    public static String listToString(List<String> list, boolean wrapperFlag, char separator){
         StringBuffer sb = new StringBuffer();
-        if (null !=  list && list.size() > Constant.INT_0){
-            if (wrappeFlag){
+        if (null !=  list && list.size() > Const.INT_0){
+            if (wrapperFlag){
                 sb.append(separator);
             }
             for (String str: list) {
                 sb.append(str).append(separator);
             }
-            if (!wrappeFlag){
+            if (!wrapperFlag){
                 sb.deleteCharAt(sb.length()-1);
             }
         }
@@ -1362,7 +1362,7 @@ public class StringUtil {
      */
     @Alpha
     public static List<String> stringToList(String str){
-        String[] array = str.trim().split(Constant.STR_COMMA);
+        String[] array = str.trim().split(Const.STR_COMMA);
         ArrayList<String> arrayList = new ArrayList<String>(array.length);
         Collections.addAll(arrayList, array);
         return arrayList;
