@@ -104,7 +104,7 @@
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
                     </compilerArgs>
                     <annotationProcessors>
-                        <annotationProcessor>com.acanx.module.annotation.processor.ast.CopierAstProcessor</annotationProcessor>
+                        <annotationProcessor>com.acanx.util.annotation.processor.ast.CopierAstProcessor</annotationProcessor>
                     </annotationProcessors>
                     <generatedSourcesDirectory>${project.build.directory}/generated-sources/annotations</generatedSourcesDirectory>
                     <annotationProcessorPaths>

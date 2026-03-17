@@ -1,4 +1,4 @@
-package com.acanx.module.annotation.processor;
+package com.acanx.util.annotation.processor;
 
 import com.acanx.util.annotation.Copier;
 import com.squareup.javapoet.ClassName;
