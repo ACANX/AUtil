@@ -1,7 +1,5 @@
 package com.acanx.util.annotation;
 
-import com.acanx.util.incubator.annotation.Copier;
-
 /**
  * TestClass
  *
@@ -17,7 +15,7 @@ public class TestClass {
      * 默认 generationMode = GenerationMode.BYTECODE
      */
     @Copier
-    public void copy(Person src, Person dest) {
+    public void copier(Person src, Person dest) {
         // 空方法，编译后会自动填充
     }
 

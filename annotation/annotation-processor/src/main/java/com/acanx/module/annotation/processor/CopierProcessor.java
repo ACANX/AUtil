@@ -1,6 +1,6 @@
-package com.acanx.module.annotation.processor.copier;
+package com.acanx.module.annotation.processor;
 
-import com.acanx.util.incubator.annotation.Copier;
+import com.acanx.util.annotation.Copier;
 import com.squareup.javapoet.ClassName;
 import com.squareup.javapoet.CodeBlock;
 import com.squareup.javapoet.JavaFile;
@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
  * Copier 注解处理器
  * 用于在编译期生成对象拷贝代码
  */
-@SupportedAnnotationTypes("com.acanx.util.incubator.annotation.Copier")
+@SupportedAnnotationTypes("com.acanx.util.annotation.Copier")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class CopierProcessor extends AbstractProcessor {
 
@@ -471,7 +471,7 @@ public class CopierProcessor extends AbstractProcessor {
         return Character.toUpperCase(str.charAt(0)) + str.substring(1);
     }
 
-    @Getter
+
     private static class FieldInfo {
         private final String name;
         private final TypeMirror type;
@@ -481,6 +481,18 @@ public class CopierProcessor extends AbstractProcessor {
             this.name = name;
             this.type = type;
             this.element = element;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public TypeMirror getType() {
+            return type;
+        }
+
+        public VariableElement getElement() {
+            return element;
         }
     }
 }

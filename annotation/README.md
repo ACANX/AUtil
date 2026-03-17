@@ -210,7 +210,7 @@ mvn clean compile
 
 ```java
 // 使用 javac 内部 API 修改 AST
-@SupportedAnnotationTypes("com.acanx.util.incubator.annotation.Copier")
+@SupportedAnnotationTypes("com.acanx.util.annotation.Copier")
 public class CopierAstProcessor extends AbstractProcessor {
     private TreeMaker treeMaker;
     private Names names;
@@ -452,7 +452,7 @@ public class Person {
 ### 3. 使用 @Copier 注解
 
 ```java
-import com.acanx.util.incubator.annotation.Copier;
+import com.acanx.util.annotation.Copier;
 
 public class PersonService {
     

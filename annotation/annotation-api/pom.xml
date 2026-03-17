@@ -9,6 +9,7 @@
 
     <groupId>com.acanx.util.annotation</groupId>
     <artifactId>annotation-api</artifactId>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>Annotation-API</name>
     <description>Custom annotation definitions</description>

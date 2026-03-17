@@ -1,4 +1,4 @@
-package com.acanx.util.incubator.annotation;
+package com.acanx.util.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

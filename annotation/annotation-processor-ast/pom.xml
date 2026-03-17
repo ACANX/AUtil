@@ -9,6 +9,7 @@
 
     <groupId>com.acanx.util.annotation</groupId>
     <artifactId>annotation-processor-ast</artifactId>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>Annotation-Processor-AST</name>
     <description>基于 javac 内部 API 的 AST 修改注解处理器</description>
@@ -31,12 +32,11 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-api.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <version>${lombok.version}</version>
-<!--            <scope>provided</scope>-->
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>org.projectlombok</groupId>-->
+<!--            <artifactId>lombok</artifactId>-->
+<!--            <version>${lombok.version}</version>-->
+<!--        </dependency>-->
     </dependencies>
 
     <build>

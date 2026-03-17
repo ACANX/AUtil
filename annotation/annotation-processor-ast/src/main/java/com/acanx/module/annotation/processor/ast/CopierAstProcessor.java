@@ -1,9 +1,8 @@
-package com.acanx.module.annotation.processor.copier.ast;
+package com.acanx.module.annotation.processor.ast;
 
-import com.acanx.util.incubator.annotation.Copier;
+import com.acanx.util.annotation.Copier;
 import com.sun.source.util.Trees;
 import com.sun.source.util.TreePath;
-import com.sun.tools.javac.code.Symbol;
 import com.sun.tools.javac.code.TypeTag;
 import com.sun.tools.javac.processing.JavacProcessingEnvironment;
 import com.sun.tools.javac.tree.JCTree;
@@ -11,7 +10,6 @@ import com.sun.tools.javac.tree.TreeMaker;
 import com.sun.tools.javac.util.Context;
 import com.sun.tools.javac.util.List;
 import com.sun.tools.javac.util.ListBuffer;
-import com.sun.tools.javac.util.Name;
 import com.sun.tools.javac.util.Names;
 
 import javax.annotation.processing.AbstractProcessor;
@@ -24,7 +22,6 @@ import javax.lang.model.type.DeclaredType;
 import javax.lang.model.type.TypeKind;
 import javax.lang.model.type.TypeMirror;
 import javax.tools.Diagnostic;
-import java.lang.annotation.Annotation;
 import javax.lang.model.element.AnnotationValue;
 import javax.lang.model.element.AnnotationMirror;
 import java.util.Arrays;
@@ -47,7 +44,7 @@ import java.util.stream.Collectors;
  *
  * @see Copier.GenerationMode#BYTECODE
  */
-@SupportedAnnotationTypes("com.acanx.util.incubator.annotation.Copier")
+@SupportedAnnotationTypes("com.acanx.util.annotation.Copier")
 @SupportedSourceVersion(SourceVersion.RELEASE_21)
 public class CopierAstProcessor extends AbstractProcessor {
 
@@ -75,7 +72,7 @@ public class CopierAstProcessor extends AbstractProcessor {
         );
 
         // 获取 Copier 注解的类型元素
-        TypeElement copierTypeElement = processingEnv.getElementUtils().getTypeElement("com.acanx.util.incubator.annotation.Copier");
+        TypeElement copierTypeElement = processingEnv.getElementUtils().getTypeElement("com.acanx.util.annotation.Copier");
         if (copierTypeElement == null) {
             processingEnv.getMessager().printMessage(
                     Diagnostic.Kind.ERROR,
