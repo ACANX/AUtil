@@ -2,6 +2,7 @@ package com.acanx.util.annotation;
 
 import com.acanx.meta.model.test.annotation.model.MessageFlex;
 import com.acanx.meta.model.test.annotation.model.MessageStable;
+//import com.acanx.util.annotation.Copier;
 import com.acanx.util.incubator.annotation.Copier;
 
 /**

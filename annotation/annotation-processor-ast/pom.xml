@@ -1,0 +1,93 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.acanx.util</groupId>
+        <artifactId>annotation</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <groupId>com.acanx.util.annotation</groupId>
+    <artifactId>annotation-processor-ast</artifactId>
+    <packaging>jar</packaging>
+    <name>Annotation-Processor-AST</name>
+    <description>基于 javac 内部 API 的 AST 修改注解处理器</description>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <java.version>21</java.version>
+    </properties>
+
+    <dependencies>
+        <!-- Annotation API -->
+        <dependency>
+            <groupId>com.acanx.util.annotation</groupId>
+            <artifactId>annotation-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j-api.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+<!--            <scope>provided</scope>-->
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>UTF-8</encoding>
+                    <fork>true</fork>
+                    <compilerArgs>
+                        <arg>-parameters</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>--add-opens</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>--add-opens</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <arg>--add-opens</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                    </compilerArgs>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <configuration>
+                    <additionalJOptions combine.children="append">
+                        <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</additionalJOption>
+                        <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</additionalJOption>
+                        <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</additionalJOption>
+                        <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</additionalJOption>
+                        <additionalJOption>--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</additionalJOption>
+                        <additionalJOption>--add-opens=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</additionalJOption>
+                        <additionalJOption>--add-opens=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</additionalJOption>
+                    </additionalJOptions>
+                    <failOnError>false</failOnError>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
