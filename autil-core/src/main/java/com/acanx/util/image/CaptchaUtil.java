@@ -1,6 +1,6 @@
 package com.acanx.util.image;
 
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -90,7 +90,7 @@ public class CaptchaUtil {
         Random random = new Random();
         // 将图像填充为白色
         gd.setColor(Color.WHITE);
-        gd.fillRect(Constant.INT_0, Constant.INT_0, width, height);
+        gd.fillRect(Const.INT_0, Const.INT_0, width, height);
 
         // 创建字体，字体的大小应该根据图片的高度来定。
         Font font = new Font("Fixedsys", Font.BOLD, fontHeight);
@@ -99,22 +99,22 @@ public class CaptchaUtil {
 
         // 画边框。
         gd.setColor(Color.BLACK);
-        gd.drawRect(Constant.INT_0, Constant.INT_0, width - Constant.INT_1, height - Constant.INT_1);
+        gd.drawRect(Const.INT_0, Const.INT_0, width - Const.INT_1, height - Const.INT_1);
 
         // 随机产生80条干扰线，使图象中的认证码不易被其它程序探测到。
         gd.setColor(Color.BLACK);
-        for (int i = Constant.INT_0; i < Constant.INT_80; i++) {
+        for (int i = Const.INT_0; i < Const.INT_80; i++) {
             int x = random.nextInt(width);
             int y = random.nextInt(height);
-            int xl = random.nextInt(Constant.INT_82);
-            int yl = random.nextInt(Constant.INT_82);
+            int xl = random.nextInt(Const.INT_82);
+            int yl = random.nextInt(Const.INT_82);
             int x2, y2;
-            if (x % Constant.INT_2 == Constant.INT_1) {
+            if (x % Const.INT_2 == Const.INT_1) {
                 x2 = x + xl;
             } else {
                 x2 = x - xl;
             }
-            if (y % Constant.INT_2 == Constant.INT_1) {
+            if (y % Const.INT_2 == Const.INT_1) {
                 y2 = y + yl;
             } else {
                 y2 = x - yl;
@@ -124,20 +124,20 @@ public class CaptchaUtil {
 
         // randomCode用于保存随机产生的验证码，以便用户登录后进行验证。
         StringBuffer randomCode = new StringBuffer();
-        int red = Constant.INT_0, green = Constant.INT_0, blue = Constant.INT_0;
+        int red = Const.INT_0, green = Const.INT_0, blue = Const.INT_0;
 
         // 随机产生codeCount数字的验证码。
-        for (int i = Constant.INT_0; i < codeCount; i++) {
+        for (int i = Const.INT_0; i < codeCount; i++) {
             // 得到随机产生的验证码数字。
-            String code = String.valueOf(codeSequence[random.nextInt(Constant.INT_36)]);
+            String code = String.valueOf(codeSequence[random.nextInt(Const.INT_36)]);
             // 产生随机的颜色分量来构造颜色值，这样输出的每位数字的颜色值都将不同。
-            red = random.nextInt(Constant.INT_255);
-            green = random.nextInt(Constant.INT_255);
-            blue = random.nextInt(Constant.INT_255);
+            red = random.nextInt(Const.INT_255);
+            green = random.nextInt(Const.INT_255);
+            blue = random.nextInt(Const.INT_255);
 
             // 用随机产生的颜色将验证码绘制到图像中。
             gd.setColor(new Color(red, green, blue));
-            gd.drawString(code, Constant.INT_15 + i * xx, codeY);
+            gd.drawString(code, Const.INT_15 + i * xx, codeY);
 
             // 将产生的四个随机数组合在一起。
             randomCode.append(code);

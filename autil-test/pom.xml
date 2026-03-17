@@ -60,13 +60,24 @@
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
-        <dependency>
-            <groupId>com.acanx.util.annotation</groupId>
-            <artifactId>annotation-processor-ast</artifactId>
-            <version>${revision}</version>
-            <scope>provided</scope>
-        </dependency>
 
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>incubator-annotation</artifactId>
+            <version>${revision}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.acanx.meta.model</groupId>
+            <artifactId>model-test</artifactId>
+            <version>${meta-open.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>incubator-annotation</artifactId>
+            <version>${revision}</version>
+            <scope>compile</scope>
+        </dependency>
 
     </dependencies>
 

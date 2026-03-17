@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -139,7 +139,7 @@ public class IPv4Util {
             return 0;
         }
         // 保留的IPv4地址段（包括私有网络地址）
-        if (!Constant.CHAR_0.equals(checkLocalAreaNetworkIPType(ip))) {
+        if (!Const.CHAR_0.equals(checkLocalAreaNetworkIPType(ip))) {
             return 1; // 局域网地址
         }
 

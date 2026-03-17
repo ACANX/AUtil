@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.PatternConstant;
+import com.acanx.c.PatternConst;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
@@ -52,7 +52,7 @@ public class LongUtil {
      */
     @Alpha
     public static Long getCurrentDateTimeMs() {
-        return Long.parseLong(LocalDateTime.now().format(PatternConstant.FORMATTER_DATETIME3));
+        return Long.parseLong(LocalDateTime.now().format(PatternConst.FORMATTER_DATETIME3));
     }
 
     /**
@@ -62,7 +62,7 @@ public class LongUtil {
      */
     @Alpha
     public static Long getCurrentDateTime() {
-        return Long.parseLong(LocalDateTime.now().format(PatternConstant.FORMATTER_DATETIME2));
+        return Long.parseLong(LocalDateTime.now().format(PatternConst.FORMATTER_DATETIME2));
     }
 
 }

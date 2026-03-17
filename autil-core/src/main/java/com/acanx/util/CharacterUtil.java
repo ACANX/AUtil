@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 
 import java.util.Random;
 
@@ -29,7 +29,7 @@ public class CharacterUtil {
             // 产生0-61的数字
             int number = random.nextInt(62);
             // 将产生的数字通过length次承载到sb中
-            sb.append(Constant.STR_BASE_62.charAt(number));
+            sb.append(Const.STR_BASE_62.charAt(number));
         }
         // 将承载的字符转换成字符串
         return sb.toString();
