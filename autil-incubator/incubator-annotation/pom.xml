@@ -87,13 +87,13 @@
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
                     </compilerArgs>
-                    <annotationProcessorPaths>
-                        <path>
-                            <groupId>com.acanx.util</groupId>
-                            <artifactId>incubator-annotation</artifactId>
-                            <version>${revision}</version>
-                        </path>
-                    </annotationProcessorPaths>
+<!--                    <annotationProcessorPaths>-->
+<!--                        <path>-->
+<!--                            <groupId>com.acanx.util</groupId>-->
+<!--                            <artifactId>incubator-annotation</artifactId>-->
+<!--                            <version>${revision}</version>-->
+<!--                        </path>-->
+<!--                    </annotationProcessorPaths>-->
                 </configuration>
             </plugin>
         </plugins>
