@@ -22,7 +22,6 @@
         <module>annotation-api</module>
         <module>annotation-processor</module>
         <module>annotation-processor-ast</module>
-<!--        <module>annotation-test</module>-->
     </modules>
 
     <dependencies>

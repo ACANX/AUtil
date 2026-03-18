@@ -7,7 +7,7 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>com.acanx.util.annotation</groupId>
+    <groupId>com.acanx.util</groupId>
     <artifactId>annotation-api</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>

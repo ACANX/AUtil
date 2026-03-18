@@ -7,7 +7,7 @@
         <version>${revision}</version>
     </parent>
 
-    <groupId>com.acanx.util.annotation</groupId>
+    <groupId>com.acanx.util</groupId>
     <artifactId>annotation-processor-ast</artifactId>
     <version>${revision}</version>
     <packaging>jar</packaging>
@@ -22,7 +22,7 @@
     <dependencies>
         <!-- Annotation API -->
         <dependency>
-            <groupId>com.acanx.util.annotation</groupId>
+            <groupId>com.acanx.util</groupId>
             <artifactId>annotation-api</artifactId>
             <version>${revision}</version>
         </dependency>
@@ -32,11 +32,13 @@
             <artifactId>slf4j-api</artifactId>
             <version>${slf4j-api.version}</version>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>org.projectlombok</groupId>-->
-<!--            <artifactId>lombok</artifactId>-->
-<!--            <version>${lombok.version}</version>-->
-<!--        </dependency>-->
+        <!-- 使用 AutoService 自动生成 Processor 服务文件 -->
+        <dependency>
+            <groupId>com.google.auto.service</groupId>
+            <artifactId>auto-service</artifactId>
+            <version>1.1.1</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -44,12 +46,13 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
                     <fork>true</fork>
-                    <compilerArgs>
+                    <compilerArgs combine.children="append">
                         <arg>-parameters</arg>
                         <arg>--add-exports</arg>
                         <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
