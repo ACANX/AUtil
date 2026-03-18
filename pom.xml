@@ -34,7 +34,7 @@
     </license>
   </licenses>
   <properties>
-      <revision>0.4.5</revision>
+      <revision>0.4.5.2</revision>
       <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
       <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
       <java.version>21</java.version>
@@ -50,7 +50,6 @@
       <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
 
       <meta-open.version>0.6.8</meta-open.version>
-
       <slf4j-api.version>2.0.17</slf4j-api.version>
       <lombok.version>1.18.44</lombok.version>
 

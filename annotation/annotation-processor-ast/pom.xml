@@ -24,7 +24,7 @@
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>annotation-api</artifactId>
-            <version>${revision}</version>
+            <version>0.4.5.2</version>
         </dependency>
 
         <dependency>
@@ -90,6 +90,24 @@
                     </additionalJOptions>
                     <failOnError>false</failOnError>
                 </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>flatten-maven-plugin</artifactId>
+                <version>1.7.3</version>
+                <configuration>
+                    <updatePomFile>true</updatePomFile>
+                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>flatten</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>flatten</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
