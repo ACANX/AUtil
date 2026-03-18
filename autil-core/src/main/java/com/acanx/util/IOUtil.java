@@ -1,6 +1,6 @@
 package com.acanx.util;
 
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -57,7 +57,7 @@ public class IOUtil {
      * @throws IOException   IOException
      */
     public static long copyLarge(Reader input, Writer output) throws IOException {
-        return copyLarge(input, output, new char[Constant.INT_4096]);
+        return copyLarge(input, output, new char[Const.INT_4096]);
     }
 
     /**
@@ -73,7 +73,7 @@ public class IOUtil {
         long count;
         int n;
         for(count = 0L; -1 != (n = input.read(buffer)); count += (long)n) {
-            output.write(buffer, Constant.INT_0, n);
+            output.write(buffer, Const.INT_0, n);
         }
         return count;
     }

@@ -15,7 +15,7 @@
     <packaging>jar</packaging>
     <name>JSON-Gson</name>
     <description>JSON-Gson 工具库</description>
-    <url>https://acanx.com</url>
+    <url>https://github.com/ACANX/AUtil</url>
 
     <dependencies>
         <dependency>
@@ -36,7 +36,7 @@
         <dependency>
             <groupId>com.acanx.meta.model</groupId>
             <artifactId>model-test</artifactId>
-            <version>0.1.0</version>
+            <version>${meta-open.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

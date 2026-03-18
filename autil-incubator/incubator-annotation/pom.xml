@@ -9,61 +9,42 @@
 
     <groupId>com.acanx.util</groupId>
     <artifactId>incubator-annotation</artifactId>
-    <version>0.2.0.0-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>Incubator-Annotation</name>
     <description>AUtil Incubator Annotation Module</description>
     <url>https://acanx.com</url>
 
     <properties>
-        <java.version>11</java.version>
+        <java.version>21</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.release>11</maven.compiler.release>
-        <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
+        <useIncrementalCompilation>false</useIncrementalCompilation>
+        <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>com.squareup</groupId>
-            <artifactId>javapoet</artifactId>
-            <version>1.13.0</version>
-        </dependency>
 <!--        <dependency>-->
-<!--            <groupId>org.ow2.asm</groupId>-->
-<!--            <artifactId>asm</artifactId>-->
-<!--            <version>9.5</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>org.ow2.asm</groupId>-->
-<!--            <artifactId>asm-commons</artifactId>-->
-<!--            <version>9.5</version>-->
-<!--        </dependency>-->
-<!--        <dependency>-->
-<!--            <groupId>com.google.auto.service</groupId>-->
-<!--            <artifactId>auto-service</artifactId>-->
-<!--            <version>1.1.1</version>-->
-<!--            &lt;!&ndash; 编译时使用，无需传递到运行时 &ndash;&gt;-->
-<!--            <scope>provided</scope>-->
-<!--            &lt;!&ndash; 或 &ndash;&gt;-->
-<!--            <optional>true</optional>-->
+<!--            <groupId>com.squareup</groupId>-->
+<!--            <artifactId>javapoet</artifactId>-->
+<!--            <version>1.13.0</version>-->
 <!--        </dependency>-->
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
             <version>${revision}</version>
         </dependency>
-        <!-- 注解处理器支持 -->
-<!--        <dependency>-->
-<!--            <groupId>org.apache.maven.plugins</groupId>-->
-<!--            <artifactId>maven-compiler-plugin</artifactId>-->
-<!--            <version>3.14.0</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-api</artifactId>
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.acanx.meta.model</groupId>-->
+<!--            <artifactId>model-test</artifactId>-->
+<!--            <version>0.5.7-SNAPSHOT</version>-->
+<!--            <scope>compile</scope>-->
+<!--        </dependency>-->
     </dependencies>
 
 
@@ -81,14 +62,38 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
-                    <annotationProcessorPaths>
-                        <!-- 确保注解处理器路径包含你的处理器 -->
-                        <path>
-                            <groupId>com.acanx.util</groupId>
-                            <artifactId>incubator-annotation</artifactId>
-                            <version>0.2.0.0-SNAPSHOT</version>
-                        </path>
-                    </annotationProcessorPaths>
+                    <encoding>UTF-8</encoding>
+                    <useIncrementalCompilation>false</useIncrementalCompilation>
+                    <compilerArgs>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
+                        <arg>--add-exports</arg>
+                        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
+                        <!-- 打开模块访问权限 -->
+                        <!-- 强制打开模块访问 -->
+                        <arg>--add-opens=jdk.compiler/com.sun.tools.javac.util=com.acanx.util.incubator.annotation</arg>
+                        <!-- 为注解处理器运行时提供权限 -->
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                        <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
+                        <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
+                    </compilerArgs>
+<!--                    <annotationProcessorPaths>-->
+<!--                        <path>-->
+<!--                            <groupId>com.acanx.util</groupId>-->
+<!--                            <artifactId>incubator-annotation</artifactId>-->
+<!--                            <version>${revision}</version>-->
+<!--                        </path>-->
+<!--                    </annotationProcessorPaths>-->
                 </configuration>
             </plugin>
         </plugins>

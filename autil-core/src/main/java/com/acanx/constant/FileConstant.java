@@ -6,6 +6,7 @@ package com.acanx.constant;
  *   @since 0.0.1.10
  *
  */
+@Deprecated
 public class FileConstant {
 
 

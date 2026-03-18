@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class GsonUtil {
 
-    private static Gson gson = new GsonBuilder().create();
+    private static Gson gson = new GsonBuilder().registerTypeAdapter(LocalDateTime.class, new Iso8601Adapter()).create();
 
 
     /**

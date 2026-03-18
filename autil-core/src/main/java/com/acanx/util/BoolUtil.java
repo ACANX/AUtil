@@ -2,7 +2,7 @@ package com.acanx.util;
 
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 
 /**
  *  Boolean类型工具类
@@ -41,9 +41,9 @@ public class BoolUtil {
      */
     public static Boolean strToBoolean(String bool) {
         switch (bool) {
-            case Constant.STR_TRUE:
+            case Const.STR_TRUE:
                 return true;
-            case Constant.STR_FALSE:
+            case Const.STR_FALSE:
                 return false;
             default:
                 return null;

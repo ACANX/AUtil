@@ -1,6 +1,6 @@
 package com.acanx.util.json.impl;
 
-import com.acanx.common.model.property.Entry;
+import com.acanx.util.model.property.Entry;
 import com.acanx.meta.model.test.json.model.SecurityMetaData;
 import com.acanx.util.StringUtil;
 import com.acanx.util.json.FastJSON2Util;

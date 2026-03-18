@@ -1,6 +1,6 @@
 package com.acanx.util.http;
 
-import com.acanx.constant.HTTPC;
+import com.acanx.c.HTTPConst;
 
 import java.util.List;
 import java.util.Map;
@@ -108,7 +108,7 @@ public class HResponse {
         if (headers == null){
             return null;
         }
-        List<String> cookieHeaders = headers.get(HTTPC.SET_COOKIE);
+        List<String> cookieHeaders = headers.get(HTTPConst.SET_COOKIE);
         if (cookieHeaders == null){
             return null;
         }
