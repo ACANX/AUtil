@@ -57,6 +57,8 @@ public class CopierAstProcessor extends AbstractProcessor {
     @Override
     public synchronized void init(javax.annotation.processing.ProcessingEnvironment processingEnv) {
         super.init(processingEnv);
+        System.out.println("processingEnv class: " + processingEnv.getClass());
+        System.out.println("processingEnv class loader: " + processingEnv.getClass().getClassLoader());
         this.javacEnv = (JavacProcessingEnvironment) processingEnv;
         this.context = javacEnv.getContext();
         this.treeMaker = TreeMaker.instance(context);
