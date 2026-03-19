@@ -62,7 +62,7 @@
                 <configuration>
                     <flattenedPomFilename>pom-xml-flattened</flattenedPomFilename>
                     <updatePomFile>true</updatePomFile>
-                    <flattenMode>resolveCiFriendliesOnly</flattenMode>
+                    <flattenMode>ossrh</flattenMode>
                 </configuration>
                 <executions>
                     <execution>
