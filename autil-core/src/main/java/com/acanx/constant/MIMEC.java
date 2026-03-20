@@ -5,6 +5,7 @@ package com.acanx.constant;
  *  MIME常量
  *
  */
+@Deprecated
 public class MIMEC {
 
 

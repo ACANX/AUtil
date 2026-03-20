@@ -21,13 +21,13 @@
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>${revision}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>json-core</artifactId>
-            <version>${revision}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
@@ -37,7 +37,7 @@
         <dependency>
             <groupId>com.acanx.meta.model</groupId>
             <artifactId>model-test</artifactId>
-            <version>0.1.0</version>
+            <version>${meta-open.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

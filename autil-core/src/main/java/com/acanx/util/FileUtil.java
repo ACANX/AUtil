@@ -14,6 +14,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
+import java.net.URI;
 import java.nio.channels.Channels;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -170,6 +171,54 @@ public class FileUtil {
 
 
     /**
+     *   重载方法，支持传入多个目录
+     * @param dirPath  入口文件夹
+     * @return     文件集合
+     */
+    @Alpha
+    public static List<String> getFileList(String dirPath) {
+        List<String> list = new ArrayList<String>();
+        File dir = new File(dirPath);
+        if (dir.isDirectory() && null != dir.listFiles() && dir.listFiles().length > 0) {
+            for (File file : dir.listFiles()) {
+                if (file.isDirectory()){
+                    List<String> fileList = getFileList(file.getAbsolutePath());
+                    list.addAll(fileList);
+                } else {
+                    list.add(file.getAbsolutePath());
+                }
+            }
+        }
+        return list;
+    }
+
+
+    /**
+     *   重载方法，支持传入多个目录
+     * @param dirUri  入口文件夹
+     * @return     文件URI集合
+     */
+    @Alpha
+    public static List<URI> getFileList(URI dirUri) {
+        List<URI> list = new ArrayList<URI>();
+        File dir = new File(dirUri.getPath());
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (null != files && files.length > 0) {
+                for(File file : files){
+                    if (file.isFile()){
+                        list.add(file.toURI());
+                    } else {
+                        list.addAll(getFileList(file.toURI()));
+                    }
+                }
+            }
+        }
+        return list;
+    }
+
+
+    /**
      *   获取过滤后的文件列表
      *
      * @param dir          入口文件
@@ -179,13 +228,47 @@ public class FileUtil {
     @Alpha
     public static List<File> getFilteredFileList(File dir, FileFilter fileFilter){
         List<File> fileList = new ArrayList<File>();
-        for(File file : dir.listFiles()){
-            if (file.isFile()){
-                if(fileFilter.accept(file)){
-                    fileList.add(file);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles();
+            if (null != files && files.length > 0) {
+                for(File file : files){
+                    if (file.isFile()){
+                        if(fileFilter.accept(file)){
+                            fileList.add(file);
+                        }
+                    } else {
+                        fileList.addAll(getFilteredFileList(file, fileFilter));
+                    }
                 }
-            } else {
-                fileList.addAll(getFilteredFileList(file, fileFilter));
+            }
+        }
+        return fileList;
+    }
+
+
+    /**
+     *   获取过滤后的文件列表
+     *
+     * @param dirPath          入口文件
+     * @param fileFilter   过滤器实现类
+     * @return             过滤后的文件集合
+     */
+    @Alpha
+    public static List<String> getFilteredFileList(String dirPath, FileFilter fileFilter){
+        List<String> fileList = new ArrayList<String>();
+        File dir = new File(dirPath);
+        if (dir.exists() && dir.isDirectory()) {
+            File[] files = dir.listFiles(fileFilter);
+            if (null != files && files.length > 0) {
+                for(File file : files){
+                    if (file.isFile()){
+                        if(fileFilter.accept(file)){
+                            fileList.add(file.getAbsolutePath());
+                        }
+                    } else {
+                        fileList.addAll(getFilteredFileList(file.getAbsolutePath(), fileFilter));
+                    }
+                }
             }
         }
         return fileList;
@@ -677,6 +760,11 @@ public class FileUtil {
     }
 
 
+    /**
+     *  递归删除空目录
+     *
+     * @param f  需要删除的基础目录
+     */
     public static void deleteEmptyDir(File f) {
         if (f.isDirectory()) {
             if (f.listFiles().length == 0){
@@ -727,5 +815,57 @@ public class FileUtil {
             return flag;
         }
     }
+
+
+
+
+    /**
+     *  移动文件操作（非原子操作）
+     *
+     * @param fileSrc      原始文件
+     * @param fileDest     目标文件
+     * @throws IOException 异常信息
+     */
+    public static void move(File fileSrc, File fileDest) throws IOException {
+        checkBeforeMove(fileSrc, fileDest);
+        Files.move(fileSrc.toPath(), fileDest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        // FileUtils.copyFile(fileSrc, fileDest);
+        System.out.println("目标文件成功拷贝到 " + fileDest.toPath().toUri().toString());
+        // FileUtil.deleteFile(fileSrc);
+        System.out.println("原始文件已成功删除 " + fileSrc.toPath().toUri().toString());
+    }
+
+    /**
+     *    文件移动 原子操作  需要在同一物理磁盘分区下操作
+     *
+     * @param fileSrc   原始文件
+     * @param fileDest  目标文件
+     * @throws IOException   异常信息
+     */
+    public static void moveAtomic(File fileSrc, File fileDest) throws IOException {
+        checkBeforeMove(fileSrc, fileDest);
+        // ATOMIC_MOVE
+        Files.move(fileSrc.toPath(), fileDest.toPath(), StandardCopyOption.ATOMIC_MOVE);
+    }
+
+    /**
+     *    移动前的检查
+     *
+     * @param fileSrc   原始文件
+     * @param fileDest  目标文件
+     */
+    private static void checkBeforeMove(File fileSrc, File fileDest) {
+        if (!fileSrc.exists()) {
+            System.out.println("源文件不存在 " + fileSrc.toPath().toUri());
+        }
+        if (!fileDest.exists()) {
+            if (!fileDest.getParentFile().exists()) {
+                fileDest.getParentFile().mkdirs();
+                System.out.println("文件夹已创建 "+ fileDest.getParentFile().toPath().toUri());
+            }
+            System.out.println("目标文件不存在 " + fileDest.toPath().toUri());
+        }
+    }
+
 
 }

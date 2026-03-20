@@ -1,10 +1,12 @@
 package com.acanx.util.json;
 
 import com.acanx.annotation.Alpha;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
+import com.fasterxml.jackson.databind.MapperFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -106,6 +108,10 @@ public class JacksonUtil {
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     // 空对象不报错
                     .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
+                    // 禁用美化输出
+                    .configure(SerializationFeature.INDENT_OUTPUT, false)
+                    // 通过setSerializationInclusion方法设置全局忽略null值
+                    .setSerializationInclusion(JsonInclude.Include.NON_NULL)
                     // 日期格式（按需设置）
                     .findAndRegisterModules();
             return mapper.writeValueAsString(object);
@@ -248,6 +254,10 @@ public class JacksonUtil {
                     // 以下为可选配置（根据需求调整）
                     // 显式注册Java 8日期模块
                     .registerModule(createJavaTimeModule())
+                    // 设置命名策略：下划线转小驼峰
+                    .setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
+                    // 启用特性，支持更灵活的名称匹配
+                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true)
                     // 允许反序列化未知字段
                     .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false)
                     // 空对象不报错

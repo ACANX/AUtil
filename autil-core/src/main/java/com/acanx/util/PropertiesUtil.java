@@ -1,8 +1,8 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.common.model.property.Property;
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
+import com.acanx.util.model.property.Property;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -108,7 +108,7 @@ public class PropertiesUtil {
             Map<String, Property> configMap = new HashMap<String, Property>();
             List<String> configList;
             try {
-                configList = FileUtil.readLines(file, Constant.UTF_8);
+                configList = FileUtil.readLines(file, Const.UTF_8);
                 for (int i = 0; i < configList.size(); i++) {
                     String line = configList.get(i);
                     String[] keyValue = line.split("=");
@@ -155,7 +155,7 @@ public class PropertiesUtil {
         List<String> propList;
         List<String> montagedPropList = new ArrayList<>();
         try {
-            propList = FileUtil.readLines(file, Constant.UTF_8);
+            propList = FileUtil.readLines(file, Const.UTF_8);
 
             int lineCount = 1;
             String montageStr = "";

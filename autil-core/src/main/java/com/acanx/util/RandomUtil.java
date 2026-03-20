@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.Constant;
+import com.acanx.c.Const;
 
 import java.util.Random;
 
@@ -27,7 +27,7 @@ public class RandomUtil {
     public static String getRandomStr(int length){
         StringBuffer sb=new StringBuffer();
         for (int i = 0; i <length ; i++) {
-            sb.append(Constant.STR_BASE_62.charAt(((int)(Math.random() * Constant.STR_BASE_62.length()))));
+            sb.append(Const.STR_BASE_62.charAt(((int)(Math.random() * Const.STR_BASE_62.length()))));
         }
         return sb.toString();
     }
@@ -153,7 +153,7 @@ public class RandomUtil {
             //产生0-61的数字
             int number = random.nextInt(10);
             //将产生的数字通过length次承载到sb中
-            sb.append(Constant.STR_BASE_10.charAt(number));
+            sb.append(Const.STR_BASE_10.charAt(number));
         }
         // 将承载的字符转换成字符串
         return sb.toString();

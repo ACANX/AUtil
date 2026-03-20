@@ -1,8 +1,8 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.Constant;
-import com.acanx.constant.PatternConstant;
+import com.acanx.c.Const;
+import com.acanx.c.PatternConst;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -63,14 +63,14 @@ public class LocalDateTimeUtil {
     @Alpha
     public static String toDateStr(LocalDateTime date, String splitChar) {
         if (StringUtil.isBlank(splitChar)){
-            return date.format(PatternConstant.FORMATTER_DATE2);
+            return date.format(PatternConst.FORMATTER_DATE2);
         } else {
-            if (Constant.STR_HYPHEN.equals(splitChar)){
-                return date.format(PatternConstant.FORMATTER_DATE);
-            } else if (Constant.STR_FORWARD_SLASH.equals(splitChar)) {
-                return date.format(PatternConstant.FORMATTER_DATE3);
+            if (Const.STR_HYPHEN.equals(splitChar)){
+                return date.format(PatternConst.FORMATTER_DATE);
+            } else if (Const.STR_FORWARD_SLASH.equals(splitChar)) {
+                return date.format(PatternConst.FORMATTER_DATE3);
             } else {
-                return date.format(DateTimeFormatter.ofPattern(String.format("yyyy%sMM%sdd", splitChar)));
+                return date.format(DateTimeFormatter.ofPattern(String.format("yyyy%sMM%sdd", splitChar, splitChar)));
             }
         }
     }
@@ -83,7 +83,7 @@ public class LocalDateTimeUtil {
      */
     @Alpha
     public static Integer toIntDate(LocalDateTime date) {
-        return Integer.parseInt(date.format(PatternConstant.FORMATTER_DATE2));
+        return Integer.parseInt(date.format(PatternConst.FORMATTER_DATE2));
     }
 
     /**
@@ -114,7 +114,7 @@ public class LocalDateTimeUtil {
      */
     public static String toRfc822DateTimeString(LocalDateTime localDateTime) {
         // 定义 RFC 822 格式的 DateTimeFormatter
-        DateTimeFormatter rfc822Formatter = PatternConstant.FORMATTER_DATETIME_RFC822
+        DateTimeFormatter rfc822Formatter = PatternConst.FORMATTER_DATETIME_RFC822
                 .withZone(ZoneId.of("UTC"))
                 .withLocale(Locale.US);
         // 将 LocalDateTime 转换为 ZonedDateTime，指定时区为 UTC (GMT)

@@ -1,9 +1,8 @@
 package com.acanx.util.http;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.HTTPC;
-import com.acanx.constant.MIMEC;
-import com.acanx.util.CollectionUtil;
+import com.acanx.c.HTTPConst;
+import com.acanx.c.MimeConst;
 import com.acanx.util.URLUtil;
 import com.acanx.util.StringUtil;
 
@@ -67,7 +66,7 @@ public class BaseHTTP {
                                     config.getReadTimeout() : DEFAULT_READ_TIMEOUT));
             // 4. 设置请求方法及请求体
             String method = config.getMethod().toUpperCase();
-            boolean isBodyAllowed = (!HTTPC.GET.equalsIgnoreCase(method) && !HTTPC.DELETE.equalsIgnoreCase(method));
+            boolean isBodyAllowed = (!HTTPConst.GET.equalsIgnoreCase(method) && !HTTPConst.DELETE.equalsIgnoreCase(method));
             if (isBodyAllowed && StringUtil.isNotBlank(config.getBody())) {
                 requestBuilder.method(method, HttpRequest.BodyPublishers.ofString(config.getBody()));
             } else {
@@ -233,7 +232,7 @@ public class BaseHTTP {
      */
     @Alpha
     public static HResponse post(String url, Map<String, String> params, Map<String, String> cookie, Map<String, String> headers, String body) {
-        return getHttpResponse(HRequest.builder().method(HTTPC.POST).url(url).params(params).contentType(MIMEC.JSON).cookies(cookie).headers(headers).body(body).build());
+        return getHttpResponse(HRequest.builder().method(HTTPConst.POST).url(url).params(params).contentType(MimeConst.JSON).cookies(cookie).headers(headers).body(body).build());
     }
 
 
@@ -249,7 +248,7 @@ public class BaseHTTP {
         String formBody = formData.entrySet().stream()
                 .map(e -> URLUtil.encodeParameter(e.getKey(), e.getValue()))
                 .collect(Collectors.joining("&"));
-        return getHttpResponse(HRequest.builder().method(HTTPC.POST).url(url).contentType(MIMEC.X_WWW_FORM_URLENCODED).body(formBody).build());
+        return getHttpResponse(HRequest.builder().method(HTTPConst.POST).url(url).contentType(MimeConst.X_WWW_FORM_URLENCODED).body(formBody).build());
     }
 
     /**
