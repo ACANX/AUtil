@@ -77,6 +77,6 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 - It is recommended to upgrade to JDK11 for better results
 
 # Referance
-- [Meta-Open Overview - Sonatype](https://central.sonatype.com/artifact/com.acanx.util/autil/overview)
+- [AUtil Overview - Sonatype](https://central.sonatype.com/artifact/com.acanx.util/autil/overview)
 - [AUtil-Core - MvnRepository](https://mvnrepository.com/artifact/com.acanx.util/autil-core)
 - [AUtil-Core - MvnRepository](https://mvnrepository.com/artifact/com.acanx.util/autil-core)
