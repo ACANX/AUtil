@@ -78,5 +78,5 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 
 # Referance
 - [AUtil Overview - Sonatype](https://central.sonatype.com/artifact/com.acanx.util/autil/overview)
-- [AUtil-Core - MvnRepository](https://mvnrepository.com/artifact/com.acanx.util/autil-core)
+- [AUtil - MvnRepository](https://mvnrepository.com/artifact/com.acanx.util/autil)
 - [AUtil-Core - MvnRepository](https://mvnrepository.com/artifact/com.acanx.util/autil-core)
