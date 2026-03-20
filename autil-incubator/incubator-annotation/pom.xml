@@ -23,11 +23,6 @@
     </properties>
 
     <dependencies>
-<!--        <dependency>-->
-<!--            <groupId>com.squareup</groupId>-->
-<!--            <artifactId>javapoet</artifactId>-->
-<!--            <version>1.13.0</version>-->
-<!--        </dependency>-->
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
@@ -39,12 +34,6 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.acanx.meta.model</groupId>-->
-<!--            <artifactId>model-test</artifactId>-->
-<!--            <version>0.5.7-SNAPSHOT</version>-->
-<!--            <scope>compile</scope>-->
-<!--        </dependency>-->
     </dependencies>
 
 
@@ -87,13 +76,6 @@
                         <arg>-J--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
                         <arg>-J--add-opens=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</arg>
                     </compilerArgs>
-<!--                    <annotationProcessorPaths>-->
-<!--                        <path>-->
-<!--                            <groupId>com.acanx.util</groupId>-->
-<!--                            <artifactId>incubator-annotation</artifactId>-->
-<!--                            <version>${revision}</version>-->
-<!--                        </path>-->
-<!--                    </annotationProcessorPaths>-->
                 </configuration>
             </plugin>
         </plugins>

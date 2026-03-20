@@ -24,32 +24,6 @@
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
-
-
-        <dependency>
-            <groupId>org.junit.jupiter</groupId>
-            <artifactId>junit-jupiter</artifactId>
-            <version>${junit-jupiter.version}</version>
-            <scope>test</scope>
-        </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.acanx.util</groupId>-->
-<!--            <artifactId>incubator-core</artifactId>-->
-<!--            <version>${revision}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-
-<!--        <dependency>-->
-<!--            <groupId>com.acanx.util</groupId>-->
-<!--            <artifactId>incubator-annotation</artifactId>-->
-<!--            <version>${revision}</version>-->
-<!--            <scope>test</scope>-->
-<!--        </dependency>-->
-        <dependency>
-            <groupId>com.acanx.meta.model</groupId>
-            <artifactId>model-test</artifactId>
-            <version>0.5.8</version>
-        </dependency>
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>annotation-api</artifactId>
@@ -62,7 +36,12 @@
             <version>${meta-open.version}</version>
         </dependency>
 
-
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
