@@ -6,7 +6,6 @@
         <groupId>com.acanx.util</groupId>
         <artifactId>autil</artifactId>
         <version>${revision}</version>
-        <relativePath>../pom.xml</relativePath>
     </parent>
 
     <groupId>com.acanx.util</groupId>
@@ -15,7 +14,7 @@
     <packaging>pom</packaging>
     <name>AUtil-JSON</name>
     <description>AUtil-JSON POM</description>
-    <url>https://acanx.com</url>
+    <url>https://github.com/ACANX/AUtil</url>
 
 
     <modules>

@@ -1,6 +1,6 @@
 package com.acanx.util.http;
 
-import com.acanx.constant.HTTPC;
+import com.acanx.c.HTTPConst;
 import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
@@ -36,11 +36,11 @@ class BaseHttpTest {
     void postJson() {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "Bearer abc123");
-        headers.put(HTTPC.CONTENT_TYPE, "application/json");
+        headers.put(HTTPConst.CONTENT_TYPE, "application/json");
         Map<String, String> cookies = new HashMap<>();
         cookies.put("sessionId", "xyz789");
         // 这里需要重新实现
-        headers.put(HTTPC.COOKIE, cookies.toString());
+        headers.put(HTTPConst.COOKIE, cookies.toString());
         String jsonBody = "{\"username\":\"admin\",\"password\":\"123456\"}";
         HResponse response1 = BaseHTTP.post("https://httpbin.org/post", headers, jsonBody);
         System.out.println(response1.getBody());

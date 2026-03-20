@@ -15,44 +15,19 @@
     <packaging>jar</packaging>
     <name>JSON-Fastjson</name>
     <description>JSON-Fastjson 工具库</description>
-    <url>https://acanx.com</url>
-
-<!--    <scm>-->
-<!--        <tag>V0.2.x</tag>-->
-<!--        <url>git@github.com:ACANX/AUtil.git</url>-->
-<!--        <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>-->
-<!--        <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>-->
-<!--    </scm>-->
-<!--    <organization>-->
-<!--        <name>ACANX</name>-->
-<!--        <url>https://acanx.com</url>-->
-<!--    </organization>-->
-<!--    <developers>-->
-<!--        <developer>-->
-<!--            <name>ACANX</name>-->
-<!--            <email>acanx@qq.com</email>-->
-<!--            <organization>ACANX</organization>-->
-<!--        </developer>-->
-<!--    </developers>-->
-<!--    <licenses>-->
-<!--        <license>-->
-<!--            <name>The Apache Software License, Version 2.0</name>-->
-<!--            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>-->
-<!--            <distribution>repo</distribution>-->
-<!--        </license>-->
-<!--    </licenses>-->
+    <url>https://github.com/ACANX/AUtil</url>
 
     <dependencies>
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>${revision}</version>
+            <version>${project.parent.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>json-core</artifactId>
-            <version>${revision}</version>
+            <version>${project.parent.version}</version>
         </dependency>
         <dependency>
             <groupId>com.alibaba.fastjson2</groupId>
@@ -62,7 +37,7 @@
         <dependency>
             <groupId>com.acanx.meta.model</groupId>
             <artifactId>model-test</artifactId>
-            <version>0.1.0</version>
+            <version>${meta-open.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>

@@ -1,4 +1,5 @@
-<?xml version="1.0" encoding="UTF-8"?><project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.acanx.util</groupId>
   <artifactId>autil</artifactId>
@@ -6,10 +7,10 @@
   <packaging>pom</packaging>
   <name>AUtil</name>
   <description>AUtil(ACANX-Util) POM</description>
-  <url>https://github.com:ACANX/AUtil</url>
+  <url>https://github.com/ACANX/AUtil</url>
   <inceptionYear>2019</inceptionYear>
   <scm>
-    <tag>V0.2.x</tag>
+    <tag>V0.4.x</tag>
     <url>git@github.com:ACANX/AUtil.git</url>
     <connection>scm:git:git@github.com:ACANX/AUtil.git</connection>
     <developerConnection>scm:git:git@github.com:ACANX/AUtil.git</developerConnection>
@@ -33,38 +34,63 @@
     </license>
   </licenses>
   <properties>
-    <revision>0.2.1.0</revision>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-    <java.version>11</java.version>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
-    <maven-compiler-plugin.version>3.14.0</maven-compiler-plugin.version>
-    <maven-deploy-plugin.version>3.1.2</maven-deploy-plugin.version>
-    <maven-surefire-plugin.version>3.5.0</maven-surefire-plugin.version>
-    <maven-source-plugin.version>3.3.1</maven-source-plugin.version>
-    <maven-javadoc-plugin.version>3.10.0</maven-javadoc-plugin.version>
-    <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
-    <acanx-utils.version>0.2.1.0</acanx-utils.version>
-    <fastjson2.version>2.0.57</fastjson2.version>
-    <jackson.version>2.19.1</jackson.version>
-    <gson.version>2.11.0</gson.version>
-    <central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
-    <junit-jupiter.version>5.13.2</junit-jupiter.version>
+      <revision>0.4.5.2</revision>
+      <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+      <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+      <java.version>21</java.version>
+      <maven.compiler.source>21</maven.compiler.source>
+      <maven.compiler.target>21</maven.compiler.target>
+      <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+      <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
+      <maven-surefire-plugin.version>3.5.5</maven-surefire-plugin.version>
+      <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
+      <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
+      <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
+      <flatten-maven-plugin.version>1.2.1</flatten-maven-plugin.version>
+      <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
+
+      <meta-open.version>0.6.9</meta-open.version>
+      <slf4j-api.version>2.0.17</slf4j-api.version>
+      <lombok.version>1.18.44</lombok.version>
+
+      <fastjson2.version>2.0.61</fastjson2.version>
+      <jackson.version>2.21.1</jackson.version>
+      <gson.version>2.13.2</gson.version>
+      <junit-jupiter.version>6.0.3</junit-jupiter.version>
   </properties>
-  <modules>
-    <module>autil-core</module>
-    <module>autil-json</module>
-    <!-- <module>autil-incubator</module> -->
-  </modules>
-  <dependencies>
-    <dependency>
-      <groupId>org.junit.jupiter</groupId>
-      <artifactId>junit-jupiter-api</artifactId>
-      <version>${junit-jupiter.version}</version>
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
+
+    <modules>
+        <module>autil-core</module>
+        <module>autil-json</module>
+        <module>autil-incubator</module>
+        <module>annotation</module>
+        <module>autil-test</module>
+    </modules>
+    <dependencies>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit-jupiter.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+
+   <repositories>
+       <repository>
+           <id>sonatype-snapshots</id>
+           <name>Sonatype Snapshot Repository</name>
+           <url>https://central.sonatype.com/repository/maven-snapshots/</url>
+           <releases>
+               <enabled>false</enabled>
+           </releases>
+           <snapshots>
+               <enabled>true</enabled>
+               <updatePolicy>always</updatePolicy>
+           </snapshots>
+       </repository>
+    </repositories>
+
   <build>
     <plugins>
       <plugin>
@@ -75,7 +101,7 @@
           <target>${java.version}</target>
         </configuration>
       </plugin>
-      <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
+      <!-- 生成 Javadoc，关闭 doclint,避免注解检查不通过 -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
@@ -90,11 +116,11 @@
               <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
               <!-- <aggregate>true</aggregate>-->
               <charset>${project.build.sourceEncoding}</charset>
-              <!-- utf-8读取文件 -->
+              <!-- utf-8 读取文件 -->
               <encoding>${project.build.sourceEncoding}</encoding>
-              <!-- utf-8进行编码代码 -->
+              <!-- utf-8 进行编码代码 -->
               <docencoding>${project.build.sourceEncoding}</docencoding>
-              <!-- utf-8进行编码文档 -->
+              <!-- utf-8 进行编码文档 -->
             </configuration>
           </execution>
         </executions>
@@ -102,11 +128,10 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>flatten-maven-plugin</artifactId>
-        <version>1.6.0</version>
+        <version>${flatten-maven-plugin.version}</version>
         <configuration>
-          <!--  是否更新pom文件，此处还有更高级的用法-->
           <updatePomFile>true</updatePomFile>
-          <flattenMode>resolveCiFriendliesOnly</flattenMode>
+          <flattenMode>ossrh</flattenMode>
         </configuration>
         <executions>
           <execution>
@@ -146,11 +171,10 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>flatten-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <version>${flatten-maven-plugin.version}</version>
             <configuration>
-              <!--  是否更新pom文件，此处还有更高级的用法-->
               <updatePomFile>true</updatePomFile>
-              <flattenMode>resolveCiFriendliesOnly</flattenMode>
+              <flattenMode>ossrh</flattenMode>
             </configuration>
             <executions>
               <execution>
@@ -174,7 +198,7 @@
             <artifactId>maven-surefire-plugin</artifactId>
             <version>${maven-surefire-plugin.version}</version>
           </plugin>
-          <!-- 生成Source jar文件 -->
+          <!-- 生成 Source jar 文件 -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
@@ -188,7 +212,7 @@
               </execution>
             </executions>
           </plugin>
-          <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
+          <!-- 生成 Javadoc，关闭 doclint,避免注解检查不通过 -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
@@ -203,11 +227,11 @@
                   <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
                   <!-- <aggregate>true</aggregate>-->
                   <charset>${project.build.sourceEncoding}</charset>
-                  <!-- utf-8读取文件 -->
+                  <!-- utf-8 读取文件 -->
                   <encoding>${project.build.sourceEncoding}</encoding>
-                  <!-- utf-8进行编码代码 -->
+                  <!-- utf-8 进行编码代码 -->
                   <docencoding>${project.build.sourceEncoding}</docencoding>
-                  <!-- utf-8进行编码文档 -->
+                  <!-- utf-8 进行编码文档 -->
                 </configuration>
               </execution>
             </executions>
@@ -219,7 +243,7 @@
     <profile>
       <id>product</id>
     </profile>
-    <!-- 发布到 Maven中央仓库 -->
+    <!-- 发布到 Maven 中央仓库 (Release) -->
     <profile>
       <id>sonatype-oss-release</id>
       <!-- 设为默认profile 开始 -->
@@ -241,11 +265,10 @@
           <plugin>
             <groupId>org.codehaus.mojo</groupId>
             <artifactId>flatten-maven-plugin</artifactId>
-            <version>1.6.0</version>
+            <version>${flatten-maven-plugin.version}</version>
             <configuration>
-              <!--  是否更新pom文件，此处还有更高级的用法-->
               <updatePomFile>true</updatePomFile>
-              <flattenMode>resolveCiFriendliesOnly</flattenMode>
+              <flattenMode>ossrh</flattenMode>
             </configuration>
             <executions>
               <execution>
@@ -264,7 +287,7 @@
               </execution>
             </executions>
           </plugin>
-          <!-- 生成Source jar文件 -->
+          <!-- 生成 Source jar 文件 -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-source-plugin</artifactId>
@@ -278,7 +301,7 @@
               </execution>
             </executions>
           </plugin>
-          <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
+          <!-- 生成 Javadoc -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-javadoc-plugin</artifactId>
@@ -290,14 +313,9 @@
                   <goal>jar</goal>
                 </goals>
                 <configuration>
-                  <!-- <additionalparam>-Xdoclint:none</additionalparam> -->
-                  <!-- <aggregate>true</aggregate> -->
                   <charset>${project.build.sourceEncoding}</charset>
-                  <!-- utf-8读取文件 -->
                   <encoding>${project.build.sourceEncoding}</encoding>
-                  <!-- utf-8进行编码代码 -->
                   <docencoding>${project.build.sourceEncoding}</docencoding>
-                  <!-- utf-8进行编码文档 -->
                 </configuration>
               </execution>
             </executions>
@@ -317,10 +335,10 @@
               </execution>
             </executions>
             <configuration>
-              <!-- 改成你自己的路径 -->
-              <executable>D:\ProgramExt\GnuPG\bin\gpg.exe</executable>
+              <executable>gpg</executable>
             </configuration>
           </plugin>
+          <!-- 使用 maven-deploy-plugin 部署到 Sonatype -->
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-deploy-plugin</artifactId>
@@ -335,7 +353,7 @@
             <configuration>
               <publishingServerId>sonatype-nexus-snapshots</publishingServerId>
               <autoPublish>true</autoPublish>
-              <deploymentName>AUtil-Deployment</deploymentName>
+              <deploymentName>AUtil-${revision}-Deployment</deploymentName>
             </configuration>
           </plugin>
         </plugins>
@@ -349,6 +367,7 @@
         </repository>
         <snapshotRepository>
           <id>sonatype-nexus-snapshots</id>
+          <name>Sonatype Snapshot Repository</name>
           <url>https://central.sonatype.com/repository/maven-snapshots/</url>
         </snapshotRepository>
       </distributionManagement>

@@ -1,7 +1,7 @@
 package com.acanx.util;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.constant.PatternConstant;
+import com.acanx.c.PatternConst;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -16,7 +16,7 @@ public class BigIntUtil {
      */
     @Alpha
     public static BigInteger getCurrentDateTimeUs() {
-        return new BigInteger(LocalDateTime.now().format(PatternConstant.FORMATTER_DATETIME4));
+        return new BigInteger(LocalDateTime.now().format(PatternConst.FORMATTER_DATETIME4));
     }
 
     /**
@@ -26,7 +26,7 @@ public class BigIntUtil {
      */
     @Alpha
     public static BigInteger getCurrentDateTimeNs() {
-        return new BigInteger(LocalDateTime.now().format(PatternConstant.FORMATTER_DATETIME5));
+        return new BigInteger(LocalDateTime.now().format(PatternConst.FORMATTER_DATETIME5));
     }
 
 

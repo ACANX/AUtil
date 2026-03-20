@@ -8,6 +8,7 @@ import com.acanx.annotation.Alpha;
  *   @since 0.0.1.10
  */
 @Alpha
+@Deprecated
 public class Constant {
 
     /*************** 整型常量 *************************/

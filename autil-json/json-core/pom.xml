@@ -14,7 +14,7 @@
     <packaging>jar</packaging>
     <name>JSON-Core</name>
     <description>Util-JSON 工具库</description>
-    <url>https://acanx.com</url>
+    <url>https://github.com/ACANX/AUtil</url>
 
 
     <modules>
