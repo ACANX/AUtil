@@ -49,7 +49,7 @@
       <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
       <central-publishing-maven-plugin.version>0.10.0</central-publishing-maven-plugin.version>
 
-      <meta-open.version>0.8.1.4</meta-open.version>
+      <meta-open.version>0.8.2</meta-open.version>
       <slf4j-api.version>2.0.17</slf4j-api.version>
       <lombok.version>1.18.44</lombok.version>
 
