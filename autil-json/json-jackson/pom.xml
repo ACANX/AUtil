@@ -5,38 +5,33 @@
     <parent>
         <groupId>com.acanx.util</groupId>
         <artifactId>autil-json</artifactId>
-        <version>0.1.1-SNAPSHOT</version>
+        <version>${revision}</version>
     </parent>
 
     <groupId>com.acanx.util</groupId>
     <artifactId>json-jackson</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>JSON-Jackson</name>
     <description>JSON-Jackson 工具库</description>
     <url>https://acanx.com</url>
 
-    <modules>
-
-    </modules>
-
-
     <dependencies>
         <dependency>
             <groupId>com.acanx.util</groupId>
             <artifactId>autil-core</artifactId>
-            <version>0.1.1-SNAPSHOT</version>
+            <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.20.1</version>
+            <version>${jackson-databind.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
-            <version>2.20.1</version>
+            <version>${jackson-datatype-jsr310.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -44,40 +39,5 @@
             <version>${junit-jupiter.version}</version>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <configuration>
-                    <source>8</source>
-                    <target>8</target>
-                </configuration>
-            </plugin>
-            <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>${maven-javadoc-plugin.version}</version>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                        <configuration>
-                            <!-- <additionalparam>-Xdoclint:none</additionalparam>-->
-                            <!-- <aggregate>true</aggregate>-->
-                            <charset>${project.build.sourceEncoding}</charset> <!-- utf-8读取文件 -->
-                            <encoding>${project.build.sourceEncoding}</encoding> <!-- utf-8进行编码代码 -->
-                            <docencoding>${project.build.sourceEncoding}</docencoding> <!-- utf-8进行编码文档 -->
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
 </project>

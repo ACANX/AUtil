@@ -15,15 +15,10 @@
     <description>AUtil Incubator Module</description>
     <url>https://github.com/ACANX/AUtil</url>
 
-    <properties>
-        <java.version>8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-    </properties>
     <modules>
         <module>incubator-core</module>
         <module>incubator-annotation</module>
-        <module>annotation-processor</module>
+<!--        <module>incubator-test</module>-->
     </modules>
 
     <dependencies>
@@ -38,6 +33,9 @@
     <dependencyManagement>
     </dependencyManagement>
 
+    <properties>
+        <jdk8.home>D:\Dev\Java\JDK8\corretto</jdk8.home>
+    </properties>
 
     <build>
         <plugins>
@@ -48,6 +46,9 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <fork>true</fork>
+                    <jvm>${jdk8.home}/bin/java</jvm>
+                    <executable>${jdk8.home}/bin/javac</executable>
                 </configuration>
             </plugin>
         </plugins>

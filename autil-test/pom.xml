@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.acanx.util</groupId>
+        <artifactId>autil</artifactId>
+        <version>${revision}</version>
+    </parent>
+
+    <groupId>com.acanx.util</groupId>
+    <artifactId>autil-test</artifactId>
+    <packaging>jar</packaging>
+    <name>AUtil-Test</name>
+    <description>AUtil Test Module - 注解处理器集成测试</description>
+    <url>https://acanx.com</url>
+
+    <properties>
+        <maven.deploy.skip>true</maven.deploy.skip>
+        <jdk8.home>D:\Dev\Java\JDK8\corretto</jdk8.home>
+    </properties>
+
+    <dependencies>
+        <!-- 注解定义模块 -->
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>annotation-api</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- 注解处理器 -->
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>annotation-processor</artifactId>
+            <version>${revision}</version>
+        </dependency>
+
+        <!-- JUnit 5 测试（从父 pom 继承 junit-jupiter 依赖） -->
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <fork>true</fork>
+                    <jvm>${jdk8.home}/bin/java</jvm>
+                    <executable>${jdk8.home}/bin/javac</executable>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>com.acanx.util</groupId>
+                            <artifactId>annotation-processor</artifactId>
+                            <version>${revision}</version>
+                        </path>
+                    </annotationProcessorPaths>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+            </plugin>
+        </plugins>
+    </build>
+</project>

@@ -29,7 +29,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.StringJoiner;
 
-import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.StringUtils;
 
 public class JavacHandlerUtil {
     public static ObjectMapper mapper = new ObjectMapper();

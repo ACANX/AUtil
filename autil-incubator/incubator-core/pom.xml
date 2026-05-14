@@ -15,14 +15,6 @@
     <description>AUtil Incubator Core Module</description>
     <url>https://acanx.com</url>
 
-    <properties>
-        <java.version>8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>8</maven.compiler.source>
-        <maven.compiler.target>8</maven.compiler.target>
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-    </properties>
-
     <dependencies>
         <dependency>
             <groupId>com.acanx.util</groupId>

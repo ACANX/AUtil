@@ -35,8 +35,8 @@
         </license>
     </licenses>
     <properties>
-        <revision>0.1.1-SNAPSHOT</revision>
-        <project.release.version>0.1.1-SNAPSHOT</project.release.version>
+        <revision>1.0.0</revision>
+        <project.release.version>1.0.0</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>
@@ -50,10 +50,17 @@
         <maven-gpg-plugin.version>3.2.6</maven-gpg-plugin.version>
         <flatten-maven-plugin.version>1.7.3</flatten-maven-plugin.version>
 
-        <fastjson2.version>2.0.60</fastjson2.version>
+        <fastjson2.version>2.0.62</fastjson2.version>
+        <jackson-databind.version>2.21.3</jackson-databind.version>
+        <jackson-datatype-jsr310.version>2.21.3</jackson-datatype-jsr310.version>
+        <gson.version>2.13.2</gson.version>
+        <javapoet.version>1.13.0</javapoet.version>
+        <commons-lang3.version>3.17.0</commons-lang3.version>
+        <slf4j-api.version>2.0.16</slf4j-api.version>
 
         <central-publishing-maven-plugin.version>0.9.0</central-publishing-maven-plugin.version>
-        <nexus-staging-maven-plugin.version>1.7.0</nexus-staging-maven-plugin.version>
+        <nexus-staging-maven-plugin.version>1.10.0</nexus-staging-maven-plugin.version>
+        <!-- JUnit 6.x 需要 Java 17+，当前项目目标为 Java 8，暂不升级 -->
         <junit-jupiter.version>5.14.1</junit-jupiter.version>
     </properties>
 
@@ -62,6 +69,8 @@
         <module>autil-core</module>
         <module>autil-json</module>
         <module>autil-incubator</module>
+        <module>annotation</module>
+        <module>autil-test</module>
     </modules>
 
     <dependencies>
@@ -139,7 +148,7 @@
         <profile>
             <id>dev</id>
             <properties>
-                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.1.1-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -202,7 +211,7 @@
         <profile>
             <id>product</id>
             <properties>
-                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.1.1-SNAPSHOT</project.release.version>
             </properties>
         </profile>
 
@@ -215,7 +224,7 @@
             </activation>
             <!-- 设为默认profile 结束 -->
             <properties>
-                <project.release.version>0.1.0.2-SNAPSHOT</project.release.version>
+                <project.release.version>0.1.1-SNAPSHOT</project.release.version>
             </properties>
             <build>
                 <plugins>
@@ -296,6 +305,8 @@
                         <configuration>
                             <publishingServerId>sonatype-nexus-snapshots</publishingServerId>
                             <autoPublish>true</autoPublish>
+                            <centralBaseUrl>https://central.sonatype.com</centralBaseUrl>
+                            <deploymentName>AUtil-${revision}-Deployment</deploymentName>
                         </configuration>
                     </plugin>
                 </plugins>

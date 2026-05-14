@@ -60,6 +60,9 @@ public class JavacManager {
 
         // 注册ObjectCopier处理器
         this.addAnnotationHandler(new ObjectCopierHandler());
+
+        // 注册Copier处理器
+        this.addAnnotationHandler(new CopierHandler());
     }
 
 

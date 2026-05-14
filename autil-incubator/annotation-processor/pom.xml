@@ -9,17 +9,14 @@
 
     <groupId>com.acanx.util</groupId>
     <artifactId>annotation-processor</artifactId>
-    <version>0.1.1-SNAPSHOT</version>
+    <version>${revision}</version>
     <packaging>jar</packaging>
     <name>Annotation-Processor</name>
-    <description>AUtil Incubator Annotation Module</description>
+    <description>AUtil Incubator Annotation Processor</description>
     <url>https://acanx.com</url>
 
     <properties>
-        <java.version>8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven-compiler-plugin.version>3.14.1</maven-compiler-plugin.version>
-        <patha>D:\Dev\Java\JDK8\corretto\lib\tools.jar</patha>
+        <jdk8.home>D:\Dev\Java\JDK8\corretto</jdk8.home>
     </properties>
 
     <dependencies>
@@ -31,12 +28,7 @@
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>javapoet</artifactId>
-            <version>1.13.0</version>
-        </dependency>
-        <dependency>
-            <groupId>com.acanx.util</groupId>
-            <artifactId>autil-core</artifactId>
-            <version>${revision}</version>
+            <version>${javapoet.version}</version>
         </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -47,31 +39,45 @@
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.20.1</version>
+            <version>${jackson-databind.version}</version>
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>commons-lang</groupId>
-            <artifactId>commons-lang</artifactId>
-            <version>2.6</version>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>${commons-lang3.version}</version>
         </dependency>
-        <dependency>
-            <groupId>com.sun</groupId>
-            <artifactId>tools</artifactId>
-            <version>1.8</version>
-            <scope>system</scope>
-            <systemPath>${patha}</systemPath>
-        </dependency>
-
     </dependencies>
 
-
-
-    <dependencyManagement>
-    </dependencyManagement>
-
+    <profiles>
+        <!-- JDK 8: 需要 tools.jar 提供 com.sun.tools.javac.* 类 -->
+        <profile>
+            <id>jdk8</id>
+            <activation>
+                <jdk>1.8</jdk>
+            </activation>
+            <dependencies>
+                <dependency>
+                    <groupId>com.sun</groupId>
+                    <artifactId>tools</artifactId>
+                    <version>1.8</version>
+                    <scope>system</scope>
+                    <systemPath>${jdk8.home}/lib/tools.jar</systemPath>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
 
     <build>
+        <!-- 排除 resources 中的 services 文件，避免编译时循环加载 -->
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>META-INF/services/**</exclude>
+                </excludes>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -80,13 +86,36 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <proc>none</proc>
+                    <fork>true</fork>
                     <compilerArgs>
-                        <arg>-processor</arg>
-                        <arg>com.acanx.util.incubator.process.JavacProcessor</arg>
                         <arg>-XDignore.symbol.file</arg>
                     </compilerArgs>
-                    <fork>true</fork>
                 </configuration>
+            </plugin>
+            <!-- 编译后复制 services 文件到 target/classes -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>2.6</version>
+                <executions>
+                    <execution>
+                        <id>copy-services</id>
+                        <phase>process-classes</phase>
+                        <goals>
+                            <goal>copy-resources</goal>
+                        </goals>
+                        <configuration>
+                            <outputDirectory>${project.build.outputDirectory}/META-INF/services</outputDirectory>
+                            <resources>
+                                <resource>
+                                    <directory>src/main/services/META-INF/services</directory>
+                                    <filtering>false</filtering>
+                                </resource>
+                            </resources>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>
