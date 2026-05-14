@@ -1,6 +1,6 @@
 package com.acanx.util.test;
 
-import com.acanx.util.test.model.CopierMethods;
+import com.acanx.util.test.annotation.CopierMethods;
 import com.acanx.util.test.model.UserDTO;
 import com.acanx.util.test.model.UserVO;
 import org.junit.jupiter.api.BeforeEach;

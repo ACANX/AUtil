@@ -1,6 +1,8 @@
-package com.acanx.util.test.model;
+package com.acanx.util.test.annotation;
 
 import com.acanx.util.annotation.Copier;
+import com.acanx.util.test.model.UserDTO;
+import com.acanx.util.test.model.UserVO;
 
 /**
  * 使用 @Copier 注解的拷贝方法集合。

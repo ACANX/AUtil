@@ -35,8 +35,8 @@
         </license>
     </licenses>
     <properties>
-        <revision>1.0.0</revision>
-        <project.release.version>1.0.0</project.release.version>
+        <revision>1.0.1-SNAPSHOT</revision>
+        <project.release.version>1.0.1-SNAPSHOT</project.release.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>8</java.version>

@@ -17,6 +17,8 @@
     <properties>
         <maven.deploy.skip>true</maven.deploy.skip>
         <jdk8.home>D:\Dev\Java\JDK8\corretto</jdk8.home>
+
+        <revision>1.0.0</revision>
     </properties>
 
     <dependencies>
@@ -26,7 +28,6 @@
             <artifactId>annotation-api</artifactId>
             <version>${revision}</version>
         </dependency>
-
         <!-- 注解处理器 -->
         <dependency>
             <groupId>com.acanx.util</groupId>

@@ -1,4 +1,7 @@
-package com.acanx.util.test.model;
+package com.acanx.util.test.annotation;
+
+import com.acanx.util.test.model.UserDTO;
+import com.acanx.util.test.model.UserVO;
 
 import java.util.Arrays;
 import java.util.List;
@@ -9,7 +12,7 @@ import java.util.List;
  * @author ACANX
  * @since 20260514
  */
-public class CopyTest {
+public class CopierAnnotationTest {
 
     public static void main(String[] args) {
         System.out.println("Hello World!");
