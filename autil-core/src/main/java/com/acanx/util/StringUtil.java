@@ -671,19 +671,20 @@ public class StringUtil {
 
 
     /**
-     * <p>Gets the SHA-1 hash of a String.</p>
+     * <p>获取字符串的 SHA-1 哈希值。</p>
      *
-     * <p>The SHA-1 hash is returned as a 40-character hexadecimal string.</p>
+     * <p>返回 40 位十六进制字符串。</p>
      *
      * <pre>
-     * StringUtil.getStringSHA1Code(null)     = RuntimeException
+     * StringUtil.getStringSHA1Code(null)     = 抛出 IllegalArgumentException
      * StringUtil.getStringSHA1Code("")       = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
      * StringUtil.getStringSHA1Code("abc")    = "a9993e364706816aba3e25717850c26c9cd0d89d"
      * </pre>
      *
-     * @param input  the String to hash, may not be null
-     * @return the SHA-1 hash as a 40-character hexadecimal string
-     * @throws RuntimeException if SHA-1 algorithm is not available or encoding fails
+     * @param input  要计算哈希的字符串，不能为 null
+     * @return 40 位十六进制 SHA-1 哈希字符串
+     * @throws IllegalArgumentException 如果字符串为 null
+     * @throws IllegalStateException 如果 SHA-1 算法不可用
      * @since 0.0.1.10
      */
     @Alpha
