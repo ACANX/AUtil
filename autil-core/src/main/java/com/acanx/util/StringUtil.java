@@ -44,7 +44,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Checks if a CharSequence is empty ("") or null.</p>
+     * <p>检查字符串是否为空("")或 null。</p>
      *
      * <pre>
      * StringUtil.isEmpty(null)      = true
@@ -54,8 +54,8 @@ public class StringUtil {
      * StringUtil.isEmpty("  bob  ") = false
      * </pre>
      *
-     * @param str  字符串
-     * @return    空值判断结果
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串为空或 null 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -64,7 +64,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Checks if a CharSequence is not empty ("") and not null.</p>
+     * <p>检查字符串是否不为空("")且不为 null。</p>
      *
      * <pre>
      * StringUtil.isNotEmpty(null)      = false
@@ -74,8 +74,8 @@ public class StringUtil {
      * StringUtil.isNotEmpty("  bob  ") = true
      * </pre>
      *
-     * @param str  字符串
-     * @return     判断结果
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串不为空且不为 null 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -84,7 +84,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Checks if a CharSequence is whitespace, empty ("") or null.</p>
+     * <p>检查字符串是否为空白(null、空字符串或仅包含空白字符)。</p>
      *
      * <pre>
      * StringUtil.isBlank(null)      = true
@@ -94,8 +94,8 @@ public class StringUtil {
      * StringUtil.isBlank("  bob  ") = false
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is null, empty or whitespace
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串为 null、空或仅包含空白字符则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -104,7 +104,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Checks if a CharSequence is not whitespace, not empty ("") and not null.</p>
+     * <p>检查字符串是否不为空白、不为空("")且不为 null。</p>
      *
      * <pre>
      * StringUtil.isNotBlank(null)      = false
@@ -114,8 +114,8 @@ public class StringUtil {
      * StringUtil.isNotBlank("  bob  ") = true
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @return {@code true} if the CharSequence is not empty and not null and not whitespace
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串不为空、不为 null 且不为空白字符则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -125,12 +125,12 @@ public class StringUtil {
 
 
     /**
-     * <p>Checks if the CharSequence contains only whitespace.</p>
+     * <p>检查字符序列是否仅包含空白字符。</p>
      *
-     * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+     * <p>空白字符由 {@link Character#isWhitespace(char)} 定义。</p>
      *
-     * <p>{@code null} will return {@code false}.
-     * An empty CharSequence (length()=0) will return {@code true}.</p>
+     * <p>{@code null} 将返回 {@code false}。
+     * 空字符序列(length()=0)将返回 {@code true}。</p>
      *
      * <pre>
      * StringUtil.isWhitespace(null)   = false
@@ -141,10 +141,9 @@ public class StringUtil {
      * StringUtil.isWhitespace("ab-c") = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
-     * @return {@code true} if only contains whitespace, and is non-null
+     * @param cs  要检查的字符序列,可以为 null
+     * @return 如果仅包含空白字符且不为 null 则返回 {@code true}
      * @since 2.0
-     * @since 3.0 Changed signature from isWhitespace(String) to isWhitespace(CharSequence)
      */
     @Alpha
     public static boolean isWhitespace(final CharSequence cs) {
@@ -162,11 +161,9 @@ public class StringUtil {
 
 
     /**
-     * <p>Compares two Strings, returning {@code true} if they represent
-     * equal sequences of characters.</p>
+     * <p>比较两个字符串,如果它们表示相同的字符序列则返回 {@code true}。</p>
      *
-     * <p>{@code null}s are handled without exceptions. Two {@code null}
-     * references are considered to be equal. The comparison is case sensitive.</p>
+     * <p>{@code null} 值会被安全处理。两个 {@code null} 引用被视为相等。比较区分大小写。</p>
      *
      * <pre>
      * StringUtil.equals(null, null)   = true
@@ -176,9 +173,9 @@ public class StringUtil {
      * StringUtil.equals("abc", "ABC") = false
      * </pre>
      *
-     * @param str1  the first String, may be null
-     * @param str2  the second String, may be null
-     * @return {@code true} if the Strings are equal (case-sensitive), or both {@code null}
+     * @param str1  第一个字符串,可以为 null
+     * @param str2  第二个字符串,可以为 null
+     * @return 如果字符串相等(区分大小写)或都为 {@code null} 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -191,11 +188,9 @@ public class StringUtil {
     }
 
     /**
-     * <p>Compares two Strings, returning {@code true} if they represent
-     * equal sequences of characters, ignoring case.</p>
+     * <p>比较两个字符串，如果它们表示相同的字符序列（忽略大小写）则返回 {@code true}。</p>
      *
-     * <p>{@code null}s are handled without exceptions. Two {@code null}
-     * references are considered to be equal. The comparison is case insensitive.</p>
+     * <p>{@code null} 值会被安全处理。两个 {@code null} 引用被视为相等。比较不区分大小写。</p>
      *
      * <pre>
      * StringUtil.equalsIgnoreCase(null, null)   = true
@@ -205,9 +200,9 @@ public class StringUtil {
      * StringUtil.equalsIgnoreCase("abc", "ABC") = true
      * </pre>
      *
-     * @param str1  the first String, may be null
-     * @param str2  the second String, may be null
-     * @return {@code true} if the Strings are equal ignoring case, or both {@code null}
+     * @param str1  第一个字符串，可以为 null
+     * @param str2  第二个字符串，可以为 null
+     * @return 如果字符串相等（忽略大小写）或都为 {@code null} 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -217,7 +212,7 @@ public class StringUtil {
             return str2 == null;
         }
         if (null == str2) {
-            // 字符串2空,字符串1非空,直接false
+            // 字符串2空，字符串1非空，直接false
             return false;
         }
         return str1.toString().equalsIgnoreCase(str2.toString());
@@ -722,19 +717,19 @@ public class StringUtil {
 
 
     /**
-     * <p>Gets the MD5 hash of a String.</p>
+     * <p>获取字符串的 MD5 哈希值。</p>
      *
-     * <p>The MD5 hash is returned as a 32-character uppercase hexadecimal string.</p>
+     * <p>返回 32 位大写十六进制字符串。</p>
      *
      * <pre>
-     * StringUtil.getStringMD5Code(null)     = RuntimeException
+     * StringUtil.getStringMD5Code(null)     = 抛出 IllegalArgumentException
      * StringUtil.getStringMD5Code("")       = "D41D8CD98F00B204E9800998ECF8427E"
      * StringUtil.getStringMD5Code("abc")    = "900150983CD24FB0D6963F7D28E17F72"
      * </pre>
      *
-     * @param str  the String to hash, may not be null
-     * @return the MD5 hash as a 32-character uppercase hexadecimal string
-     * @throws RuntimeException if MD5 algorithm is not available
+     * @param str  要计算哈希的字符串,不能为 null
+     * @return 32 位大写十六进制 MD5 哈希字符串
+     * @throws IllegalArgumentException 如果字符串为 null
      * @since 0.0.1.10
      */
     @Alpha
@@ -749,7 +744,8 @@ public class StringUtil {
             //获得加密后的数据
             secretBytes = md.digest();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("没有md5这个算法!");
+            // MD5 算法在所有 Java 平台都可用,此异常理论上不会抛出
+            throw new IllegalStateException("MD5 算法不可用", e);
         }
         // 将加密后的数据转换为16进制数字
         String md5code = new BigInteger(1, secretBytes).toString(16);
@@ -1761,7 +1757,7 @@ public class StringUtil {
      *
      * @param inputString 需要判断的字符串
      * @param stringList  字符串列表
-     * @return 如果输入的字符串在列表中，则返回 true；否则返回 false
+     * @return 如果输入的字符串在列表中,则返回 true;否则返回 false
      * @since 0.0.1.10
      */
     public static boolean containsString(String inputString, List<String> stringList) {
