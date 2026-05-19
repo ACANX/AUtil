@@ -297,7 +297,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Converts an Object to a String, returning an empty String ("") if the Object is null.</p>
+     * <p>将对象转换为字符串，如果对象为 null 则返回空字符串（""）。</p>
      *
      * <pre>
      * StringUtil.toStringOrEmpty(null)     = ""
@@ -306,8 +306,8 @@ public class StringUtil {
      * StringUtil.toStringOrEmpty(123)      = "123"
      * </pre>
      *
-     * @param obj  the Object to convert, may be null
-     * @return the String representation of the Object, or "" if null
+     * @param obj  要转换的对象，可以为 null
+     * @return 对象的字符串表示，如果为 null 则返回 ""
      * @since 0.0.1.10
      */
     @Alpha
@@ -316,12 +316,9 @@ public class StringUtil {
     }
 
     /**
-     * <p>Joins the elements of the provided array into a single String
-     * containing the provided list of elements.</p>
+     * <p>将数组中的元素使用字符分隔符连接为一个字符串。</p>
      *
-     * <p>No delimiter is added before or after the list.
-     * Null objects or empty strings within the array are represented by
-     * empty strings.</p>
+     * <p>列表前后不添加分隔符。数组中的 null 对象或空字符串用空字符串表示。</p>
      *
      * <pre>
      * StringUtil.join(null, '*', *, *)                = null
@@ -333,11 +330,11 @@ public class StringUtil {
      * StringUtil.join(["a", "b", "c"], '--', 2, 2)  = ""
      * </pre>
      *
-     * @param array  the array of values to join together, may be null
-     * @param delimiter  the separator character to use
-     * @param startIndex the first index to start joining from
-     * @param endIndex the index to stop joining from (exclusive)
-     * @return the joined String, {@code null} if null array input
+     * @param array      要连接的数组，可以为 null
+     * @param delimiter  分隔符字符
+     * @param startIndex 开始连接的起始索引
+     * @param endIndex   结束连接的索引（不包含）
+     * @return 连接后的字符串，如果数组为 null 则返回 {@code null}
      * @since 0.0.1.10
      */
     @Alpha
@@ -558,10 +555,10 @@ public class StringUtil {
 
 
     /**
-     * <p>Checks if the CharSequence contains only Unicode digits.</p>
+     * <p>检查字符串是否仅包含 Unicode 数字字符。</p>
      *
-     * <p>{@code null} will return {@code false}.
-     * An empty CharSequence (length()=0) will return {@code false}.</p>
+     * <p>{@code null} 将返回 {@code false}。
+     * 空字符串（length()=0）将返回 {@code false}。</p>
      *
      * <pre>
      * StringUtil.isNumeric(null)   = false
@@ -577,8 +574,8 @@ public class StringUtil {
      * StringUtil.isNumeric("+123") = false
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @return {@code true} if only contains digits, and is non-null
+     * @param str  要检查的字符串，可以为 null
+     * @return 如果仅包含数字字符且不为 null 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -647,10 +644,10 @@ public class StringUtil {
 
 
     /**
-     * <p>Checks if the CharSequence contains only Unicode letters or digits.</p>
+     * <p>检查字符串是否仅包含 Unicode 字母或数字字符。</p>
      *
-     * <p>{@code null} will return {@code false}.
-     * An empty CharSequence (length()=0) will return {@code false}.</p>
+     * <p>{@code null} 将返回 {@code false}。
+     * 空字符串（length()=0）将返回 {@code false}。</p>
      *
      * <pre>
      * StringUtil.isAlphanumeric(null)   = false
@@ -662,8 +659,8 @@ public class StringUtil {
      * StringUtil.isAlphanumeric("ab-c") = false
      * </pre>
      *
-     * @param str  the CharSequence to check, may be null
-     * @return {@code true} if only contains letters or digits, and is non-null
+     * @param str  要检查的字符串，可以为 null
+     * @return 如果仅包含字母或数字字符且不为 null 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -760,7 +757,7 @@ public class StringUtil {
 
 
     /**
-     * <p>Generates a String by repeating a given string a specified number of times.</p>
+     * <p>通过重复指定字符串指定次数生成新字符串。</p>
      *
      * <pre>
      * StringUtil.getStrSeq(null, 3)   = null
@@ -770,9 +767,9 @@ public class StringUtil {
      * StringUtil.getStrSeq("ab", 0)   = ""
      * </pre>
      *
-     * @param str     the String to repeat, may be null
-     * @param length  the number of times to repeat
-     * @return the repeated String, or null if input is null
+     * @param str     要重复的字符串，可以为 null
+     * @param length  重复次数
+     * @return 重复后的字符串，如果输入为 null 则返回 null
      * @since 0.0.1.10
      */
     @Alpha
@@ -785,7 +782,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Converts a snake_case String to camelCase.</p>
+     * <p>将下划线命名的字符串转换为小驼峰命名（camelCase）。</p>
      *
      * <pre>
      * StringUtil.snakeToCamelCase(null)        = null
@@ -795,8 +792,8 @@ public class StringUtil {
      * StringUtil.snakeToCamelCase("user")      = "user"
      * </pre>
      *
-     * @param snakeCaseField  the snake_case String to convert, may be null
-     * @return the camelCase String, or null if input is null
+     * @param snakeCaseField  下划线命名的字符串，可以为 null
+     * @return 小驼峰命名的字符串，如果输入为 null 则返回 null
      * @since 0.0.1.10
      */
     @Alpha
@@ -805,7 +802,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Converts a snake_case String to camelCase with optional first letter capitalization.</p>
+     * <p>将下划线命名的字符串转换为驼峰命名，可选择首字母是否大写。</p>
      *
      * <pre>
      * StringUtil.snakeToCamelCase(null, false)        = null
@@ -815,9 +812,9 @@ public class StringUtil {
      * StringUtil.snakeToCamelCase("user", true)       = "User"
      * </pre>
      *
-     * @param snakeCaseField  the snake_case String to convert, may be null
-     * @param largeCamelFlag  if true, capitalize the first letter (PascalCase)
-     * @return the camelCase or PascalCase String, or null if input is null
+     * @param snakeCaseField  下划线命名的字符串，可以为 null
+     * @param largeCamelFlag  如果为 true，则首字母大写（PascalCase/大驼峰）
+     * @return 驼峰命名的字符串，如果输入为 null 则返回 null
      * @since 0.0.1.10
      */
     @Alpha
