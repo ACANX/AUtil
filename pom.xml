@@ -51,7 +51,9 @@
 
       <meta-open.version>0.8.4</meta-open.version>
       <slf4j-api.version>2.0.18</slf4j-api.version>
-      <lombok.version>1.18.44</lombok.version>
+      <lombok.version>1.18.46</lombok.version>
+      <auto-service.version>1.1.1</auto-service.version>
+      <javapoet.version>1.13.0</javapoet.version>
 
       <fastjson2.version>2.0.62</fastjson2.version>
       <jackson.version>2.21.3</jackson.version>
