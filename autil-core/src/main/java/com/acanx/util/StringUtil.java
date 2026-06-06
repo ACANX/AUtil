@@ -25,7 +25,7 @@ import java.util.StringJoiner;
  * ACANX-Util / com.acanx.utils / StringUtil
  * 文件由 ACANX 创建于 2019/1/5 . 15:46
  *  StringUtil:字符串处理相关工具类
- * 补充说明：
+ * 补充说明:
  *  2019/1/5  15:46
  *
  * @author ACANX
@@ -44,7 +44,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Checks if a CharSequence is empty ("") or null.</p>
+     * <p>检查字符串是否为空("")或 null。</p>
      *
      * <pre>
      * StringUtil.isEmpty(null)      = true
@@ -54,8 +54,8 @@ public class StringUtil {
      * StringUtil.isEmpty("  bob  ") = false
      * </pre>
      *
-     * @param str  字符串
-     * @return    空值判断结果
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串为空或 null 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -64,7 +64,7 @@ public class StringUtil {
     }
 
     /**
-     * <p>Checks if a CharSequence is not empty ("") and not null.</p>
+     * <p>检查字符串是否不为空("")且不为 null。</p>
      *
      * <pre>
      * StringUtil.isNotEmpty(null)      = false
@@ -74,8 +74,8 @@ public class StringUtil {
      * StringUtil.isNotEmpty("  bob  ") = true
      * </pre>
      *
-     * @param str  字符串
-     * @return     判断结果
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串不为空且不为 null 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -84,10 +84,18 @@ public class StringUtil {
     }
 
     /**
-     *   字符串空格判断
+     * <p>检查字符串是否为空白(null、空字符串或仅包含空白字符)。</p>
      *
-     * @param str  字符串
-     * @return     判断结果
+     * <pre>
+     * StringUtil.isBlank(null)      = true
+     * StringUtil.isBlank("")        = true
+     * StringUtil.isBlank(" ")       = true
+     * StringUtil.isBlank("bob")     = false
+     * StringUtil.isBlank("  bob  ") = false
+     * </pre>
+     *
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串为 null、空或仅包含空白字符则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -96,6 +104,7 @@ public class StringUtil {
     }
 
     /**
+     * <p>检查字符串是否不为空白、不为空("")且不为 null。</p>
      *
      * <pre>
      * StringUtil.isNotBlank(null)      = false
@@ -105,8 +114,8 @@ public class StringUtil {
      * StringUtil.isNotBlank("  bob  ") = true
      * </pre>
      *
-     * @param str  字符串
-     * @return     非空格判断结果
+     * @param str  要检查的字符串,可以为 null
+     * @return 如果字符串不为空、不为 null 且不为空白字符则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -116,12 +125,12 @@ public class StringUtil {
 
 
     /**
-     * <p>Checks if the CharSequence contains only whitespace.</p>
+     * <p>检查字符序列是否仅包含空白字符。</p>
      *
-     * <p>Whitespace is defined by {@link Character#isWhitespace(char)}.</p>
+     * <p>空白字符由 {@link Character#isWhitespace(char)} 定义。</p>
      *
-     * <p>{@code null} will return {@code false}.
-     * An empty CharSequence (length()=0) will return {@code true}.</p>
+     * <p>{@code null} 将返回 {@code false}。
+     * 空字符序列(length()=0)将返回 {@code true}。</p>
      *
      * <pre>
      * StringUtil.isWhitespace(null)   = false
@@ -132,10 +141,9 @@ public class StringUtil {
      * StringUtil.isWhitespace("ab-c") = false
      * </pre>
      *
-     * @param cs  the CharSequence to check, may be null
-     * @return {@code true} if only contains whitespace, and is non-null
+     * @param cs  要检查的字符序列,可以为 null
+     * @return 如果仅包含空白字符且不为 null 则返回 {@code true}
      * @since 2.0
-     * @since 3.0 Changed signature from isWhitespace(String) to isWhitespace(CharSequence)
      */
     @Alpha
     public static boolean isWhitespace(final CharSequence cs) {
@@ -153,11 +161,21 @@ public class StringUtil {
 
 
     /**
-     *  字符串相同判断
+     * <p>比较两个字符串,如果它们表示相同的字符序列则返回 {@code true}。</p>
      *
-     * @param str1  字符串1
-     * @param str2  字符串2
-     * @return      判断结果
+     * <p>{@code null} 值会被安全处理。两个 {@code null} 引用被视为相等。比较区分大小写。</p>
+     *
+     * <pre>
+     * StringUtil.equals(null, null)   = true
+     * StringUtil.equals(null, "abc")  = false
+     * StringUtil.equals("abc", null)  = false
+     * StringUtil.equals("abc", "abc") = true
+     * StringUtil.equals("abc", "ABC") = false
+     * </pre>
+     *
+     * @param str1  第一个字符串,可以为 null
+     * @param str2  第二个字符串,可以为 null
+     * @return 如果字符串相等(区分大小写)或都为 {@code null} 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -170,11 +188,21 @@ public class StringUtil {
     }
 
     /**
-     *  字符串相同判断
+     * <p>比较两个字符串，如果它们表示相同的字符序列（忽略大小写）则返回 {@code true}。</p>
      *
-     * @param str1  字符串1
-     * @param str2  字符串2
-     * @return      判断结果
+     * <p>{@code null} 值会被安全处理。两个 {@code null} 引用被视为相等。比较不区分大小写。</p>
+     *
+     * <pre>
+     * StringUtil.equalsIgnoreCase(null, null)   = true
+     * StringUtil.equalsIgnoreCase(null, "abc")  = false
+     * StringUtil.equalsIgnoreCase("abc", null)  = false
+     * StringUtil.equalsIgnoreCase("abc", "abc") = true
+     * StringUtil.equalsIgnoreCase("abc", "ABC") = true
+     * </pre>
+     *
+     * @param str1  第一个字符串，可以为 null
+     * @param str2  第二个字符串，可以为 null
+     * @return 如果字符串相等（忽略大小写）或都为 {@code null} 则返回 {@code true}
      * @since 0.0.1.10
      */
     @Alpha
@@ -269,10 +297,18 @@ public class StringUtil {
     }
 
     /**
-     *  toStringOrEmpty
+     * <p>将对象转换为字符串，如果对象为 null 则返回空字符串（""）。</p>
      *
-     * @param obj  obj
-     * @return 结果
+     * <pre>
+     * StringUtil.toStringOrEmpty(null)     = ""
+     * StringUtil.toStringOrEmpty("")       = ""
+     * StringUtil.toStringOrEmpty("abc")    = "abc"
+     * StringUtil.toStringOrEmpty(123)      = "123"
+     * </pre>
+     *
+     * @param obj  要转换的对象，可以为 null
+     * @return 对象的字符串表示，如果为 null 则返回 ""
+     * @since 0.0.1.10
      */
     @Alpha
     private static String toStringOrEmpty(Object obj) {
@@ -280,13 +316,26 @@ public class StringUtil {
     }
 
     /**
-     *   join
+     * <p>将数组中的元素使用字符分隔符连接为一个字符串。</p>
      *
-     * @param array  array
-     * @param delimiter delimiter
-     * @param startIndex 起始位置
-     * @param endIndex  结束位置
-     * @return  结果
+     * <p>列表前后不添加分隔符。数组中的 null 对象或空字符串用空字符串表示。</p>
+     *
+     * <pre>
+     * StringUtil.join(null, '*', *, *)                = null
+     * StringUtil.join([], '*', *, *)                  = ""
+     * StringUtil.join([null], '*', *, *)              = ""
+     * StringUtil.join(["a", "b", "c"], '--', 0, 3)  = "a--b--c"
+     * StringUtil.join(["a", "b", "c"], '--', 1, 3)  = "b--c"
+     * StringUtil.join(["a", "b", "c"], '--', 2, 3)  = "c"
+     * StringUtil.join(["a", "b", "c"], '--', 2, 2)  = ""
+     * </pre>
+     *
+     * @param array      要连接的数组，可以为 null
+     * @param delimiter  分隔符字符
+     * @param startIndex 开始连接的起始索引
+     * @param endIndex   结束连接的索引（不包含）
+     * @return 连接后的字符串，如果数组为 null 则返回 {@code null}
+     * @since 0.0.1.10
      */
     @Alpha
     public static String join(Object[] array, char delimiter, int startIndex, int endIndex) {
@@ -506,6 +555,10 @@ public class StringUtil {
 
 
     /**
+     * <p>检查字符串是否仅包含 Unicode 数字字符。</p>
+     *
+     * <p>{@code null} 将返回 {@code false}。
+     * 空字符串（length()=0）将返回 {@code false}。</p>
      *
      * <pre>
      * StringUtil.isNumeric(null)   = false
@@ -521,8 +574,9 @@ public class StringUtil {
      * StringUtil.isNumeric("+123") = false
      * </pre>
      *
-     * @param str  字符串
-     * @return     判断结果
+     * @param str  要检查的字符串，可以为 null
+     * @return 如果仅包含数字字符且不为 null 则返回 {@code true}
+     * @since 0.0.1.10
      */
     @Alpha
     public static boolean isNumeric(String str) {
@@ -590,6 +644,11 @@ public class StringUtil {
 
 
     /**
+     * <p>检查字符串是否仅包含 Unicode 字母或数字字符。</p>
+     *
+     * <p>{@code null} 将返回 {@code false}。
+     * 空字符串（length()=0）将返回 {@code false}。</p>
+     *
      * <pre>
      * StringUtil.isAlphanumeric(null)   = false
      * StringUtil.isAlphanumeric("")     = false
@@ -600,8 +659,9 @@ public class StringUtil {
      * StringUtil.isAlphanumeric("ab-c") = false
      * </pre>
      *
-     * @param str  字符串
-     * @return     判断结果
+     * @param str  要检查的字符串，可以为 null
+     * @return 如果仅包含字母或数字字符且不为 null 则返回 {@code true}
+     * @since 0.0.1.10
      */
     @Alpha
     public static boolean isAlphanumeric(String str) {
@@ -611,20 +671,30 @@ public class StringUtil {
 
 
     /**
-     *  获取字符串的SHA1值
+     * <p>获取字符串的 SHA-1 哈希值。</p>
      *
-     * @param input  字符串
-     * @return       SHA1
+     * <p>返回 40 位十六进制字符串。</p>
+     *
+     * <pre>
+     * StringUtil.getStringSHA1Code(null)     = 抛出 IllegalArgumentException
+     * StringUtil.getStringSHA1Code("")       = "da39a3ee5e6b4b0d3255bfef95601890afd80709"
+     * StringUtil.getStringSHA1Code("abc")    = "a9993e364706816aba3e25717850c26c9cd0d89d"
+     * </pre>
+     *
+     * @param input  要计算哈希的字符串，不能为 null
+     * @return 40 位十六进制 SHA-1 哈希字符串
+     * @throws IllegalArgumentException 如果字符串为 null
+     * @throws IllegalStateException 如果 SHA-1 算法不可用
      * @since 0.0.1.10
      */
     @Alpha
     public static String getStringSHA1Code(String input) {
         try {
-            // 创建MessageDigest实例，初始化为SHA1算法
+            // 创建MessageDigest实例,初始化为SHA1算法
             MessageDigest md = MessageDigest.getInstance("SHA-1");
             // 更新MessageDigest对象以包含inputString的字节
             md.update(input.getBytes("UTF-8"));
-            // 完成哈希计算，获取结果
+            // 完成哈希计算,获取结果
             byte[] digest = md.digest();
             // 将结果转换为十六进制字符串
             StringBuilder hexString = new StringBuilder();
@@ -645,9 +715,20 @@ public class StringUtil {
 
 
     /**
-     * 字符串的MD5加密 默认输出为大写十六进制字符
-     * @param str   待加密的字符串
-     * @return   加密后的MD5值，32位（十六进制字符、大写）
+     * <p>获取字符串的 MD5 哈希值。</p>
+     *
+     * <p>返回 32 位大写十六进制字符串。</p>
+     *
+     * <pre>
+     * StringUtil.getStringMD5Code(null)     = 抛出 IllegalArgumentException
+     * StringUtil.getStringMD5Code("")       = "D41D8CD98F00B204E9800998ECF8427E"
+     * StringUtil.getStringMD5Code("abc")    = "900150983CD24FB0D6963F7D28E17F72"
+     * </pre>
+     *
+     * @param str  要计算哈希的字符串,不能为 null
+     * @return 32 位大写十六进制 MD5 哈希字符串
+     * @throws IllegalArgumentException 如果字符串为 null
+     * @since 0.0.1.10
      */
     @Alpha
     public static String getStringMD5Code(String str) {
@@ -661,12 +742,13 @@ public class StringUtil {
             //获得加密后的数据
             secretBytes = md.digest();
         } catch (NoSuchAlgorithmException e) {
-            throw new RuntimeException("没有md5这个算法！");
+            // MD5 算法在所有 Java 平台都可用,此异常理论上不会抛出
+            throw new IllegalStateException("MD5 算法不可用", e);
         }
         // 将加密后的数据转换为16进制数字
         String md5code = new BigInteger(1, secretBytes).toString(16);
         // 16进制数字
-        // 如果生成数字未满32位，需要前面补0
+        // 如果生成数字未满32位,需要前面补0
         for (int i = 0; i < 32 - md5code.length(); i++) {
             md5code = "0" + md5code;
         }
@@ -676,13 +758,20 @@ public class StringUtil {
 
 
     /**
-     * 生成指定长度的指定字符串
-     *   如：  getStrSeq("123", 3)   return  "123123123"
-     *        getStrSeq("321", 4)   return  "321321321321"
+     * <p>通过重复指定字符串指定次数生成新字符串。</p>
      *
-     * @param str    String 指定字符串
-     * @param length int 循环长度
-     * @return String 生成的字符串
+     * <pre>
+     * StringUtil.getStrSeq(null, 3)   = null
+     * StringUtil.getStrSeq("", 3)     = ""
+     * StringUtil.getStrSeq("123", 3)  = "123123123"
+     * StringUtil.getStrSeq("321", 4)  = "321321321321"
+     * StringUtil.getStrSeq("ab", 0)   = ""
+     * </pre>
+     *
+     * @param str     要重复的字符串，可以为 null
+     * @param length  重复次数
+     * @return 重复后的字符串，如果输入为 null 则返回 null
+     * @since 0.0.1.10
      */
     @Alpha
     public static String getStrSeq(String str, int length) {
@@ -694,10 +783,19 @@ public class StringUtil {
     }
 
     /**
-     *  将下划线字符串转换为小驼峰字符串
+     * <p>将下划线命名的字符串转换为小驼峰命名（camelCase）。</p>
      *
-     * @param snakeCaseField 下划线字符串
-     * @return       驼峰字符串
+     * <pre>
+     * StringUtil.snakeToCamelCase(null)        = null
+     * StringUtil.snakeToCamelCase("")          = ""
+     * StringUtil.snakeToCamelCase("user_name") = "userName"
+     * StringUtil.snakeToCamelCase("USER_NAME") = "uSERNAME"
+     * StringUtil.snakeToCamelCase("user")      = "user"
+     * </pre>
+     *
+     * @param snakeCaseField  下划线命名的字符串，可以为 null
+     * @return 小驼峰命名的字符串，如果输入为 null 则返回 null
+     * @since 0.0.1.10
      */
     @Alpha
     public static String snakeToCamelCase(String snakeCaseField) {
@@ -705,11 +803,20 @@ public class StringUtil {
     }
 
     /**
-     *  将下划线字符串转换为驼峰字符串
+     * <p>将下划线命名的字符串转换为驼峰命名，可选择首字母是否大写。</p>
      *
-     * @param snakeCaseField 下划线字符串
-     * @param largeCamelFlag 首字母大写标识
-     * @return       驼峰字符串
+     * <pre>
+     * StringUtil.snakeToCamelCase(null, false)        = null
+     * StringUtil.snakeToCamelCase("", false)          = ""
+     * StringUtil.snakeToCamelCase("user_name", false) = "userName"
+     * StringUtil.snakeToCamelCase("user_name", true)  = "UserName"
+     * StringUtil.snakeToCamelCase("user", true)       = "User"
+     * </pre>
+     *
+     * @param snakeCaseField  下划线命名的字符串，可以为 null
+     * @param largeCamelFlag  如果为 true，则首字母大写（PascalCase/大驼峰）
+     * @return 驼峰命名的字符串，如果输入为 null 则返回 null
+     * @since 0.0.1.10
      */
     @Alpha
     public static String snakeToCamelCase(String snakeCaseField, Boolean largeCamelFlag) {
@@ -739,10 +846,20 @@ public class StringUtil {
     }
 
     /**
-     * 将驼峰字符串转换为下划线字符串
+     * <p>将驼峰命名的字符串转换为下划线命名的字符串。</p>
      *
-     * @param camelCaseField 小驼峰字符串
-     * @return               下划线格式的字符串
+     * <pre>
+     * StringUtil.camelToSnakeCase(null)               = null
+     * StringUtil.camelToSnakeCase("")                 = ""
+     * StringUtil.camelToSnakeCase("userName")        = "user_name"
+     * StringUtil.camelToSnakeCase("UserName")        = "user_name"
+     * StringUtil.camelToSnakeCase("userAccount")    = "user_account"
+     * StringUtil.camelToSnakeCase("UserAccount")    = "user_account"
+     * </pre>
+     *
+     * @param camelCaseField 驼峰命名的字符串
+     * @return 下划线命名的字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String camelToSnakeCase(String camelCaseField) {
@@ -750,11 +867,21 @@ public class StringUtil {
     }
 
     /**
-     *    将驼峰字符串转换为下划线字符串
+     * <p>将驼峰命名的字符串转换为指定分隔符分隔的字符串。</p>
      *
-     * @param camelCaseField 小驼峰字符串
-     * @param splitChar      分隔符
-     * @return       下划线格式的字符串
+     * <pre>
+     * StringUtil.camelToSnakeCase(null, '_')               = null
+     * StringUtil.camelToSnakeCase("", '_')                 = ""
+     * StringUtil.camelToSnakeCase("userName", '_')        = "user_name"
+     * StringUtil.camelToSnakeCase("UserName", '_')        = "user_name"
+     * StringUtil.camelToSnakeCase("userName", '-')        = "user-name"
+     * StringUtil.camelToSnakeCase("UserAccount", '.')     = "user.account"
+     * </pre>
+     *
+     * @param camelCaseField 驼峰命名的字符串
+     * @param splitChar      分隔符字符
+     * @return 使用指定分隔符分隔的字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String camelToSnakeCase(String camelCaseField, Character splitChar) {
@@ -846,10 +973,19 @@ public class StringUtil {
     }
 
     /**
-     *    字符串首字母转大写
+     * <p>将字符串的首字母转换为大写。</p>
      *
-     * @param value  字符串
-     * @return       转换后的结果字符串
+     * <pre>
+     * StringUtil.toUpperCaseFirstChar(null)   = null
+     * StringUtil.toUpperCaseFirstChar("")     = ""
+     * StringUtil.toUpperCaseFirstChar("abc")  = "Abc"
+     * StringUtil.toUpperCaseFirstChar("Abc")  = "Abc"
+     * StringUtil.toUpperCaseFirstChar("ABC")  = "ABC"
+     * </pre>
+     *
+     * @param value 要转换的字符串
+     * @return 首字母大写的字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String toUpperCaseFirstChar(String value) {
@@ -868,11 +1004,20 @@ public class StringUtil {
 
 
     /**
-     *      字符串左
+     * <p>获取字符串右侧指定字符数的子字符串。</p>
      *
-     * @param str  字符串
-     * @param num   num
-     * @return     处理后的结果
+     * <pre>
+     * StringUtil.right(null, 3)    = null
+     * StringUtil.right("", 3)      = ""
+     * StringUtil.right("abc", 2)   = "bc"
+     * StringUtil.right("abc", 4)   = "abc"
+     * StringUtil.right("abc", -1)  = ""
+     * </pre>
+     *
+     * @param str 要获取子字符串的字符串
+     * @param num 要获取的字符数
+     * @return 右侧子字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String right(String str, int num) {
@@ -880,12 +1025,20 @@ public class StringUtil {
     }
 
     /**
-     *   right
+     * <p>获取字符串右侧指定字符数的子字符串,如果字符串为空则返回默认值。</p>
      *
-     * @param str1  字符串
-     * @param num   num
-     * @param str2  str2
-     * @return     处理结果
+     * <pre>
+     * StringUtil.right(null, 2, "default")  = "default"
+     * StringUtil.right("", 2, "default")    = "default"
+     * StringUtil.right("abc", 2, "default") = "bc"
+     * StringUtil.right("abc", 4, "default") = "abc"
+     * </pre>
+     *
+     * @param str1  要获取子字符串的字符串
+     * @param num   要获取的字符数
+     * @param str2  默认值
+     * @return 右侧子字符串或默认值
+     * @since 0.0.1.10
      */
     @Alpha
     public static String right(String str1, int num, String str2) {
@@ -893,12 +1046,20 @@ public class StringUtil {
     }
 
     /**
-     *  left
+     * <p>获取字符串左侧指定字符数的子字符串。</p>
      *
-     * @param str 字符串
-     * @param num  num
-     * @return    处理后的结果
+     * <pre>
+     * StringUtil.left(null, 3)    = null
+     * StringUtil.left("", 3)      = ""
+     * StringUtil.left("abc", 2)   = "ab"
+     * StringUtil.left("abc", 4)   = "abc"
+     * StringUtil.left("abc", -1)  = ""
+     * </pre>
      *
+     * @param str 要获取子字符串的字符串
+     * @param num 要获取的字符数
+     * @return 左侧子字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String left(String str, int num) {
@@ -906,12 +1067,20 @@ public class StringUtil {
     }
 
     /**
-     * left
+     * <p>获取字符串左侧指定字符数的子字符串,如果字符串为空则返回默认值。</p>
      *
-     * @param str1 字符串1
-     * @param num  num
-     * @param str2 字符串2
-     * @return  处理结果
+     * <pre>
+     * StringUtil.left(null, 2, "default")  = "default"
+     * StringUtil.left("", 2, "default")    = "default"
+     * StringUtil.left("abc", 2, "default") = "ab"
+     * StringUtil.left("abc", 4, "default") = "abc"
+     * </pre>
+     *
+     * @param str1  要获取子字符串的字符串
+     * @param num   要获取的字符数
+     * @param str2  默认值
+     * @return 左侧子字符串或默认值
+     * @since 0.0.1.10
      */
     @Alpha
     public static String left(String str1, int num, String str2) {
@@ -920,10 +1089,19 @@ public class StringUtil {
 
 
     /**
-     *   defaultIfBlank
+     * <p>如果字符串为空白(null、空字符串或仅包含空白字符),则返回默认处理后的字符串。</p>
      *
-     * @param str 字符串
-     * @return  处理结果
+     * <pre>
+     * StringUtil.defaultIfBlank(null)    = ""
+     * StringUtil.defaultIfBlank("")      = ""
+     * StringUtil.defaultIfBlank("   ")   = " "
+     * StringUtil.defaultIfBlank("abc")   = "abc"
+     * StringUtil.defaultIfBlank(" abc ") = "abc"
+     * </pre>
+     *
+     * @param str 要检查的字符串
+     * @return 处理后的字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String defaultIfBlank(String str) {
@@ -931,12 +1109,21 @@ public class StringUtil {
     }
 
     /**
-     *    leftDelChar
+     * <p>从字符串左侧删除指定的字符。</p>
      *
-     * @param descStr   descStr
-     * @param text     text
-     * @param ch      字符
-     * @return        结果
+     * <pre>
+     * StringUtil.leftDelChar("default", null, '0')    = "default"
+     * StringUtil.leftDelChar("default", "", '0')      = "default"
+     * StringUtil.leftDelChar("default", "000abc", '0') = "abc"
+     * StringUtil.leftDelChar("default", "abc", '0')    = "abc"
+     * StringUtil.leftDelChar("default", "00abc", '0')  = "abc"
+     * </pre>
+     *
+     * @param descStr 默认返回值
+     * @param text    要处理的字符串
+     * @param ch      要删除的字符
+     * @return 处理后的字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String leftDelChar(String descStr, String text, char ch) {
@@ -1113,11 +1300,19 @@ public class StringUtil {
     }
 
     /**
-     *     字符在字符串中的位置
+     * <p>获取指定字符在字符串中的位置(从1开始计数)。</p>
      *
-     * @param str   字符串
-     * @param searchChar  搜索字符
-     * @return   位置结果
+     * <pre>
+     * StringUtil.positionOf(null, 'a')     = -1
+     * StringUtil.positionOf("", 'a')       = -1
+     * StringUtil.positionOf("abc", 'b')   = 2
+     * StringUtil.positionOf("abc", 'd')   = -1
+     * </pre>
+     *
+     * @param str        要搜索的字符串
+     * @param searchChar 要查找的字符
+     * @return 字符的位置(从1开始),如果未找到返回-1
+     * @since 0.0.1.10
      */
     @Alpha
     public static int positionOf(String str, char searchChar) {
@@ -1126,11 +1321,19 @@ public class StringUtil {
     }
 
     /**
-     *  子字符串在字符串中的位置
+     * <p>获取子字符串在字符串中的位置(从1开始计数)。</p>
      *
-     * @param str  字符串
-     * @param searchStr 子字符串
-     * @return        位置结果
+     * <pre>
+     * StringUtil.positionOf(null, "ab")     = -1
+     * StringUtil.positionOf("", "ab")       = -1
+     * StringUtil.positionOf("abc", "bc")   = 2
+     * StringUtil.positionOf("abc", "d")    = -1
+     * </pre>
+     *
+     * @param str       要搜索的字符串
+     * @param searchStr 要查找的子字符串
+     * @return 子字符串的位置(从1开始),如果未找到返回-1
+     * @since 0.0.1.10
      */
     @Alpha
     public static int positionOf(String str, String searchStr) {
@@ -1143,11 +1346,20 @@ public class StringUtil {
     }
 
     /**
-     *   containsAll
+     * <p>检查字符串是否包含所有指定的字符。</p>
      *
-     * @param str str
-     * @param searchChars searchChars
-     * @return 结果
+     * <pre>
+     * StringUtil.containsAll(null, "abc")     = false
+     * StringUtil.containsAll("", "abc")       = false
+     * StringUtil.containsAll("abc", null)    = false
+     * StringUtil.containsAll("abc", "ac")    = true
+     * StringUtil.containsAll("abc", "ad")   = false
+     * </pre>
+     *
+     * @param str         要检查的字符串
+     * @param searchChars 要查找的字符集合
+     * @return 如果字符串包含所有指定字符则返回true
+     * @since 0.0.1.10
      */
     @Alpha
     public static boolean containsAll(String str, String searchChars) {
@@ -1329,12 +1541,20 @@ public class StringUtil {
 
 
     /**
-     *   集合转字符串（以separator（如逗号）间隔）
+     * <p>将字符串列表转换为以指定分隔符分隔的字符串。</p>
      *
-     * @param list   字符串集合
-     * @param wrapperFlag  首末是否需要添加间隔符
-     * @param separator  间隔符
-     * @return 结果字符串
+     * <pre>
+     * StringUtil.listToString(null, false, ',')    = ""
+     * StringUtil.listToString([], false, ',')      = ""
+     * StringUtil.listToString(["a","b"], false, ',') = "a,b"
+     * StringUtil.listToString(["a","b"], true, ',')  = ",a,b,"
+     * </pre>
+     *
+     * @param list         字符串列表
+     * @param wrapperFlag  是否在首末添加分隔符
+     * @param separator    分隔符字符
+     * @return 转换后的字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String listToString(List<String> list, boolean wrapperFlag, char separator){
@@ -1355,10 +1575,18 @@ public class StringUtil {
 
 
     /**
-     *  元素之间以逗号间隔的字符串转集合
+     * <p>将逗号分隔的字符串转换为字符串列表。</p>
      *
-     * @param str 字符串
-     * @return  字符串集合
+     * <pre>
+     * StringUtil.stringToList(null)     = null
+     * StringUtil.stringToList("")       = []
+     * StringUtil.stringToList("a,b,c") = ["a", "b", "c"]
+     * StringUtil.stringToList(" a , b ") = ["a", "b"]
+     * </pre>
+     *
+     * @param str 逗号分隔的字符串
+     * @return 字符串列表
+     * @since 0.0.1.10
      */
     @Alpha
     public static List<String> stringToList(String str){
@@ -1372,10 +1600,16 @@ public class StringUtil {
 
 
     /**
-     *   获取当前日期时间字符串
+     * <p>使用指定的日期格式获取当前日期时间字符串。</p>
      *
-     * @param sdf   SimpleDateFormat
-     * @return   格式化后的当前日期时间字符串
+     * <pre>
+     * StringUtil.getCurrentDateTimeString(new SimpleDateFormat("yyyy-MM-dd"))  = "2026-05-19"
+     * StringUtil.getCurrentDateTimeString(new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")) = "2026-05-19 23:00:00"
+     * </pre>
+     *
+     * @param sdf 日期格式化对象
+     * @return 格式化后的当前日期时间字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String getCurrentDateTimeString(SimpleDateFormat sdf){
@@ -1383,11 +1617,18 @@ public class StringUtil {
     }
 
     /**
-     * 将String字符串转换为java.util.Date格式日期
+     * <p>将日期字符串转换为java.util.Date对象。</p>
+     *
+     * <pre>
+     * StringUtil.formattedDateStringToDate("2026-05-19", "yyyy-MM-dd")     = Date对象
+     * StringUtil.formattedDateStringToDate("2026-05-19 23:00", "yyyy-MM-dd HH:mm") = Date对象
+     * StringUtil.formattedDateStringToDate("invalid", "yyyy-MM-dd")         = null
+     * </pre>
      *
      * @param dateStr    表示日期的字符串
-     * @param dateFormat 传入字符串的日期表示格式（如："yyyy-MM-dd HH:mm:ss"）
-     * @return java.util.Date类型日期对象（如果转换失败则返回null）
+     * @param dateFormat 日期格式(如:"yyyy-MM-dd HH:mm:ss")
+     * @return java.util.Date类型日期对象,转换失败返回null
+     * @since 0.0.1.10
      */
     @Alpha
     public static java.util.Date formattedDateStringToDate(String dateStr, String dateFormat) {
@@ -1402,11 +1643,17 @@ public class StringUtil {
     }
 
     /**
-     * 将String字符串转换为java.sql.Timestamp格式日期,用于数据库保存
+     * <p>将日期字符串转换为java.sql.Timestamp对象,用于数据库保存。</p>
+     *
+     * <pre>
+     * StringUtil.formattedDateStrToSqlDate("2026-05-19 23:00:00", "yyyy-MM-dd HH:mm:ss") = Timestamp对象
+     * StringUtil.formattedDateStrToSqlDate("invalid", "yyyy-MM-dd") = null
+     * </pre>
      *
      * @param dateStr    表示日期的字符串
-     * @param dateFormat 传入字符串的日期表示格式（如："yyyy-MM-dd HH:mm:ss"）
-     * @return java.sql.Timestamp类型日期对象（如果转换失败则返回null）
+     * @param dateFormat 日期格式(如:"yyyy-MM-dd HH:mm:ss")
+     * @return java.sql.Timestamp类型日期对象,转换失败返回null
+     * @since 0.0.1.10
      */
     @Alpha
     public static java.sql.Timestamp formattedDateStrToSqlDate(String dateStr, String dateFormat) {
@@ -1423,11 +1670,17 @@ public class StringUtil {
 
 
     /**
-     *   日期时间字符串转Timestamp
+     * <p>将日期字符串转换为java.sql.Timestamp对象。</p>
      *
-     * @param dateStr  日期字符串
-     * @param format   格式化模板
-     * @return         Timestamp
+     * <pre>
+     * StringUtil.formattedDateStringToTimestamp("2026-05-19 23:00:00", "yyyy-MM-dd HH:mm:ss") = Timestamp对象
+     * StringUtil.formattedDateStringToTimestamp("2026-05-19", null) = Timestamp对象(使用默认格式)
+     * </pre>
+     *
+     * @param dateStr 日期字符串
+     * @param format  日期格式,为null或空时使用默认格式"yyyy-MM-dd HH:mm:ss"
+     * @return java.sql.Timestamp对象
+     * @since 0.0.1.10
      */
     @Alpha
     public static Timestamp formattedDateStringToTimestamp(String dateStr, String format) {
@@ -1445,11 +1698,16 @@ public class StringUtil {
     }
 
     /**
-     * 将字符串转日期成Long类型的时间戳，格式为：yyyy-MM-dd HH:mm:ss
+     * <p>将日期时间字符串转换为Long类型的时间戳(毫秒)。</p>
      *
-     * @param time  时间
-     * @param format 时间格式化模式
-     * @return   Long类型的时间戳
+     * <pre>
+     * StringUtil.formattedTimeStringToLong("2026-05-19 23:00:00", "yyyy-MM-dd HH:mm:ss") = 1716124800000L
+     * </pre>
+     *
+     * @param time   日期时间字符串
+     * @param format 日期时间格式
+     * @return Long类型的时间戳(毫秒)
+     * @since 0.0.1.10
      */
     @Alpha
     public static Long formattedTimeStringToLong(String time, String format) {
@@ -1460,11 +1718,18 @@ public class StringUtil {
     }
 
     /**
-     *   秒级的时间戳转Date
+     * <p>将秒级时间戳转换为格式化的日期时间字符串。</p>
      *
-     * @param seconds  秒级的时间戳
-     * @param format   格式化
-     * @return   日期时间字符串
+     * <pre>
+     * StringUtil.timestampStrToFormattedDateString("1716124800", "yyyy-MM-dd HH:mm:ss") = "2024-05-19 16:00:00"
+     * StringUtil.timestampStrToFormattedDateString(null, "yyyy-MM-dd") = ""
+     * StringUtil.timestampStrToFormattedDateString("1716124800", null) = 使用默认格式
+     * </pre>
+     *
+     * @param seconds 秒级时间戳字符串
+     * @param format  日期格式,为null或空时使用默认格式"yyyy-MM-dd HH:mm:ss"
+     * @return 格式化的日期时间字符串
+     * @since 0.0.1.10
      */
     @Alpha
     public static String timestampStrToFormattedDateString(String seconds, String format) {
@@ -1480,11 +1745,18 @@ public class StringUtil {
 
 
     /**
-     * 判断输入的字符串是否是给定字符串列表中的某一个等值的字符串
+     * <p>判断输入的字符串是否是给定字符串列表中的某一个等值的字符串。</p>
+     *
+     * <pre>
+     * StringUtil.containsString("a", ["a", "b", "c"])  = true
+     * StringUtil.containsString("d", ["a", "b", "c"])  = false
+     * StringUtil.containsString(null, ["a", "b"])      = false
+     * </pre>
      *
      * @param inputString 需要判断的字符串
      * @param stringList  字符串列表
-     * @return 如果输入的字符串在列表中，则返回 true；否则返回 false
+     * @return 如果输入的字符串在列表中,则返回 true;否则返回 false
+     * @since 0.0.1.10
      */
     public static boolean containsString(String inputString, List<String> stringList) {
         // 使用 Stream API 来进行判断
@@ -1493,7 +1765,7 @@ public class StringUtil {
 
 
     /**
-     * 生成固定长度数字字符串，不足位时前面补零
+     * 生成固定长度数字字符串,不足位时前面补零
      * @param no 原始数字
      * @param length 目标字符串长度
      * @return 补零后的等长字符串
