@@ -86,3 +86,9 @@ git merge-base --is-ancestor <remote-ref> HEAD
 ```
 
 非快进时先说明情况，不要直接强推。
+
+## 开发规范文档
+
+`Docs/DevSpec/` 下的规范需遵照执行：
+
+- [`GitCommitSpec.md`](Docs/DevSpec/GitCommitSpec.md) —— Git 提交规范。**涉及纯大小写改名时，必须借中转名拆成两个提交**，否则他人在大小写不敏感的文件系统上 clone/checkout 会遇到路径冲突警告。
