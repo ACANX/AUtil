@@ -37,20 +37,17 @@ permissions:
 
 jobs:
   # ============================================================
-  # 编译 + 单元测试
+  # 编译（Build/Compile）
+  # 动态矩阵：push / pull_request 并行 JDK 25（主）+ JDK 21；
+  # workflow_dispatch 仅运行手动选择的 JDK 版本（无多余实例，避免 cancelled 连带下游跳过）
   # ============================================================
-  build:
-    name: BuildAndTest
+  build-compile:
+    name: BuildCompile
     runs-on: ubuntu-latest
-
-    # workflow_dispatch：使用手动选择的 JDK 版本（单值，由 SkipUnselectedJdk 跳过其他版本）
-    # push / pull_request：矩阵并行测试 JDK 25（主）+ JDK 21
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - java-version: '25'
-          - java-version: '21'
+        java-version: ${{ fromJson((github.event.inputs && github.event.inputs.javaVersion) || '["25","21"]') }}
 
     steps:
       - name: CheckoutCode
@@ -67,15 +64,38 @@ jobs:
           distribution: 'temurin'
           cache: 'maven'
 
-      - name: SkipUnselectedJdk
-        if: github.event.inputs.javaVersion != '' && github.event.inputs.javaVersion != matrix.java-version
-        run: echo "Skipping JDK ${{ matrix.java-version }} (user selected ${{ github.event.inputs.javaVersion }})" && exit 80
-
       - name: CompileSource
         run: >
           ./mvnw compile
           -Pdev
           --no-transfer-progress
+
+  # ============================================================
+  # 单元测试（Build/Compile 成功后执行）
+  # ============================================================
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    needs: build-compile
+    strategy:
+      fail-fast: false
+      matrix:
+        java-version: ${{ fromJson((github.event.inputs && github.event.inputs.javaVersion) || '["25","21"]') }}
+
+    steps:
+      - name: CheckoutCode
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: SetupJava
+        id: setupJava
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
+          cache: 'maven'
 
       - name: RunUnitTests
         run: >
@@ -84,13 +104,6 @@ jobs:
           --no-transfer-progress
         env:
           JAVA_OPTS: -Xmx512m
-
-      - name: PackageArtifacts
-        run: >
-          ./mvnw package
-          -Pdev
-          -DskipTests
-          --no-transfer-progress
 
       - name: UploadTestResults
         if: always()
@@ -102,13 +115,13 @@ jobs:
           retention-days: 7
 
   # ============================================================
-  # 代码质量卡点（静态分析）
+  # 代码质量卡点（静态分析，Build/Compile 成功后执行）
   # workflow_dispatch 跳过以节省资源（手动触发时仅关注编译/测试结果）
   # ============================================================
   qualityGate:
     name: QualityGate
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-compile
     if: github.event_name != 'workflow_dispatch'
 
     steps:
@@ -159,7 +172,6 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 sha: context.sha,
-                state: state,
                 target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions`,
                 description: description,
                 context: 'ci/quality-gate'
@@ -169,13 +181,13 @@ jobs:
             }
 
   # ============================================================
-  # 构建产物（JDK 25 编译，字节码兼容 JDK 21）
+  # 构建产物（Build/Compile 成功后执行）
   # workflow_dispatch 或 V1.3.x / feat/V1.3.0/Local / dependa 分支 push 时执行
   # ============================================================
   artifact:
-    name: BuildArtifacts
+    name: Artifacts
     runs-on: ubuntu-latest
-    needs: build
+    needs: build-compile
     if: |
       github.event_name == 'workflow_dispatch'
       || github.ref == 'refs/heads/V1.3.x'
