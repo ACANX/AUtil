@@ -1,6 +1,7 @@
 package com.acanx.util.json.impl;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.util.json.JSONConfig;
 import com.acanx.util.json.JSONProvider;
 import com.acanx.util.json.JacksonMode;
 import com.acanx.util.json.JacksonUtil;

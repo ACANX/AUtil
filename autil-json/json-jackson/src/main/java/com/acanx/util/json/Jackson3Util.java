@@ -301,7 +301,7 @@ public class Jackson3Util {
         JsonMapper mapper = buildSerializeMapper(c);
         if (c.getOutput() == OutputFormat.PRETTY) {
             int indent = c.getIndent() != null ? c.getIndent() : 2;
-            return mapper.writer(createPrettyPrinter(indent)).writeValueAsString(object);
+            return mapper.writer().with(createPrettyPrinter(indent)).writeValueAsString(object);
         }
         return mapper.writeValueAsString(object);
     }
@@ -333,12 +333,12 @@ public class Jackson3Util {
      * @return ObjectMapper
      */
     private static JsonMapper buildSerializeMapper(JSONConfig c) {
-        // DISABLE_HTML_ESCAPE：需自定义 JsonFactory（关闭 HTML 转义）
+        // DISABLE_HTML_ESCAPE：需自定义 JsonFactory（关闭 HTML 转义，Jackson 3 走 JsonFactoryBuilder）
         JsonMapper.Builder builder;
         if (c.isSerializeEnabled(SerializeFeature.DISABLE_HTML_ESCAPE)) {
-            tools.jackson.core.json.JsonFactory factory = new tools.jackson.core.json.JsonFactory();
-            factory.setCharacterEscapes(new NoHtmlCharacterEscapes());
-            builder = JsonMapper.builder(factory);
+            tools.jackson.core.json.JsonFactoryBuilder factoryBuilder = new tools.jackson.core.json.JsonFactoryBuilder();
+            factoryBuilder.characterEscapes(new NoHtmlCharacterEscapes());
+            builder = JsonMapper.builder(factoryBuilder.build());
         } else {
             builder = JsonMapper.builder();
         }
