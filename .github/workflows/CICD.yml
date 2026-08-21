@@ -17,12 +17,12 @@ on:
   workflow_dispatch:
     inputs:
       ref:
-        description: '分支/标签/提交 SHA（默认 V1.3.x）'
+        description: 'Branch/tag/commit SHA (default V1.3.x)'
         required: false
         default: 'V1.3.x'
         type: string
       javaVersion:
-        description: 'JDK 版本'
+        description: 'JDK version'
         required: false
         default: '25'
         type: choice
@@ -37,16 +37,17 @@ permissions:
 
 jobs:
   # ============================================================
-  # 编译 + 单元测试
+  # Compile and Unit Tests
   # ============================================================
   build:
     name: BuildAndTest
     runs-on: ubuntu-latest
-
-    # workflow_dispatch：使用手动选择的 JDK 版本（单值）
-    # push / pull_request：矩阵并行测试 JDK 25（主）+ JDK 21
-    matrix:
-      java-version: ${{ github.event.inputs.javaVersion || '25' }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - java-version: '25'
+          - java-version: '21'
 
     steps:
       - name: CheckoutCode
@@ -62,6 +63,10 @@ jobs:
           java-version: ${{ matrix.java-version }}
           distribution: 'temurin'
           cache: 'maven'
+
+      - name: SkipUnselectedJdk
+        if: github.event.inputs.javaVersion != '' && github.event.inputs.javaVersion != matrix.java-version
+        run: echo "Skipping JDK ${{ matrix.java-version }} (user selected ${{ github.event.inputs.javaVersion }})" && exit 80
 
       - name: CompileSource
         run: >
@@ -95,8 +100,8 @@ jobs:
           retention-days: 7
 
   # ============================================================
-  # 代码质量卡点（静态检查）
-  # workflow_dispatch 跳过以节省资源（手动触发时仅关注编译/测试结果）
+  # Code Quality Gate (static analysis)
+  # Skipped for workflow_dispatch to save resources
   # ============================================================
   qualityGate:
     name: QualityGate
@@ -162,8 +167,8 @@ jobs:
             }
 
   # ============================================================
-  # 构建产物（JDK 25 编译，字节码兼容 JDK 21）
-  # workflow_dispatch 或 V1.3.x / feat/V1.3.0/Local 分支 push 时执行
+  # Build Artifacts (JDK 25 compile, bytecode compatible with JDK 21)
+  # Runs on workflow_dispatch or V1.3.x / feat/V1.3.0/Local / dependa push
   # ============================================================
   artifact:
     name: BuildArtifacts
