@@ -28,13 +28,3 @@
 
 ### 自定义
 
-### flatten-maven-plugin ###
-.flattened-pom.xml
-pom-xml-flattened
-
-### VSCode ###
-.vscode/
-
-### xcodemap ###
-.xcodemap/
-
