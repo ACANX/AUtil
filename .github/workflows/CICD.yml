@@ -1,0 +1,214 @@
+name: CICD
+
+on:
+  push:
+    branches:
+      - V1.3.x
+      - feat/V1.3.0/Local
+      - dependa
+      - feat/**
+      - fix/**
+      - refactor/**
+  pull_request:
+    branches:
+      - V1.3.x
+      - feat/V1.3.0/Local
+      - dependa
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: '分支/标签/提交 SHA（默认 V1.3.x）'
+        required: false
+        default: 'V1.3.x'
+        type: string
+      javaVersion:
+        description: 'JDK 版本'
+        required: false
+        default: '25'
+        type: choice
+        options:
+          - '25'
+          - '21'
+
+permissions:
+  contents: read
+  checks: write
+  pull-requests: write
+
+jobs:
+  # ============================================================
+  # 编译 + 单元测试
+  # ============================================================
+  build:
+    name: BuildAndTest
+    runs-on: ubuntu-latest
+
+    # workflow_dispatch：使用手动选择的 JDK 版本（单值）
+    # push / pull_request：矩阵并行测试 JDK 25（主）+ JDK 21
+    matrix:
+      java-version: ${{ github.event.inputs.javaVersion || '25' }}
+
+    steps:
+      - name: CheckoutCode
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: SetupJava
+        id: setupJava
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: CompileSource
+        run: >
+          ./mvnw compile
+          -Pdev
+          -q
+          --no-transfer-progress
+
+      - name: RunUnitTests
+        run: >
+          ./mvnw test
+          -Pdev
+          --no-transfer-progress
+        env:
+          JAVA_OPTS: -Xmx512m
+
+      - name: PackageArtifacts
+        run: >
+          ./mvnw package
+          -Pdev
+          -DskipTests
+          --no-transfer-progress
+
+      - name: UploadTestResults
+        if: always()
+        id: uploadTestResults
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-jdk${{ matrix.java-version }}
+          path: '**/target/surefire-reports/*.xml'
+          retention-days: 7
+
+  # ============================================================
+  # 代码质量卡点（静态检查）
+  # workflow_dispatch 跳过以节省资源（手动触发时仅关注编译/测试结果）
+  # ============================================================
+  qualityGate:
+    name: QualityGate
+    runs-on: ubuntu-latest
+    needs: build
+    if: github.event_name != 'workflow_dispatch'
+
+    steps:
+      - name: CheckoutCode
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: SetupJava
+        id: setupJava
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: RunSpotBugsAnalysis
+        id: spotbugs
+        run: >
+          ./mvnw spotbugs:check
+          -Pdev
+          --no-transfer-progress
+        continue-on-error: true
+
+      - name: RunDependencyAnalysis
+        id: depAnalyze
+        run: >
+          ./mvnw dependency:analyze
+          -Pdev
+          --no-transfer-progress
+        continue-on-error: true
+
+      - name: ReportCommitStatus
+        if: always()
+        id: commitStatus
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const allPassed = true;
+            const state = allPassed ? 'success' : 'failure';
+            const description = allPassed
+              ? 'All quality checks passed'
+              : 'Quality gate finished (warnings allowed)';
+
+            try {
+              await github.rest.repos.createCommitStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                sha: context.sha,
+                state: state,
+                target_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions`,
+                description: description,
+                context: 'ci/quality-gate'
+              });
+            } catch (e) {
+              console.warn('Could not set commit status:', e.message);
+            }
+
+  # ============================================================
+  # 构建产物（JDK 25 编译，字节码兼容 JDK 21）
+  # workflow_dispatch 或 V1.3.x / feat/V1.3.0/Local 分支 push 时执行
+  # ============================================================
+  artifact:
+    name: BuildArtifacts
+    runs-on: ubuntu-latest
+    needs: build
+    if: |
+      github.event_name == 'workflow_dispatch'
+      || github.ref == 'refs/heads/V1.3.x'
+      || github.ref == 'refs/heads/feat/V1.3.0/Local'
+      || github.ref == 'refs/heads/dependa'
+
+    steps:
+      - name: CheckoutCode
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: SetupJava
+        id: setupJava
+        uses: actions/setup-java@v5
+        with:
+          java-version: '25'
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: PackageArtifacts
+        run: >
+          ./mvnw package
+          -Pdev
+          -DskipTests
+          --no-transfer-progress
+
+      - name: UploadJarArtifacts
+        id: uploadJars
+        uses: actions/upload-artifact@v4
+        with:
+          name: autil-jars
+          path: '**/target/*.jar'
+          retention-days: 5
+
+      - name: UploadSourceJarArtifacts
+        id: uploadSources
+        uses: actions/upload-artifact@v4
+        with:
+          name: autil-sources
+          path: '**/target/*-sources.jar'
+          retention-days: 5

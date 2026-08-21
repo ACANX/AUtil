@@ -57,13 +57,13 @@ public class JSONUtil {
      */
     private static int getPriority(String className) {
         System.out.println(className);
-        if (className.toLowerCase().contains("fastjson")) {
+        if (className.toLowerCase().contains("jackson")) {
             return 3;
         }
-        if (className.toLowerCase().contains("jackson")) {
+        if (className.toLowerCase().contains("gson")) {
             return 2;
         }
-        if (className.toLowerCase().contains("gson")) {
+        if (className.toLowerCase().contains("fastjson")) {
             return 1;
         }
         return 0;
