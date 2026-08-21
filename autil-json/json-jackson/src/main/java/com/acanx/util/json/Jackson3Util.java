@@ -62,12 +62,17 @@ public class Jackson3Util {
     /**
      * 构建基础 ObjectMapper（驼峰 + 自定义日期格式，对应 JacksonUtil 的 toJSONString/parseObject(Class)）
      *
+     * <p>禁用 SORT_PROPERTIES_ALPHABETICALLY：Jackson 3.0 起该特性默认开启（Jackson 2 默认关闭），
+     * 会导致 POJO 属性按字母序输出，与 Jackson 2 的声明顺序不一致；此处显式关闭以保持行为一致。</p>
+     *
      * @return ObjectMapper
      */
     private static JsonMapper createBaseMapper() {
         return JsonMapper.builder()
                 // 显式注册自定义日期模块
                 .addModule(createJavaTimeModule())
+                // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
                 .build();
     }
 
@@ -82,6 +87,8 @@ public class Jackson3Util {
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 // 显式注册自定义日期模块
                 .addModule(createJavaTimeModule())
+                // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
                 // 允许反序列化未知字段
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 // 空对象不报错
@@ -130,6 +137,8 @@ public class Jackson3Util {
         try {
             return JsonMapper.builder()
                     .addModule(createJavaTimeModule())
+                    // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                    .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
                     // 允许反序列化未知字段
                     .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                     // 空对象不报错
@@ -260,6 +269,8 @@ public class Jackson3Util {
             JsonMapper mapper = JsonMapper.builder()
                     .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                     .addModule(createJavaTimeModule())
+                    // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                    .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
                     // 启用特性，支持更灵活的名称匹配
                     .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                     // 允许反序列化未知字段

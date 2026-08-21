@@ -22,6 +22,18 @@ import java.util.ServiceLoader;
  */
 public class JSONUtil {
     /**
+     *   Provider 显式优先级表（见 Docs/DevProposal/Jackson3Migration.md §5.2）
+     *   jackson3 > jackson2 > gson > fastjson2
+     *   <p>注意：必须声明在 static 块之前（static 块排序时会调用 getPriority）</p>
+     */
+    private static final Map<String, Integer> PRIORITIES = Map.of(
+            "com.acanx.util.json.impl.Jackson3Provider", 4,
+            "com.acanx.util.json.impl.JacksonProvider",  3,
+            "com.acanx.util.json.impl.GsonProvider",     2,
+            "com.acanx.util.json.impl.FastJSONProvider", 1
+    );
+
+    /**
      *  服务提供者
      */
     private static final JSONProvider PROVIDER;
@@ -49,17 +61,6 @@ public class JSONUtil {
         PROVIDER = providers.get(0);
         System.out.println("启用JSON工具服务提供者:"+PROVIDER.getProviderName());
     }
-
-    /**
-     *   Provider 显式优先级表（见 Docs/DevProposal/Jackson3Migration.md §5.2）
-     *   jackson3 > jackson2 > gson > fastjson2
-     */
-    private static final Map<String, Integer> PRIORITIES = Map.of(
-            "com.acanx.util.json.impl.Jackson3Provider", 4,
-            "com.acanx.util.json.impl.JacksonProvider",  3,
-            "com.acanx.util.json.impl.GsonProvider",     2,
-            "com.acanx.util.json.impl.FastJSONProvider", 1
-    );
 
     /**
      *  工具的优先级（显式表查找，未知类名兜底为 0）
