@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 0.2.0.5
  */
 @Alpha
-public interface JSONProvider {
+public interface JSONProvider extends JSONSerialization {
 
     /**
      *  是否可用
