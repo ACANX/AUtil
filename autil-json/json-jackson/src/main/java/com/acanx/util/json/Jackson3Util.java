@@ -62,8 +62,10 @@ public class Jackson3Util {
     /**
      * 构建基础 ObjectMapper（驼峰 + 自定义日期格式，对应 JacksonUtil 的 toJSONString/parseObject(Class)）
      *
-     * <p>禁用 SORT_PROPERTIES_ALPHABETICALLY：Jackson 3.0 起该特性默认开启（Jackson 2 默认关闭），
-     * 会导致 POJO 属性按字母序输出，与 Jackson 2 的声明顺序不一致；此处显式关闭以保持行为一致。</p>
+     * <p>对齐 Jackson 2 属性顺序：Jackson 3.0 起 {@code SORT_PROPERTIES_ALPHABETICALLY} 默认开启
+     * （Jackson 2 默认关闭）会导致字母序输出；且 Jackson 3 会把无注解多参构造识别为隐式 creator，
+     * 配合默认开启的 {@code SORT_CREATOR_PROPERTIES_FIRST} 把 creator 属性前置。
+     * 两者一并关闭后恢复 Jackson 2 的声明顺序输出。</p>
      *
      * @return ObjectMapper
      */
@@ -71,8 +73,9 @@ public class Jackson3Util {
         return JsonMapper.builder()
                 // 显式注册自定义日期模块
                 .addModule(createJavaTimeModule())
-                // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                // 对齐 Jackson 2：关闭默认字母序排序与 creator 属性前置，保持属性声明顺序输出
                 .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+                .disable(MapperFeature.SORT_CREATOR_PROPERTIES_FIRST)
                 .build();
     }
 
@@ -87,8 +90,9 @@ public class Jackson3Util {
                 .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                 // 显式注册自定义日期模块
                 .addModule(createJavaTimeModule())
-                // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                // 对齐 Jackson 2：关闭默认字母序排序与 creator 属性前置，保持属性声明顺序输出
                 .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+                .disable(MapperFeature.SORT_CREATOR_PROPERTIES_FIRST)
                 // 允许反序列化未知字段
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                 // 空对象不报错
@@ -137,8 +141,9 @@ public class Jackson3Util {
         try {
             return JsonMapper.builder()
                     .addModule(createJavaTimeModule())
-                    // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                    // 对齐 Jackson 2：关闭默认字母序排序与 creator 属性前置，保持属性声明顺序输出
                     .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+                    .disable(MapperFeature.SORT_CREATOR_PROPERTIES_FIRST)
                     // 允许反序列化未知字段
                     .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
                     // 空对象不报错
@@ -269,8 +274,9 @@ public class Jackson3Util {
             JsonMapper mapper = JsonMapper.builder()
                     .propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE)
                     .addModule(createJavaTimeModule())
-                    // 对齐 Jackson 2：关闭默认字母序排序，保持属性声明顺序输出
+                    // 对齐 Jackson 2：关闭默认字母序排序与 creator 属性前置，保持属性声明顺序输出
                     .disable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY)
+                    .disable(MapperFeature.SORT_CREATOR_PROPERTIES_FIRST)
                     // 启用特性，支持更灵活的名称匹配
                     .enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                     // 允许反序列化未知字段
