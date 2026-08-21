@@ -73,6 +73,8 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <!-- 本模块不依赖注解处理器，禁用自动发现，避免加载 CopierAstProcessor 等处理器导致 JDK 21 编译失败 -->
+                    <proc>none</proc>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
