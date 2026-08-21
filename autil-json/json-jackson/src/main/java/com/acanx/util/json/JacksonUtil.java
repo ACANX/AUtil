@@ -336,7 +336,7 @@ public class JacksonUtil {
             }
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException("Object to JSON conversion failed", e);
+            throw new IllegalStateException("Object to JSON conversion failed", e);
         }
     }
 
@@ -360,7 +360,7 @@ public class JacksonUtil {
             JavaType javaType = mapper.getTypeFactory().constructType(type);
             return mapper.readValue(json, javaType);
         } catch (IOException e) {
-            throw new RuntimeException("JSON to Object conversion failed", e);
+            throw new IllegalStateException("JSON to Object conversion failed", e);
         }
     }
 
@@ -374,12 +374,7 @@ public class JacksonUtil {
         ObjectMapper mapper = new ObjectMapper();
         // 命名风格（默认 SNAKE_CASE）
         NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
-        switch (naming) {
-            case SNAKE_CASE -> mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-            case UPPER_CAMEL -> mapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
-            case KEBAB_CASE -> mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-            default -> { /* LOWER_CAMEL：默认小驼峰 */ }
-        }
+        applyNamingStrategy(mapper, naming);
         // null 策略（默认 SKIP）
         NullStrategy ns = c.getNullStrategy() != null ? c.getNullStrategy() : NullStrategy.SKIP;
         if (ns == NullStrategy.SKIP) {
@@ -423,12 +418,7 @@ public class JacksonUtil {
         ObjectMapper mapper = new ObjectMapper();
         // 字段映射（默认 SNAKE_TO_CAMEL）
         FieldMapping fm = c.getFieldMapping() != null ? c.getFieldMapping() : FieldMapping.SNAKE_TO_CAMEL;
-        switch (fm) {
-            case SNAKE_TO_CAMEL -> mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-            case SMART -> mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
-            // EXACT：默认同名字段；CAMEL_TO_SNAKE：反向映射框架无原生能力，降级为同名字段
-            default -> { }
-        }
+        applyFieldMapping(mapper, fm);
         // 未知字段（默认 IGNORE）
         UnknownFieldHandling uf = c.getUnknownFieldHandling() != null
                 ? c.getUnknownFieldHandling() : UnknownFieldHandling.IGNORE;
@@ -459,6 +449,37 @@ public class JacksonUtil {
             mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         }
         return mapper;
+    }
+
+    /**
+     * 应用序列化命名策略（LOWER_CAMEL 使用默认小驼峰，不设置）
+     *
+     * @param mapper ObjectMapper
+     * @param naming 命名风格
+     */
+    private static void applyNamingStrategy(ObjectMapper mapper, NamingStyle naming) {
+        if (naming == NamingStyle.SNAKE_CASE) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        } else if (naming == NamingStyle.UPPER_CAMEL) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
+        } else if (naming == NamingStyle.KEBAB_CASE) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        }
+        // LOWER_CAMEL：默认小驼峰，不设置
+    }
+
+    /**
+     * 应用反序列化字段映射（EXACT 使用默认同名字段；CAMEL_TO_SNAKE 反向映射框架无原生能力，降级为同名字段）
+     *
+     * @param mapper ObjectMapper
+     * @param fm     字段映射规则
+     */
+    private static void applyFieldMapping(ObjectMapper mapper, FieldMapping fm) {
+        if (fm == FieldMapping.SNAKE_TO_CAMEL) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        } else if (fm == FieldMapping.SMART) {
+            mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+        }
     }
 
     /**

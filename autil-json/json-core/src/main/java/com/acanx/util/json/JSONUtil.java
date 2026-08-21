@@ -91,7 +91,7 @@ public class JSONUtil {
      * @return  对象序列化后的JSON字符串
      * @deprecated 请使用 {@link #serialize(Object, JSONConfig)}（本方法 config 参数在各实现中全链路被丢弃）
      */
-    @Deprecated
+    @Deprecated(since = "1.3.0", forRemoval = true)
     public static String toJSONString(Object obj, Map<String, Object> config) {
         return PROVIDER.toJSONString(obj, config);
     }
@@ -140,7 +140,7 @@ public class JSONUtil {
      * @throws IllegalAccessException IllegalAccessException
      * @deprecated 请使用 {@link #deserialize(String, Class, JSONConfig)}（本方法 config 参数在各实现中全链路被丢弃）
      */
-    @Deprecated
+    @Deprecated(since = "1.3.0", forRemoval = true)
     public static <T> T parseObject(String json, Class<T> clazz, Map<String, Object> config)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return PROVIDER.parseObject(json, clazz);

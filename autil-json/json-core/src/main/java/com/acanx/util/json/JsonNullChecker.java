@@ -33,32 +33,59 @@ public final class JsonNullChecker {
      */
     @Alpha
     public static void checkNullFields(Object object) {
-        if (object == null) {
+        if (object == null || isSkippableType(object)) {
             return;
         }
+        checkDeclaredFields(object.getClass(), object);
+    }
+
+    /**
+     * 判断是否为无业务字段的直通类型（基础类型/包装/String/枚举/集合/Map 等）
+     *
+     * @param object 待判断对象
+     * @return 是否直通
+     */
+    private static boolean isSkippableType(Object object) {
         Class<?> type = object.getClass();
-        // 基础类型/包装/String/枚举/集合/Map 等无业务字段的类型直接通过
-        if (type.isPrimitive() || type.isEnum()
+        return type.isPrimitive() || type.isEnum()
                 || type.getName().startsWith("java.") || type.getName().startsWith("javax.")
-                || object instanceof Iterable || object instanceof java.util.Map) {
-            return;
-        }
+                || object instanceof Iterable || object instanceof java.util.Map;
+    }
+
+    /**
+     * 递归校验类及父类的声明字段
+     *
+     * @param type   类
+     * @param object 待校验对象
+     */
+    private static void checkDeclaredFields(Class<?> type, Object object) {
         for (Class<?> current = type; current != null && current != Object.class; current = current.getSuperclass()) {
             for (Field field : current.getDeclaredFields()) {
-                if (Modifier.isStatic(field.getModifiers())) {
-                    continue;
-                }
-                try {
-                    field.setAccessible(true);
-                    if (field.get(object) == null) {
-                        throw new JSONConfigException(
-                                "NullStrategy.THROW：对象 " + type.getName() + " 的字段 " + field.getName() + " 为 null，禁止序列化");
-                    }
-                } catch (IllegalAccessException e) {
-                    // 字段不可访问则跳过（保持宽容）
-                    // ignore
-                }
+                checkField(current, field, object);
             }
+        }
+    }
+
+    /**
+     * 校验单个字段
+     *
+     * @param type   声明类
+     * @param field  字段
+     * @param object 待校验对象
+     */
+    private static void checkField(Class<?> type, Field field, Object object) {
+        if (Modifier.isStatic(field.getModifiers())) {
+            return;
+        }
+        try {
+            field.setAccessible(true);
+            if (field.get(object) == null) {
+                throw new JSONConfigException(
+                        "NullStrategy.THROW：对象 " + type.getName() + " 的字段 " + field.getName() + " 为 null，禁止序列化");
+            }
+        } catch (IllegalAccessException e) {
+            // 字段不可访问则跳过（保持宽容）
+            // ignore
         }
     }
 }

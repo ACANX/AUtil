@@ -215,16 +215,48 @@ public class FastJSONProvider implements JSONProvider {
         if (c.getNullStrategy() == NullStrategy.THROW) {
             JsonNullChecker.checkNullFields(object);
         }
-        // 命名策略（默认 SNAKE_CASE）
-        NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
-        NameFilter nameFilter = null;
-        switch (naming) {
-            case SNAKE_CASE -> nameFilter = NameFilter.of(PropertyNamingStrategy.SnakeCase);
-            case UPPER_CAMEL -> nameFilter = NameFilter.of(PropertyNamingStrategy.PascalCase);
-            case KEBAB_CASE -> nameFilter = NameFilter.of(PropertyNamingStrategy.LowerCaseWithDashes);
-            default -> { /* LOWER_CAMEL：默认小驼峰 */ }
+        // 日期格式：未配置时使用全局默认格式（与 Jackson/Gson 对齐，保证三框架一致）
+        String df = c.getDateFormat() != null && !c.getDateFormat().isBlank()
+                ? c.getDateFormat() : JSONConfig.DEFAULT_DATE_FORMAT;
+        // 组合命名 + 日期格式 + features（Context(String format, Feature...) 构造器一步到位）
+        JSONWriter.Context context = new JSONWriter.Context(df, buildSerializeFeatures(c));
+        NameFilter nameFilter = buildNameFilter(c);
+        if (nameFilter != null) {
+            context.setNameFilter(nameFilter);
         }
-        // 组装 writer features
+        try (JSONWriter writer = JSONWriter.of(context)) {
+            writer.writeAny(object);
+            return writer.toString();
+        }
+    }
+
+    /**
+     * 按配置构建序列化命名过滤器（默认 SNAKE_CASE；LOWER_CAMEL 返回 null 使用默认）
+     *
+     * @param c JSONConfig
+     * @return NameFilter，可为 null
+     */
+    private NameFilter buildNameFilter(JSONConfig c) {
+        NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
+        if (naming == NamingStyle.SNAKE_CASE) {
+            return NameFilter.of(PropertyNamingStrategy.SnakeCase);
+        }
+        if (naming == NamingStyle.UPPER_CAMEL) {
+            return NameFilter.of(PropertyNamingStrategy.PascalCase);
+        }
+        if (naming == NamingStyle.KEBAB_CASE) {
+            return NameFilter.of(PropertyNamingStrategy.LowerCaseWithDashes);
+        }
+        return null;
+    }
+
+    /**
+     * 按配置组装序列化 writer features
+     *
+     * @param c JSONConfig
+     * @return Feature 数组
+     */
+    private JSONWriter.Feature[] buildSerializeFeatures(JSONConfig c) {
         List<JSONWriter.Feature> features = new ArrayList<>();
         NullStrategy ns = c.getNullStrategy() != null ? c.getNullStrategy() : NullStrategy.SKIP;
         if (ns == NullStrategy.ALWAYS) {
@@ -253,19 +285,7 @@ public class FastJSONProvider implements JSONProvider {
         if (c.isSerializeEnabled(SerializeFeature.DETECT_CYCLIC_REFERENCES)) {
             features.add(JSONWriter.Feature.ReferenceDetection);
         }
-        // 日期格式：未配置时使用全局默认格式（与 Jackson/Gson 对齐，保证三框架一致）
-        String df = c.getDateFormat() != null && !c.getDateFormat().isBlank()
-                ? c.getDateFormat() : JSONConfig.DEFAULT_DATE_FORMAT;
-        // 组合命名 + 日期格式 + features（Context(String format, Feature...) 构造器一步到位）
-        JSONWriter.Feature[] featureArr = features.toArray(new JSONWriter.Feature[0]);
-        JSONWriter.Context context = new JSONWriter.Context(df, featureArr);
-        if (nameFilter != null) {
-            context.setNameFilter(nameFilter);
-        }
-        try (JSONWriter writer = JSONWriter.of(context)) {
-            writer.writeAny(object);
-            return writer.toString();
-        }
+        return features.toArray(new JSONWriter.Feature[0]);
     }
 
     /**

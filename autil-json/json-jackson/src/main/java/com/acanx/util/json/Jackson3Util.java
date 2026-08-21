@@ -347,12 +347,7 @@ public class Jackson3Util {
                 .disable(MapperFeature.SORT_CREATOR_PROPERTIES_FIRST);
         // 命名风格（默认 SNAKE_CASE）
         NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
-        switch (naming) {
-            case SNAKE_CASE -> builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-            case UPPER_CAMEL -> builder.propertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
-            case KEBAB_CASE -> builder.propertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
-            default -> { /* LOWER_CAMEL：默认小驼峰 */ }
-        }
+        applyNamingStrategy(builder, naming);
         // null 策略（默认 SKIP）
         NullStrategy ns = c.getNullStrategy() != null ? c.getNullStrategy() : NullStrategy.SKIP;
         if (ns == NullStrategy.SKIP) {
@@ -396,12 +391,7 @@ public class Jackson3Util {
                 .disable(MapperFeature.SORT_CREATOR_PROPERTIES_FIRST);
         // 字段映射（默认 SNAKE_TO_CAMEL）
         FieldMapping fm = c.getFieldMapping() != null ? c.getFieldMapping() : FieldMapping.SNAKE_TO_CAMEL;
-        switch (fm) {
-            case SNAKE_TO_CAMEL -> builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
-            case SMART -> builder.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
-            // EXACT：默认同名字段；CAMEL_TO_SNAKE：反向映射框架无原生能力，降级为同名字段
-            default -> { }
-        }
+        applyFieldMapping(builder, fm);
         // 未知字段（默认 IGNORE）
         UnknownFieldHandling uf = c.getUnknownFieldHandling() != null
                 ? c.getUnknownFieldHandling() : UnknownFieldHandling.IGNORE;
@@ -436,6 +426,37 @@ public class Jackson3Util {
             builder.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
         }
         return builder.build();
+    }
+
+    /**
+     * 应用序列化命名策略（LOWER_CAMEL 使用默认小驼峰，不设置）
+     *
+     * @param builder JsonMapper.Builder
+     * @param naming  命名风格
+     */
+    private static void applyNamingStrategy(JsonMapper.Builder builder, NamingStyle naming) {
+        if (naming == NamingStyle.SNAKE_CASE) {
+            builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        } else if (naming == NamingStyle.UPPER_CAMEL) {
+            builder.propertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
+        } else if (naming == NamingStyle.KEBAB_CASE) {
+            builder.propertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        }
+        // LOWER_CAMEL：默认小驼峰，不设置
+    }
+
+    /**
+     * 应用反序列化字段映射（EXACT 使用默认同名字段；CAMEL_TO_SNAKE 反向映射框架无原生能力，降级为同名字段）
+     *
+     * @param builder JsonMapper.Builder
+     * @param fm      字段映射规则
+     */
+    private static void applyFieldMapping(JsonMapper.Builder builder, FieldMapping fm) {
+        if (fm == FieldMapping.SNAKE_TO_CAMEL) {
+            builder.propertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        } else if (fm == FieldMapping.SMART) {
+            builder.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+        }
     }
 
     /**
