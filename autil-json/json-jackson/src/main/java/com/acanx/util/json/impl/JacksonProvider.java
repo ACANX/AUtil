@@ -1,6 +1,7 @@
 package com.acanx.util.json.impl;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.util.json.JSONConfig;
 import com.acanx.util.json.JSONProvider;
 import com.acanx.util.json.JacksonMode;
 import com.acanx.util.json.JacksonUtil;
@@ -180,5 +181,31 @@ public class JacksonProvider implements JSONProvider {
     @Override
     public <T> List<T> parseArraySnake(String text, Class<T> objectClass) {
         return JacksonUtil.parseArraySnake(text, objectClass);
+    }
+
+    /**
+     * 通用序列化（下划线默认，JSONConfig 可覆盖）
+     *
+     * @param object Java对象
+     * @param config 序列化配置，可为 null
+     * @return JSON字符串
+     */
+    @Override
+    public String serialize(Object object, JSONConfig config) {
+        return JacksonUtil.serialize(object, config);
+    }
+
+    /**
+     * 通用反序列化（下划线→小驼峰默认，JSONConfig 可覆盖）
+     *
+     * @param jsonStr    JSON字符串
+     * @param targetType 目标类型（Class 或 Type）
+     * @param config     反序列化配置，可为 null
+     * @param <T>        目标类型参数
+     * @return           反序列化结果
+     */
+    @Override
+    public <T> T deserialize(String jsonStr, java.lang.reflect.Type targetType, JSONConfig config) {
+        return JacksonUtil.deserialize(jsonStr, targetType, config);
     }
 }
