@@ -25,6 +25,7 @@
 /nbdist/
 /.nb-gradle/
 
-
 ### 自定义
-
+# Maven flatten-maven-plugin 生成的扁平化 POM(构建产物,不入库、不跟踪)
+.flattened-pom.xml
+pom-xml-flattened
