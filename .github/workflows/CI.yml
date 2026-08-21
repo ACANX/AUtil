@@ -23,14 +23,14 @@ jobs:
   # 编译 + 单元测试
   # ============================================================
   build:
-    name: Build & Test (JDK ${{ matrix.java-version }})
+    name: Build & Test (JDK ${{ matrix.java-version }}, target 21)
     runs-on: ubuntu-latest
 
-    # 并行测试多个 JDK 版本（主要质量卡点使用 JDK 21）
+    # JDK 25 为编译运行环境；maven.compiler.target=21 限制字节码兼容 JDK 21
     matrix:
       java-version:
+        - '25'
         - '21'
-        - '23'
 
     steps:
       - name: Checkout Code
@@ -97,14 +97,14 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Java 21
+      - name: Setup Java 25
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
+          java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
 
-      # SpotBugs 静态分析（JDK 21 兼容）
+      # SpotBugs 静态分析
       - name: SpotBugs Static Analysis
         run: >
           ./mvnw spotbugs:check
@@ -150,7 +150,7 @@ jobs:
             }
 
   # ============================================================
-  # 构建产物（用于后续发布）
+  # 构建产物（JDK 25 编译，字节码兼容 JDK 21）
   # ============================================================
   artifact:
     name: Build Artifacts
@@ -162,10 +162,10 @@ jobs:
       - name: Checkout Code
         uses: actions/checkout@v4
 
-      - name: Setup Java 21
+      - name: Setup Java 25
         uses: actions/setup-java@v5
         with:
-          java-version: '21'
+          java-version: '25'
           distribution: 'temurin'
           cache: 'maven'
 
