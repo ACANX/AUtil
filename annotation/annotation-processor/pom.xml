@@ -54,6 +54,8 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
+                    <!-- 本模块是注解处理器提供者，编译时无需触发注解处理，避免 javac 尝试实例化 services 声明的 Processor -->
+                    <proc>none</proc>
                     <compilerArgs>
                          <!--   <arg>-parameters</arg>-->
                     </compilerArgs>
