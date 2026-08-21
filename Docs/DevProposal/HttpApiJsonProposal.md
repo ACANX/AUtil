@@ -356,3 +356,22 @@ public class ApiClient {
 1. 评审本提案,确认接口命名(`JSONSerialization`)、方法命名(`serialize` / `deserialize`)与配置语义。
 2. 与 `JsonFeatureProposal.md` 评审合并推进:其阶段一(`JSONConfig` + 枚举)是本提案的前置。
 3. 排期:Feature 提案阶段一 → 本提案接口落地 + 行为快照 → 三实现层映射 → 纳入 `Jackson3Migration` 快照回归。
+
+---
+
+## 11. 实施记录
+
+### 2026-08-21：接口与三实现层映射已落地
+
+**已实施：**
+
+- ✅ `JSONSerialization` 接口（`serialize(Object, JSONConfig)` / `<T> deserialize(String, Type, JSONConfig)`），`JSONProvider extends JSONSerialization` 并提供 default 兜底（委托 toJSONStringSnake / parseObjectSnake，忽略 config，保证编译不破）
+- ✅ `JSONUtil` 门面：`serialize(Object)` / `serialize(Object, JSONConfig)` / `deserialize(String, Class)` / `deserialize(String, Class, JSONConfig)` / `deserialize(String, Type, JSONConfig)`；旧 Map 方法保留并标记 `@Deprecated`
+- ✅ 三实现层（Jackson2 / Jackson3 / Gson / Fastjson2）覆写 `serialize` / `deserialize`，`JSONConfig` 全链路生效：默认「下划线 + 紧凑 + null 跳过」「下划线→小驼峰 + 忽略未知字段」，逐项可覆盖（命名/null/日期/输出格式/字段映射/枚举/未知字段/未知枚举/补充 Feature）
+- ✅ 行为快照契约测试：三模块同一套断言（含泛型 Type 目标、未知字段 FAIL、大小写不敏感等）
+- ✅ 与 `JsonFeatureProposal`（JSONConfig + 枚举）依赖关系落地；与 `Jackson3Migration`（快照回归）叠加验证（Jackson2/Jackson3 同套断言）
+
+**框架差异说明（部分支持降级，详见各实现 javadoc）：**
+- Gson：PRETTY 缩进固定 2；unknownFieldHandling.FAIL / 未知枚举 FAIL/DEFAULT / SMART / enumStyle TO_STRING/ORDINAL 无原生能力降级为默认
+- Fastjson2：完整支持缩进 2/4（PrettyFormatWith2Space/4Space）、枚举三态、SORT_MAP_KEYS、ErrorOnUnknownProperties 等
+- Jackson3：枚举控制走 `EnumFeature`（WRITE_ENUMS_USING_TO_STRING / READ_UNKNOWN_ENUM_VALUES_AS_NULL 等），与 Jackson2 的 SerializationFeature/DeserializationFeature 不同

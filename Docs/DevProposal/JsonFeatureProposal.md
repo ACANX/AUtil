@@ -361,3 +361,23 @@ JSONUtil.parseObject(json, clazz, config);
 1. 评审本提案,确认 Feature 清单是否完整、命名是否合理。
 2. 确认 `JSONConfig` 与 `@AJSON*` 注解的归属模块(`json-core` 或 `annotation-api`)。
 3. 排期阶段一(Feature 抽象定义 + 行为快照测试)。
+
+---
+
+## 14. 实施记录
+
+### 2026-08-21：阶段一已落地（Feature 抽象定义 + 核心链路三框架映射）
+
+**已实施：**
+
+- ✅ Feature 枚举：`NamingStyle`（LOWER/UPPER_CAMEL、SNAKE、KEBAB）、`OutputFormat`（COMPACT/PRETTY+缩进）、`NullStrategy`（ALWAYS/SKIP/THROW）、`FieldMapping`（SMART/EXACT/S2C/C2S）、`EnumStyle`、`UnknownFieldHandling`、`UnknownEnumValue`、`SerializeFeature` / `DeserializeFeature`（补充开关，javadoc 标注支持度）
+- ✅ `JSONConfig`（builder 增量覆盖语义：未设置项 getter 为 null，实现层按方法默认值合并；`DEFAULT_DATE_FORMAT` 全局统一）
+- ✅ `JSONConfigException` + `JsonNullChecker`（THROW 增强语义实现支撑，仅检测对象直接字段，局限已文档化）
+- ✅ 三框架核心 Feature 映射（json-jackson 双 Provider / json-gson / json-fastjson）：naming / output(缩进2·4) / nullStrategy / dateFormat / fieldMapping / enumStyle / unknownFieldHandling / unknownEnumValue 全部落地；补充 Feature 按支持度落地（如 SORT_MAP_KEYS、DISABLE_HTML_ESCAPE、ESCAPE_NON_ASCII、ACCEPT_CASE_INSENSITIVE_PROPERTIES、FAIL_ON_NULL_FOR_PRIMITIVES、ACCEPT_EMPTY_STRING_AS_NULL、SUPPORT_AUTO_TYPE 等），部分支持项安全降级（见各实现 javadoc）
+- ✅ 契约测试：`JSONConfigTest` + 三模块 `*SerializationContractTest`（同一套断言，验证三框架行为一致）
+- ✅ 旧方法全部保留；`JSONUtil.toJSONString(Object,Map)` / `parseObject(String,Class,Map)` 标记 `@Deprecated`
+
+**未实施（待排期）：**
+
+- ⏳ 统一注解 `@AJSONField` / `@AJSONIgnore` / `@AJSONFormat` / `@AJSONType` / `@AJSONInclude`（阶段二，需三框架注解映射工程）
+- ⏳ 补充 Feature 的完整三框架对齐（部分支持项如 `writeClassName` / `referenceDetection` / `rootValueUnwrap` 的 Gson 侧能力）

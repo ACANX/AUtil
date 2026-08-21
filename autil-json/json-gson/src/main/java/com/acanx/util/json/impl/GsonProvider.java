@@ -1,11 +1,23 @@
 package com.acanx.util.json.impl;
 
 import com.acanx.annotation.Alpha;
-import com.acanx.util.json.GsonUtil;
+import com.acanx.util.json.FieldMapping;
+import com.acanx.util.json.JSONConfig;
 import com.acanx.util.json.JSONProvider;
+import com.acanx.util.json.GsonUtil;
+import com.acanx.util.json.JsonNullChecker;
+import com.acanx.util.json.NamingStyle;
+import com.acanx.util.json.NullStrategy;
+import com.acanx.util.json.OutputFormat;
+import com.acanx.util.json.SerializeFeature;
+import com.acanx.util.json.support.DateFormatAdapter;
+import com.acanx.util.json.support.Iso8601Adapter;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.lang.reflect.Type;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -176,5 +188,113 @@ public class GsonProvider implements JSONProvider {
     // @Override
     public <T> List<T> parseArraySnake(String text, Class<T> objectClass) {
         return GsonUtil.parseArraySnake(text, objectClass);
+    }
+
+    /**
+     * 通用序列化（下划线默认、紧凑、null 跳过，JSONConfig 可覆盖）
+     *
+     * <p>框架能力说明（部分支持降级）：PRETTY 缩进固定 2（indent 参数忽略）；
+     * enumStyle 仅支持默认 NAME（TO_STRING/ORDINAL 降级为 NAME）；
+     * SORT_MAP_KEYS / FAIL_ON_EMPTY_BEANS / WRITE_CLASS_NAME 等 Gson 无原生能力的 Feature 降级忽略。</p>
+     *
+     * @param object Java对象
+     * @param config 序列化配置，可为 null
+     * @return JSON字符串
+     */
+    @Override
+    public String serialize(Object object, JSONConfig config) {
+        JSONConfig c = config == null ? JSONConfig.builder().build() : config;
+        if (c.getNullStrategy() == NullStrategy.THROW) {
+            JsonNullChecker.checkNullFields(object);
+        }
+        return buildSerializeGson(c).toJson(object);
+    }
+
+    /**
+     * 通用反序列化（下划线→小驼峰默认，JSONConfig 可覆盖）
+     *
+     * <p>框架能力说明（部分支持降级）：unknownFieldHandling.FAIL / unknownEnumValue 的
+     * FAIL/DEFAULT / SMART 智能映射等 Gson 无原生能力，降级为默认行为。</p>
+     *
+     * @param jsonStr    JSON字符串
+     * @param targetType 目标类型（Class 或 Type）
+     * @param config     反序列化配置，可为 null
+     * @param <T>        目标类型参数
+     * @return           反序列化结果
+     */
+    @Override
+    public <T> T deserialize(String jsonStr, Type targetType, JSONConfig config) {
+        JSONConfig c = config == null ? JSONConfig.builder().build() : config;
+        return buildDeserializeGson(c).fromJson(jsonStr, targetType);
+    }
+
+    /**
+     * 构建序列化 Gson（按 JSONConfig 映射）
+     *
+     * @param c JSONConfig（非 null）
+     * @return Gson
+     */
+    private Gson buildSerializeGson(JSONConfig c) {
+        GsonBuilder builder = new GsonBuilder();
+        // 日期格式（默认全局默认格式，与 Jackson 对齐）
+        registerDateAdapter(builder, c);
+        // 命名风格（默认 SNAKE_CASE）
+        NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
+        switch (naming) {
+            case SNAKE_CASE -> builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+            case UPPER_CAMEL -> builder.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
+            case KEBAB_CASE -> builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_DASHES);
+            default -> { /* LOWER_CAMEL：IDENTITY 默认 */ }
+        }
+        // null 策略（默认 SKIP；Gson 默认不输出 null，ALWAYS 需显式开启）
+        NullStrategy ns = c.getNullStrategy() != null ? c.getNullStrategy() : NullStrategy.SKIP;
+        if (ns == NullStrategy.ALWAYS) {
+            builder.serializeNulls();
+        }
+        // 输出格式（PRETTY：Gson 固定缩进 2）
+        OutputFormat of = c.getOutput() != null ? c.getOutput() : OutputFormat.COMPACT;
+        if (of == OutputFormat.PRETTY) {
+            builder.setPrettyPrinting();
+        }
+        // 补充 Feature：DISABLE_HTML_ESCAPE（Gson disableHtmlEscaping）
+        if (c.isSerializeEnabled(SerializeFeature.DISABLE_HTML_ESCAPE)) {
+            builder.disableHtmlEscaping();
+        }
+        return builder.create();
+    }
+
+    /**
+     * 构建反序列化 Gson（按 JSONConfig 映射）
+     *
+     * @param c JSONConfig（非 null）
+     * @return Gson
+     */
+    private Gson buildDeserializeGson(JSONConfig c) {
+        GsonBuilder builder = new GsonBuilder();
+        // 日期格式（默认全局默认格式，与 Jackson 对齐）
+        registerDateAdapter(builder, c);
+        // 字段映射（默认 SNAKE_TO_CAMEL；SMART/CAMEL_TO_SNAKE Gson 无原生能力，降级为默认）
+        FieldMapping fm = c.getFieldMapping() != null ? c.getFieldMapping() : FieldMapping.SNAKE_TO_CAMEL;
+        if (fm == FieldMapping.SNAKE_TO_CAMEL) {
+            builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
+        }
+        // unknownFieldHandling：Gson 天然 IGNORE，FAIL 降级（Gson 无此配置）
+        // unknownEnumValue：Gson 未知枚举天然返回 null（对应 NULL），FAIL/DEFAULT 降级
+        return builder.create();
+    }
+
+    /**
+     * 注册 LocalDateTime 日期适配器（默认格式走 Iso8601Adapter，自定义格式走 DateFormatAdapter）
+     *
+     * @param builder GsonBuilder
+     * @param c       JSONConfig
+     */
+    private void registerDateAdapter(GsonBuilder builder, JSONConfig c) {
+        String df = c.getDateFormat();
+        if (df != null && !df.isBlank() && !JSONConfig.DEFAULT_DATE_FORMAT.equals(df)) {
+            builder.registerTypeAdapter(LocalDateTime.class, new DateFormatAdapter(df));
+        } else {
+            builder.registerTypeAdapter(LocalDateTime.class, new Iso8601Adapter());
+        }
     }
 }
