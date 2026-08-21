@@ -12,6 +12,16 @@ on:
     branches:
       - V1.3.x
       - feat/V1.3.0/Local
+  workflow_dispatch:
+    inputs:
+      java-version:
+        description: 'JDK 版本'
+        required: false
+        default: '25'
+        type: choice
+        options:
+          - '25'
+          - '21'
 
 permissions:
   contents: read
@@ -26,11 +36,10 @@ jobs:
     name: Build & Test (JDK ${{ matrix.java-version }}, target 21)
     runs-on: ubuntu-latest
 
-    # JDK 25 为编译运行环境；maven.compiler.target=21 限制字节码兼容 JDK 21
+    # workflow_dispatch：使用手动选择的 JDK 版本（单值）
+    # push / pull_request：矩阵并行测试 JDK 25（主）+ JDK 21
     matrix:
-      java-version:
-        - '25'
-        - '21'
+      java-version: ${{ github.event.inputs.java-version || '25' }}
 
     steps:
       - name: Checkout Code
@@ -75,7 +84,7 @@ jobs:
           --no-transfer-progress
 
       # ========================================================
-      # 阶段四：生成测试报告（作为 PR 评论附件）
+      # 阶段四：上传测试报告（7 天保留）
       # ========================================================
       - name: Upload Test Results
         if: always()
@@ -87,11 +96,13 @@ jobs:
 
   # ============================================================
   # 代码质量卡点（静态检查）
+  # workflow_dispatch 跳过以节省资源（手动触发时仅关注编译/测试结果）
   # ============================================================
   quality-gate:
     name: Quality Gate
     runs-on: ubuntu-latest
     needs: build
+    if: github.event_name != 'workflow_dispatch'
 
     steps:
       - name: Checkout Code
@@ -112,7 +123,7 @@ jobs:
           --no-transfer-progress
         continue-on-error: true
 
-      # 编译检查（附加工具，可选）
+      # 依赖分析
       - name: Dependency Analysis
         run: >
           ./mvnw dependency:analyze
@@ -120,16 +131,13 @@ jobs:
           --no-transfer-progress
         continue-on-error: true
 
-      # ========================================================
-      # 合并状态检查（PR 合入门槛）
-      # ========================================================
+      # 上报 commit status（辅助，不阻断合并）
       - name: Set commit status
         if: always()
         uses: actions/github-script@v7
         with:
           script: |
-            const needs = needs();
-            const allPassed = true; // 质量门禁为辅助检查，不强制阻断合并
+            const allPassed = true;
             const state = allPassed ? 'success' : 'failure';
             const description = allPassed
               ? 'All quality checks passed'
@@ -151,12 +159,16 @@ jobs:
 
   # ============================================================
   # 构建产物（JDK 25 编译，字节码兼容 JDK 21）
+  # 仅在 main 版本分支 push 时执行
   # ============================================================
   artifact:
     name: Build Artifacts
     runs-on: ubuntu-latest
     needs: build
-    if: github.ref == 'refs/heads/V1.3.x' || github.ref == 'refs/heads/feat/V1.3.0/Local'
+    if: |
+      github.event_name == 'workflow_dispatch'
+      || github.ref == 'refs/heads/V1.3.x'
+      || github.ref == 'refs/heads/feat/V1.3.0/Local'
 
     steps:
       - name: Checkout Code
