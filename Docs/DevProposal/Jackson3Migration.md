@@ -1,10 +1,13 @@
-# Jackson 2 → Jackson 3 平滑升级方案
+# Jackson 2 → Jackson 3 平滑升级方案(同模块双 Provider + 开关仲裁)
 
 > 状态:待评审
 > 作者:ACANX
 > 日期:2026-08-21
 > 适用范围:`autil-json` 模块群(重点为 `json-jackson`)
 > 关联提交:`a90ae38 refactor(json): 调整SPI加载优先级为jackson>gson>fastjson2`
+> 关联提案:
+> - `Docs/DevProposal/JsonFeatureProposal.md` — Feature 特性规范(定义 `JsonConfig` 等配置载体与 Feature 语义)
+> - `Docs/DevProposal/HttpApiJsonProposal.md` — `JSONSerialization` 通用 REST/RPC 序列化接口(Provider 需实现 `serialize` / `deserialize`)
 
 ---
 
@@ -22,6 +25,11 @@
 ### 1.2 目标
 
 将 Jackson 实现从 **Jackson 2 平滑迁移到 Jackson 3**,过程中保持对外 API 与行为稳定,支持随时回滚。
+
+**本方案的约束与方向**:
+- **不新增 maven 模块**——`JacksonProvider`(Jackson 2)与 `Jackson3Provider`(Jackson 3)**共存于 `json-jackson` 同一模块**;
+- 通过**三态开关 + 显式优先级表**仲裁两个 Provider 的启用,迁移期可用「显式启用 / 自动自适应」两种方式切换;
+- 切换与回滚各只需一行配置,观察期结束才清理旧实现。
 
 ---
 
@@ -45,21 +53,25 @@
 
 - `json-core` 的 `JSONProvider` 接口对 Jackson **零依赖**——依赖倒置已成立,升级仅限 `json-jackson` 模块内部。
 - 使用方只面对 `JSONUtil` 门面 + SPI 契约,不直接触碰 Jackson API。
+- **Jackson 2 与 Jackson 3 包名完全隔离**:`com.fasterxml.jackson.*` vs `tools.jackson.*`,且两者 groupId 不同,属于**不同的 maven artifact**——这意味着两套依赖**可以同时存在于同一模块的 classpath,不会发生类冲突**。这是"同模块双 Provider"方案成立的前提。
 
 ### 2.3 风险点
 
 - 现有 `autil-json` 各模块测试**几乎全为空壳**(空方法体/断言被注释),**没有可用的回归测试网**。
-- `getPriority` 按**类名子串匹配**(`contains("jackson")`)仲裁优先级,Jackson 2 与未来的 Jackson 3 Provider 会**同分**,排序不稳定。
+- `getPriority` 按**类名子串匹配**(`contains("jackson")`)仲裁优先级,`JacksonProvider` 与未来的 `Jackson3Provider` 类名都含 `"jackson"`,会**同分**,排序不稳定——必须在引入双 Provider 的同时改为**显式优先级表**。
 - Jackson 3 包名从 `com.fasterxml.jackson.*` 变更为 `tools.jackson.*`,属破坏性变更(但使用面窄,可控)。
+- 同模块双依赖会带来**依赖体积与传递面**问题,需用 `optional` 依赖隔离(见 §5.3)。
 
 ---
 
 ## 3. 升级原则
 
 1. **一次只加新实现,不删旧实现**——避免任何时刻出现"无可用实现"。
-2. **默认实现切换可回滚**——通过依赖/优先级一行回退。
-3. **以测试固化行为契约**——升级前后同一套断言必须全绿。
-4. **外部 API 零变化**——`JSONProvider`、`JSONUtil`、`MimeConst` 等对外契约不动。
+2. **不新增 maven 模块**——两个 Provider 在 `json-jackson` 模块内共存,依赖通过 `optional` 控制传递。
+3. **默认实现切换可回滚**——通过三态开关 / 依赖 scope 一行回退。
+4. **显式优先、自适应兜底**——优先尊重显式开关;未显式指定时,自动探测 classpath 中可用的 Jackson 版本。
+5. **以测试固化行为契约**——升级前后同一套断言必须全绿。
+6. **外部 API 零变化**——`JSONProvider`、`JSONUtil`、`JSONSerialization`、`MimeConst` 等对外契约不动。
 
 ---
 
@@ -74,58 +86,187 @@
   - 日期时间格式(`yyyy-MM-dd'T'HH:mm:ss.SSSSSS`)
   - 数组/集合/泛型解析
   - 文件读写
+  - `JSONSerialization.serialize` / `deserialize` 默认语义(见 `HttpApiJsonProposal.md` §5.2/§5.3)
 - 断言使用 JUnit 5,替换现有空壳测试。
 - **交付物**:`json-jackson` 行为快照测试套件,全绿。
 
-### 阶段二:新增 `json-jackson3` 模块(不修改 `json-jackson`)
+### 阶段二:模块内新增 `Jackson3Provider`(不新增模块,双 Provider 共存)
 
-- 新建 `autil-json/json-jackson3`,依赖 **Jackson 3**(`tools.jackson.core:*`),实现**同一个** `JSONProvider` SPI,注册同接口 SPI 文件。
-- `json-jackson`(Jackson 2)模块**保持不动**,现有下游零影响。
-- 模块内部自测:Jackson 3 环境下跑阶段一的快照断言,逐步消除行为差异。
-- **交付物**:可独立构建、自测通过的新模块。
+在 **`json-jackson` 现有模块内部**新增 Jackson 3 实现,与 Jackson 2 实现并存:
+
+1. **pom 依赖**:新增 Jackson 3 依赖,标记 `optional`(不传递给下游):
+
+   ```xml
+   <!-- Jackson 3:迁移期新增,optional 保证默认不传递给下游 -->
+   <dependency>
+       <groupId>tools.jackson.core</groupId>
+       <artifactId>jackson-databind</artifactId>
+       <version>${jackson3.version}</version>
+       <optional>true</optional>
+   </dependency>
+   ```
+
+   - Jackson 2 依赖**保持 compile 不变**(现有下游靠它获得实现)。
+   - `optional` 对本模块自身的编译与测试仍然可见,只是不传递——所以阶段一快照测试可以就地针对两个 Provider 各跑一遍。
+   - 若 Jackson 3 传递引入 `com.fasterxml.*` 依赖(如 annotations),需 `<exclusions>` 排除以避免与 Jackson 2 冲突(见 §8 风险)。
+
+2. **新增 `Jackson3Provider`**:基于 `tools.jackson.*` 实现 `JSONProvider`(含 `JSONSerialization.serialize` / `deserialize`)。**独立实现,不 `extends JacksonProvider`**(底层 API 完全不同)。类名与 `JacksonProvider` 区分,避免 SPI 排序同分。
+
+3. **SPI 注册**:`META-INF/services/com.acanx.util.json.JSONProvider` 同时列出两个 Provider:
+
+   ```
+   com.acanx.util.json.impl.JacksonProvider
+   com.acanx.util.json.impl.Jackson3Provider
+   ```
+
+4. **引入开关仲裁**(详见 §5):`isAvailable()` 感知三态开关;`getPriority` 同步改为**显式优先级表**。
+
+5. **模块内自测**:同一套快照断言分别对 `JacksonProvider` / `Jackson3Provider` 运行,逐步消除行为差异。
+
+- **交付物**:`json-jackson` 模块内双 Provider 共存,开关默认保持 Jackson 2 生效,**现有下游零影响**。
 
 ### 阶段三:切换默认实现(可回滚)
 
-- 将 `getPriority` 由"类名子串匹配"改为**显式优先级表**:
+- **观察期**:默认 `mode=auto`(见 §5.1)。发布后默认行为仍为 Jackson 2(因下游无 Jackson 3 依赖),不受影响;**预演环境**显式加 Jackson 3 依赖 + `mode=jackson3` 验证。
+- **切换默认**:确认稳定后,将依赖 scope **对调**——Jackson 3 改为 compile、Jackson 2 改为 optional,使默认 classpath 携带 Jackson 3,`auto` 模式自动选中 Jackson 3 Provider。
+- **回滚**:一行操作即可——`-Dautil.json.jackson.mode=jackson2`(强制 Jackson 2),或把 pom 依赖 scope 换回。
+- **全项目(含 `autil-core` / `autil-test` / `autil-incubator`)跑一遍测试与构建**。
+- **交付物**:默认实现切换为 Jackson 3 + 全项目回归通过 + 回滚开关文档。
+
+### 阶段四:清理与归档
+
+- 稳定运行一段观察期后,删除 `JacksonProvider`(Jackson 2 实现)、Jackson 2 依赖、SPI 中对应条目;`JacksonMode` 移除 `JACKSON2` 分支(或整个开关)。
+- 在 CHANGELOG / 文档记录迁移说明。
+
+---
+
+## 5. Provider 仲裁与开关机制(核心)
+
+### 5.1 三态开关 `JacksonMode`
+
+通过 JVM 系统属性 `-Dautil.json.jackson.mode=<值>` 控制,三态:
+
+| 取值 | 语义 | 典型用途 |
+|---|---|---|
+| `auto`(**默认**) | 自适应:classpath 存在 `tools.jackson`(Jackson 3)则启用 Jackson 3,否则回落 Jackson 2 | 常规发布、默认行为 |
+| `jackson3` | **显式启用** Jackson 3 | 迁移预演、灰度验证 |
+| `jackson2` | **显式回退**到 Jackson 2 | 回滚锚点、兼容排障 |
+
+> **同时满足「暂时显式启用」与「自适应降级/升级」**:需要确定性时显式指定;不需要时 `auto` 自动选择,且随 classpath 有无 Jackson 3 自动升降级。
 
 ```java
+public enum JacksonMode {
+    AUTO, JACKSON3, JACKSON2;
+
+    static JacksonMode resolve() {
+        String v = System.getProperty("autil.json.jackson.mode");
+        if (v == null || v.isBlank() || "auto".equalsIgnoreCase(v)) return AUTO;
+        if ("jackson3".equalsIgnoreCase(v)) return JACKSON3;
+        if ("jackson2".equalsIgnoreCase(v)) return JACKSON2;
+        return AUTO; // 未知取值,安全兜底
+    }
+
+    static boolean isJackson3Active() {
+        JacksonMode m = resolve();
+        if (m == JACKSON3) return true;
+        if (m == JACKSON2) return false;
+        return canLoad("tools.jackson.databind.ObjectMapper"); // auto:自适应探测
+    }
+
+    static boolean isJackson2Active() {
+        return resolve() != JACKSON3; // 默认可用,仅强制 jackson3 时关闭
+    }
+
+    private static boolean canLoad(String clazz) {
+        try {
+            Class.forName(clazz);
+            return true;
+        } catch (ClassNotFoundException e) {
+            return false; // classpath 无 Jackson 3 → 回落 Jackson 2
+        }
+    }
+}
+```
+
+### 5.2 仲裁逻辑:isAvailable + 显式优先级表
+
+- `Jackson3Provider.isAvailable()` = `JacksonMode.isJackson3Active()`
+- `JacksonProvider.isAvailable()` = `JacksonMode.isJackson2Active()`(默认 true,仅强制 `jackson3` 时 false)
+
+`JSONUtil` 现有静态块逻辑不变(收集 `isAvailable()==true` 的 Provider → 按优先级排序 → 取第一个),`getPriority` 改为**显式优先级表**,不再依赖类名子串:
+
+```java
+// JSONUtil.getPriority 改造(阶段二同步落地)
 private static final Map<String, Integer> PRIORITIES = Map.of(
     "com.acanx.util.json.impl.Jackson3Provider", 4,
     "com.acanx.util.json.impl.JacksonProvider",  3,
     "com.acanx.util.json.impl.GsonProvider",     2,
     "com.acanx.util.json.impl.FastJSONProvider", 1
 );
+
+private static int getPriority(String className) {
+    return PRIORITIES.getOrDefault(className, 0);
+}
 ```
 
-  使 `jackson3 > jackson2 > gson > fastjson2`,顺序确定、可预测。
-- 全项目(含 `autil-core` / `autil-test` / `autil-incubator`)跑一遍测试与构建。
-- 观察期:默认实现为 jackson3;若下游报兼容问题,**一行依赖/优先级即可回退到 jackson2**。
-- **交付物**:默认实现切换 + 全项目回归通过 + 回滚开关文档。
+**仲裁结果一览**:
 
-### 阶段四:清理与归档
+| 开关 / classpath | Jackson3Provider.isAvailable | JacksonProvider.isAvailable | 生效 Provider |
+|---|---|---|---|
+| `jackson3` | ✅ | ❌ | **Jackson3** |
+| `jackson2` | ❌ | ✅ | **Jackson2** |
+| `auto` + 有 Jackson 3 依赖 | ✅ | ✅ | **Jackson3**(优先级 4 > 3) |
+| `auto` + 无 Jackson 3 依赖 | ❌ | ✅ | **Jackson2** |
 
-- 稳定运行一段观察期后,删除 `json-jackson`(Jackson 2)模块及相关依赖与 SPI。
-- 在 CHANGELOG / 文档记录迁移说明。
+> `auto` 模式下当两者都可用时,由显式优先级表(4 > 3)稳定选择 Jackson 3;**无需改动任何业务代码即可完成默认实现切换**,切换/回滚都只是一行配置。
+
+### 5.3 依赖 scope 与类加载安全性
+
+- **Jackson 2 保持 compile**:现有下游依赖 `json-jackson` 获得 Jackson 2 实现,不能变 optional。
+- **Jackson 3 设为 optional**:默认不传递给下游;启用 Jackson 3 的下游自行声明 Jackson 3 依赖。
+- **类加载安全性**:`Jackson3Provider` 编译期引用 `tools.jackson.*`;当开关未启用时,`isAvailable()` 返回 false,Provider **不会被实例化**,其字段/方法签名中的 `tools.jackson` 类型不会被 JVM 解析(惰性加载),**不会抛 `NoClassDefFoundError`**。`isAvailable()` 内部用 `Class.forName` + catch 探测,天然免疫缺失依赖。
+- **切换默认(阶段三)的本质**:依赖 scope 对调(Jackson 3 改 compile、Jackson 2 改 optional)+ `mode` 默认 `auto`。
+
+### 5.4 开关使用示例
+
+```bash
+# 默认(自适应):classpath 无 Jackson 3 → Jackson 2
+mvn test
+
+# 预演:显式启用 Jackson 3(需自行引入 Jackson 3 依赖)
+mvn test -Dautil.json.jackson.mode=jackson3
+
+# 排障/回滚:强制 Jackson 2
+mvn test -Dautil.json.jackson.mode=jackson2
+```
 
 ---
 
-## 5. 关键设计决策
+## 6. 关键设计决策
 
-### 5.1 为什么新增独立模块而不是就地替换
+### 6.1 为什么同模块双 Provider,而不是新增独立 `json-jackson3` 模块
 
-就地替换会让 `json-jackson` 在迁移窗口内**同时存在两种依赖形态**,编译与运行风险高、回滚困难。独立 `json-jackson3` 模块并行共存,旧模块天然是回滚锚点。
+- **前提**:Jackson 2/3 包名与 groupId 完全隔离,同 classpath 共存无类冲突(见 §2.2),这是同模块方案的技术基础。
+- **约束**:项目不希望新增 maven 模块——避免模块膨胀、依赖管理复杂化、发布链路变长。
+- **等价回滚能力**:原独立模块方案靠"旧模块天然是回滚锚点";同模块方案靠「`optional` 依赖 + 三态开关」实现同样的回滚,切换/回滚都是**一行配置**,且更细粒度(可在运行时按 JVM 参数切换,无需换 jar)。
+- **权衡**:同模块会把双 Jackson 依赖带入模块构建,依赖体积略增;用 `optional` 控制传递,默认对下游零影响,迁移完成清理即可。
 
-### 5.2 优先级仲裁的显式化
+### 6.2 为什么三态开关(而非纯显式启用)
 
-现状 `getPriority` 用类名子串匹配,Jackson 2/3 的 Provider 类名都含 `"jackson"`,会同分导致排序不稳定。改为显式优先级表后,顺序确定,且新实现默认最高。
+- **纯显式启用**只能满足"我要 Jackson 3",无法应对"默认该用哪个"——若默认就选 Jackson 3,回滚要靠改配置,且首次升级无法自动判定环境。
+- **三态开关**把「显式确定性」与「自适应」合一:`auto` 默认自适应(有则升、无则降),`jackson3`/`jackson2` 显式覆盖,兼顾迁移预演、灰度、回滚三种诉求,是纯显式方案的超集。
 
-### 5.3 测试先行是升级的安全网
+### 6.3 优先级仲裁的显式化
 
-当前测试空壳,升级时无自动回归能力。阶段一的行为快照测试是**整个升级可信的前提**。
+现状 `getPriority` 用类名子串匹配,`JacksonProvider` / `Jackson3Provider` 类名都含 `"jackson"`,会同分导致排序不稳定。改为显式优先级表后,顺序确定,且 `jackson3 > jackson2 > gson > fastjson2`,新实现默认最高。
+
+### 6.4 测试先行是升级的安全网
+
+当前测试空壳,升级时无自动回归能力。阶段一的行为快照测试是**整个升级可信的前提**;阶段二对两个 Provider 跑同一套快照,是"行为一致"的判定标准。
 
 ---
 
-## 6. Jackson 3 迁移要点
+## 7. Jackson 3 迁移要点
 
 | 维度 | Jackson 2 | Jackson 3 |
 |---|---|---|
@@ -138,28 +279,33 @@ private static final Map<String, Integer> PRIORITIES = Map.of(
 
 ---
 
-## 7. 风险登记与应对
+## 8. 风险登记与应对
 
 | 风险 | 概率 | 影响 | 应对 |
 |---|---|---|---|
-| Jackson 3 行为差异(日期/命名/null 策略) | 中 | 中 | 阶段一快照测试锁定,逐步对齐 |
-| 优先级仲裁不稳定(同名 Provider 同分) | 高 | 高 | 阶段三显式优先级表 |
-| 下游项目升级后报错 | 中 | 高 | 默认实现可回滚;观察期 |
+| Jackson 3 行为差异(日期/命名/null 策略) | 中 | 中 | 阶段一快照测试锁定,阶段二双 Provider 对照逐步对齐 |
+| 优先级仲裁不稳定(同名 Provider 同分) | 高 | 高 | 阶段二同步落地显式优先级表 |
+| 双 Jackson 依赖共存的传递冲突(如 Jackson 3 引入 `com.fasterxml.*` 传递依赖) | 低 | 中 | 实施时核实;若有则 `<exclusions>` 排除 |
+| `optional` 下启用 Jackson 3 但未引入依赖 → `NoClassDefFoundError` | 低 | 中 | `isAvailable()` 用 `Class.forName` 探测 + 文档提示;未启用不会实例化 |
+| 开关拼写/取值错误 | 低 | 低 | `resolve()` 未知取值安全兜底为 `auto` |
+| 下游项目升级后报错 | 中 | 高 | 开关回滚(一行 `jackson2`);依赖 scope 回退;观察期 |
 | 无回归测试网 | 高 | 高 | 阶段一补行为快照测试 |
-| Jackson 3 依赖引入后版本冲突 | 低 | 中 | 独立模块隔离 + 版本属性集中管理 |
+| 同模块双依赖导致 jar 体积增大 | 低 | 低 | `optional` 隔离;阶段四清理旧依赖 |
 
 ---
 
-## 8. 验收标准
+## 9. 验收标准
 
 - [ ] 阶段一:行为快照测试全绿(Jackson 2 基线)
-- [ ] 阶段二:`json-jackson3` 独立构建、自测通过
-- [ ] 阶段三:默认实现为 jackson3,全项目构建与测试通过;回滚开关验证有效
-- [ ] 阶段四:旧模块删除后全绿
+- [ ] 阶段二:不新增模块,`json-jackson` 内 `JacksonProvider` / `Jackson3Provider` 双 Provider 共存;`getPriority` 为显式优先级表;开关默认 `auto` 且默认行为为 Jackson 2,现有下游零影响
+- [ ] 阶段二:三个开关取值分别验证生效 Provider(`jackson3` → Jackson3,`jackson2` → Jackson2,`auto` 有/无 Jackson 3 依赖各验一次)
+- [ ] 阶段三:依赖 scope 对调后默认实现为 Jackson 3,全项目构建与测试通过;回滚开关 `jackson2` 验证有效
+- [ ] 阶段四:旧依赖/旧 Provider 删除后全绿
 
 ---
 
-## 9. 待办 / 下一步
+## 10. 待办 / 下一步
 
-1. 评审本方案,确认阶段划分与模块命名(`json-jackson3`)。
+1. 评审本方案,确认:三态开关命名(`autil.json.jackson.mode`)、`optional` 依赖策略、阶段三依赖 scope 对调的时机。
 2. 排期阶段一(行为快照测试),这是后续一切的前提。
+3. 阶段二落地时,与 `JsonFeatureProposal.md` / `HttpApiJsonProposal.md` 的实施顺序保持一致(Feature 抽象 → 通用接口 → 换实现)。
