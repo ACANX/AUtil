@@ -35,7 +35,7 @@ public enum SerializeFeature {
     DISABLE_HTML_ESCAPE,
 
     /**
-     * 非 ASCII 字符转义为 \uXXXX（⚠️ 部分支持：Gson 无原生能力，降级为不转义）
+     * 非 ASCII 字符转义为 反斜杠 u 加四位十六进制（Unicode 转义）形式（⚠️ 部分支持：Gson 无原生能力，降级为不转义）
      */
     ESCAPE_NON_ASCII,
 
