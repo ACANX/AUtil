@@ -21,7 +21,7 @@ class ZipUtilTest {
         if (!zipDir.exists()) {
             zipDir.mkdirs();
         }
-        String savePath = tmpDir + "Zip"+ File.separator + "zipFiles" + System.currentTimeMillis()+".zip";
+        String savePath = tmpDir + File.separator + "Zip" + File.separator + "zipFiles" + System.currentTimeMillis() + ".zip";
         System.out.println(savePath);
         try {
             URL url = ZipUtilTest.class.getProtectionDomain().getCodeSource().getLocation();
@@ -42,7 +42,12 @@ class ZipUtilTest {
     void zipFolderFiles() {
         String tmpDir = System.getProperty("java.io.tmpdir");
         System.out.println(tmpDir);
-        String savePath = tmpDir + "Zip"+ File.separator + "custom_name" + System.currentTimeMillis()+".zip";
+        String dir = tmpDir + File.separator + "Zip";
+        File zipDir = new File(dir);
+        if (!zipDir.exists()) {
+            zipDir.mkdirs();
+        }
+        String savePath = tmpDir + File.separator + "Zip" + File.separator + "custom_name" + System.currentTimeMillis() + ".zip";
         System.out.println(savePath);
         try {
             InputStream is = ZipUtilTest.class.getResourceAsStream("/properties");
