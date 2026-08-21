@@ -151,7 +151,6 @@ class JacksonSerializationContractTest {
     @Test
     void deserializeCaseInsensitiveFeature() {
         JSONConfig cfg = JSONConfig.builder()
-                .fieldMapping(FieldMapping.EXACT)
                 .enable(DeserializeFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                 .build();
         String json = "{\"USER_ID\":11,\"User_Name\":\"Alice\"}";
