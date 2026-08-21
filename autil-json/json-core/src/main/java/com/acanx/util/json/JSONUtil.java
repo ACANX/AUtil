@@ -51,22 +51,23 @@ public class JSONUtil {
     }
 
     /**
-     *  工具的优先级
+     *   Provider 显式优先级表（见 Docs/DevProposal/Jackson3Migration.md §5.2）
+     *   jackson3 > jackson2 > gson > fastjson2
+     */
+    private static final Map<String, Integer> PRIORITIES = Map.of(
+            "com.acanx.util.json.impl.Jackson3Provider", 4,
+            "com.acanx.util.json.impl.JacksonProvider",  3,
+            "com.acanx.util.json.impl.GsonProvider",     2,
+            "com.acanx.util.json.impl.FastJSONProvider", 1
+    );
+
+    /**
+     *  工具的优先级（显式表查找，未知类名兜底为 0）
      * @param className   类名
      * @return            优先级
      */
     private static int getPriority(String className) {
-        System.out.println(className);
-        if (className.toLowerCase().contains("jackson")) {
-            return 3;
-        }
-        if (className.toLowerCase().contains("gson")) {
-            return 2;
-        }
-        if (className.toLowerCase().contains("fastjson")) {
-            return 1;
-        }
-        return 0;
+        return PRIORITIES.getOrDefault(className, 0);
     }
 
 
