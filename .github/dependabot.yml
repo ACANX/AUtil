@@ -2,10 +2,17 @@ version: 2
 updates:
   - package-ecosystem: "maven"
     directory: "/"
-    schedule:
+    # 更新频率:当前启用【每天一次 daily】;待运行稳定后切换为【每周一次 weekly】
+    #   切换方式:注释掉下面的 daily schedule 块,并取消 weekly schedule 块的注释
+    schedule:                     # ===== 每天一次(当前生效)=====
       interval: "daily"
-      time: "03:00"         # 每天 UTC 时间 3:00 检查
-      timezone: "Asia/Shanghai" # 时区设置
+      time: "03:00"               # 触发时间(配合 timezone 即上海时间 03:00)
+      timezone: "Asia/Shanghai"
+    # schedule:                   # ===== 每周一次(备用,每周一触发)=====
+    #   interval: "weekly"
+    #   day: "monday"
+    #   time: "03:00"
+    #   timezone: "Asia/Shanghai"
     target-branch: "dependa"
     open-pull-requests-limit: 15  # 最大 PR 数量
     reviewers:                  # 自动添加审阅者
@@ -15,6 +22,39 @@ updates:
     ignore:                    # 忽略特定依赖
       - dependency-name: "org.springframework:spring-core"
         versions: [">= 7.0.0-"] # 忽略 spring-core 7.x 的更新
+    commit-message:            # 自定义提交信息
+      prefix: "chore"
+      include: "scope"
+    labels:                    # 自动添加标签
+      - "依赖:升级"
+      - "自动化:提交"
+      - "Dependabot"
+      - "RR"
+    pull-request-branch-name:
+      separator: "-"              # 分支名使用短横线分隔
+    allow:
+      - dependency-type: "all"      # 允许所有依赖类型
+
+  # GitHub Actions 工作流中各 action 的版本更新(自动扫描 .github/workflows/ 下的工作流)
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    # 更新频率:当前启用【每天一次 daily】;待运行稳定后切换为【每周一次 weekly】
+    #   切换方式:注释掉下面的 daily schedule 块,并取消 weekly schedule 块的注释
+    schedule:                     # ===== 每天一次(当前生效)=====
+      interval: "daily"
+      time: "03:00"               # 触发时间(配合 timezone 即上海时间 03:00)
+      timezone: "Asia/Shanghai"
+    # schedule:                   # ===== 每周一次(备用,每周一触发)=====
+    #   interval: "weekly"
+    #   day: "monday"
+    #   time: "03:00"
+    #   timezone: "Asia/Shanghai"
+    target-branch: "dependa"
+    open-pull-requests-limit: 15  # 最大 PR 数量
+    reviewers:                  # 自动添加审阅者
+      - "ACANX"
+    assignees:                  # 自动分配负责人
+      - "ACANX"
     commit-message:            # 自定义提交信息
       prefix: "chore"
       include: "scope"
