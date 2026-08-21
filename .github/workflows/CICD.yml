@@ -5,6 +5,7 @@ on:
     branches:
       - V1.3.x
       - feat/V1.3.0/Local
+      - dependa
       - feat/**
       - fix/**
       - refactor/**
@@ -12,6 +13,7 @@ on:
     branches:
       - V1.3.x
       - feat/V1.3.0/Local
+      - dependa
   workflow_dispatch:
     inputs:
       ref:
@@ -171,6 +173,7 @@ jobs:
       github.event_name == 'workflow_dispatch'
       || github.ref == 'refs/heads/V1.3.x'
       || github.ref == 'refs/heads/feat/V1.3.0/Local'
+      || github.ref == 'refs/heads/dependa'
 
     steps:
       - name: CheckoutCode
