@@ -1,8 +1,6 @@
 /target/
 !.mvn/wrapper/maven-wrapper.jar
-/.mvn/
 
-### STS ###
 .apt_generated
 .classpath
 .factorypath
@@ -11,13 +9,11 @@
 .springBeans
 .sts4-cache
 
-### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
 
-### NetBeans ###
 /nbproject/private/
 /build/
 /nbbuild/
@@ -25,14 +21,9 @@
 /nbdist/
 /.nb-gradle/
 
-### 自定义
 
-### flatten-maven-plugin ###
-.flattened-pom.xml
-pom-xml-flattened
-
-### VSCode ###
-.vscode/
-
-### xcodemap ###
-.xcodemap/
+.log
+.mvn
+.log/
+.idea/
+*.log
