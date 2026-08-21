@@ -2,8 +2,8 @@ package com.acanx.util.json;
 
 import com.acanx.annotation.Alpha;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import tools.jackson.core.SerializableString;
 import tools.jackson.core.io.CharacterEscapes;
-import tools.jackson.core.io.SerializableString;
 import tools.jackson.core.json.JsonWriteFeature;
 import tools.jackson.core.type.TypeReference;
 import tools.jackson.core.util.DefaultIndenter;
@@ -56,11 +56,6 @@ public class Jackson3Util {
     private Jackson3Util() {
         // 工具类，禁止实例化
     }
-
-    /**
-     * 自定义日期时间格式（与 JacksonUtil 保持一致）
-     */
-    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
 
     /**
      * 自定义日期时间格式（与 JacksonUtil/Gson 对齐）
