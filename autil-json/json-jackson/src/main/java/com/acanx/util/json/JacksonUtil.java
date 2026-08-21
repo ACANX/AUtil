@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -495,25 +494,13 @@ public class JacksonUtil {
     }
 
     /**
-     * 关闭 HTML 特殊字符转义的转义表（仅保留 JSON 必需转义：引号/反斜杠/控制字符）
+     * 关闭 HTML 特殊字符转义的转义表薄壳（转义表由 {@link JsonEscapeTables} 统一提供）
      */
     private static final class NoHtmlCharacterEscapes extends CharacterEscapes {
 
-        private static final int[] NO_HTML_ESCAPES = new int[128];
-
-        static {
-            Arrays.fill(NO_HTML_ESCAPES, CharacterEscapes.ESCAPE_NONE);
-            // 保留 JSON 结构必需的标准转义
-            NO_HTML_ESCAPES['"'] = CharacterEscapes.ESCAPE_STANDARD;
-            NO_HTML_ESCAPES['\\'] = CharacterEscapes.ESCAPE_STANDARD;
-            for (int i = 0; i < 0x20; i++) {
-                NO_HTML_ESCAPES[i] = CharacterEscapes.ESCAPE_STANDARD;
-            }
-        }
-
         @Override
         public int[] getEscapeCodesForAscii() {
-            return NO_HTML_ESCAPES;
+            return JsonEscapeTables.noHtmlEscapes();
         }
 
         @Override
