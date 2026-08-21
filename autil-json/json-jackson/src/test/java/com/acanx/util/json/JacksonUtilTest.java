@@ -62,13 +62,14 @@ class JacksonUtilTest {
     void toJSONStringPrettyFormat() {
         // 下划线 + 美化输出，null 字段保留
         String json = JacksonUtil.toJSONStringPrettyFormat(ALICE);
-        assertEquals("{\n"
-                + "  \"user_id\" : 11,\n"
-                + "  \"user_name\" : \"Alice\",\n"
-                + "  \"password\" : null,\n"
-                + "  \"email\" : null,\n"
-                + "  \"create_time\" : \"2023-01-01T12:00:00.123456\"\n"
-                + "}", json);
+        assertEquals("""
+                {
+                  "user_id" : 11,
+                  "user_name" : "Alice",
+                  "password" : null,
+                  "email" : null,
+                  "create_time" : "2023-01-01T12:00:00.123456"
+                }""", json);
     }
 
     @Test

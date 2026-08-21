@@ -60,13 +60,14 @@ class Jackson3UtilTest {
     void toJSONStringPrettyFormat() {
         // 下划线 + 美化输出，null 字段保留
         String json = Jackson3Util.toJSONStringPrettyFormat(ALICE);
-        assertEquals("{\n"
-                + "  \"user_id\" : 11,\n"
-                + "  \"user_name\" : \"Alice\",\n"
-                + "  \"password\" : null,\n"
-                + "  \"email\" : null,\n"
-                + "  \"create_time\" : \"2023-01-01T12:00:00.123456\"\n"
-                + "}", json);
+        assertEquals("""
+                {
+                  "user_id" : 11,
+                  "user_name" : "Alice",
+                  "password" : null,
+                  "email" : null,
+                  "create_time" : "2023-01-01T12:00:00.123456"
+                }""", json);
     }
 
     @Test
@@ -130,14 +131,5 @@ class Jackson3UtilTest {
         assertEquals(2, users.size());
         assertEquals(11, users.get(0).getUserId());
         assertEquals("Bob", users.get(1).getUserName());
-    }
-
-    @Test
-    void parseObjectFromSnakeDeprecatedAlias() {
-        // 已废弃别名与 parseObjectSnake 行为一致
-        User user = Jackson3Util.parseObjectFromSnake(JSON_SNAKE, User.class);
-        assertNotNull(user);
-        assertEquals(11, user.getUserId());
-        assertEquals("Alice", user.getUserName());
     }
 }

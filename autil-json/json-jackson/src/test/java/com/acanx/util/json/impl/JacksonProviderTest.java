@@ -66,13 +66,14 @@ class JacksonProviderTest {
 
     @Test
     void toJSONStringPrettyFormat() {
-        assertEquals("{\n"
-                + "  \"user_id\" : 11,\n"
-                + "  \"user_name\" : \"Alice\",\n"
-                + "  \"password\" : null,\n"
-                + "  \"email\" : null,\n"
-                + "  \"create_time\" : \"2023-01-01T12:00:00.123456\"\n"
-                + "}", provider.toJSONStringPrettyFormat(ALICE));
+        assertEquals("""
+                {
+                  "user_id" : 11,
+                  "user_name" : "Alice",
+                  "password" : null,
+                  "email" : null,
+                  "create_time" : "2023-01-01T12:00:00.123456"
+                }""", provider.toJSONStringPrettyFormat(ALICE));
     }
 
     @Test
