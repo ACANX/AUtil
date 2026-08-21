@@ -318,6 +318,7 @@ public class FastJSONProvider implements JSONProvider {
         String df = c.getDateFormat() != null && !c.getDateFormat().isBlank()
                 ? c.getDateFormat() : JSONConfig.DEFAULT_DATE_FORMAT;
         JSONReader.Feature[] featureArr = features.toArray(new JSONReader.Feature[0]);
-        return JSON.parseObject(jsonStr, targetType, df, featureArr);
+        // 使用 (String, Type, String format, Filter, Feature...) 五参签名，避免与带 long features 的重载歧义
+        return JSON.parseObject(jsonStr, targetType, df, (com.alibaba.fastjson2.filter.Filter) null, featureArr);
     }
 }
