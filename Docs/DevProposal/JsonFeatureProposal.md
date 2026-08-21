@@ -85,7 +85,7 @@ Feature 分为三大类:
 | **字段级注解** | 控制"某个字段/类"的序列化细节 | `@AJSON` 系列注解(见 §7) |
 
 配置载体(三选一,优先级从高到低):
-1. **调用级**:`JSONUtil.toJSONString(obj, JsonConfig)` —— 单次调用的临时配置(替代失效的 `Map<String,Object>`)
+1. **调用级**:`JSONUtil.toJSONString(obj, JSONConfig)` —— 单次调用的临时配置(替代失效的 `Map<String,Object>`)
 2. **注解级**:`@AJSON` 系列注解(见 §7)—— 字段/类上的持久配置
 3. **实现级**:SPI Provider 自带的默认实现能力(如 fastjson 的 `SupportSmartMatch`)
 
@@ -99,7 +99,7 @@ Feature 体系必须支持**后续持续新增 Feature**,设计上保证扩展�
    - 三框架都支持 → 纳入通用 Feature 定义;
    - 仅部分支持 → 不建议纳入通用 Feature;若确有需要,标注"部分支持",并记录不支持框架的差异(见 §9 收敛清单),或作为框架特有扩展保留。
 2. **定义枚举项**:在对应枚举(`SerializeFeature` / `DeserializeFeature` / `NamingStyle` 等)中新增枚举值,带明确的 javadoc 与默认值。
-3. **JsonConfig 承载**:在 `JsonConfig` 增加对应配置项(或通过已有 `customFeature` 扩展点承载)。
+3. **JSONConfig 承载**:在 `JSONConfig` 增加对应配置项(或通过已有 `customFeature` 扩展点承载)。
 4. **各实现层映射**:在 `json-jackson` / `json-gson` / `json-fastjson` 三个实现中,把新 Feature 映射到对应框架原生 API。
 5. **测试与文档**:新增 Feature 专项测试(三框架行为一致性)+ 更新映射对照表(§9)与使用文档。
 
@@ -108,9 +108,9 @@ Feature 体系必须支持**后续持续新增 Feature**,设计上保证扩展�
 | 机制 | 说明 |
 |---|---|
 | **枚举驱动的封闭开关** | Feature 即枚举项,新增 Feature 不修改已有枚举项与已有逻辑,天然向后兼容 |
-| **`JsonConfig` 增量扩展** | 新增配置项以新增方法/属性承载,不改变既有 builder 的既有方法 |
+| **`JSONConfig` 增量扩展** | 新增配置项以新增方法/属性承载,不改变既有 builder 的既有方法 |
 | **`@AJSON` 注解预留属性** | 注解设计预留扩展语义,新 Feature 优先复用既有属性,必要时新增属性(默认值不影响已有行为) |
-| **自定义 Feature 扩展点** | 预留 `JsonConfig.customFeature`(Map)与 SPI 接口层自定义钩子,供特殊场景在不改核心枚举的前提下扩展(非推荐路径,优先走标准枚举) |
+| **自定义 Feature 扩展点** | 预留 `JSONConfig.customFeature`(Map)与 SPI 接口层自定义钩子,供特殊场景在不改核心枚举的前提下扩展(非推荐路径,优先走标准枚举) |
 | **不支持的框架降级策略** | 若某实现层不支持某 Feature,默认采用"安全降级"(回退到默认行为),并在日志/文档标注,不抛错中断 |
 
 ---
@@ -152,7 +152,7 @@ Feature 体系必须支持**后续持续新增 Feature**,设计上保证扩展�
 | `SKIP` | null 字段不序列化 | `JsonInclude.NON_NULL` | 默认(不输出 null) | `SkipNullField` |
 | `THROW` | null 字段序列化时抛异常 | —(需自定义) | —(需自定义) | —(需自定义) |
 
-> 说明:`THROW` 是增强语义,需在实现层做统一校验(检测 null 字段则抛 `JsonConfigException`)。现有 `toJSONStringForStorage` 在 Jackson 实现下等价于 `SKIP`,Fastjson2/Gson 下语义不完全一致——这正是 Feature 规范要收敛的差异。
+> 说明:`THROW` 是增强语义,需在实现层做统一校验(检测 null 字段则抛 `JSONConfigException`)。现有 `toJSONStringForStorage` 在 Jackson 实现下等价于 `SKIP`,Fastjson2/Gson 下语义不完全一致——这正是 Feature 规范要收敛的差异。
 
 ### 5.4 日期时间 / JDK 内置对象自定义格式化(需求 S-04)
 
@@ -160,7 +160,7 @@ Feature 体系必须支持**后续持续新增 Feature**,设计上保证扩展�
   - Jackson:`@JsonFormat(pattern=...)` → 由 SPI 实现的 `JavaTimeModule` 定制
   - Gson:`registerTypeAdapter(LocalDateTime, Iso8601Adapter)` → 按注解格式定制
   - Fastjson2:`@JSONField(format=...)` → 原生支持
-- **全局默认格式**:调用级 `JsonConfig.setDateFormat(...)` 提供默认格式兜底。
+- **全局默认格式**:调用级 `JSONConfig.setDateFormat(...)` 提供默认格式兜底。
 - **内置对象扩展**:`BigDecimal` / `BigInteger` 的序列化方式(字符串 vs 数字)、`UUID` / `Duration` / `Instant` 等 JDK 内置类型的格式,纳入 Feature `jdkTypeHandling`。
 
 ### 5.5 补充序列化 Feature(参考三大框架可配置能力)
@@ -242,10 +242,10 @@ Feature 体系必须支持**后续持续新增 Feature**,设计上保证扩展�
 
 ## 8. 配置入口与优先级
 
-### 8.1 调用级配置对象 `JsonConfig`(替代失效的 `Map<String,Object>`)
+### 8.1 调用级配置对象 `JSONConfig`(替代失效的 `Map<String,Object>`)
 
 ```java
-JsonConfig config = JsonConfig.builder()
+JSONConfig config = JSONConfig.builder()
     .naming(NamingStyle.SNAKE_CASE)
     .output(OutputFormat.PRETTY, 4)      // 格式化,缩进 4
     .nullStrategy(NullStrategy.SKIP)
@@ -253,20 +253,20 @@ JsonConfig config = JsonConfig.builder()
     .enumStyle(EnumStyle.TO_STRING)
     .build();
 
-JSONUtil.toJSONString(obj, config);       // 新增方法,接受 JsonConfig
+JSONUtil.toJSONString(obj, config);       // 新增方法,接受 JSONConfig
 JSONUtil.parseObject(json, clazz, config);
 ```
 
 ### 8.2 优先级(高 → 低)
 
-1. 调用级 `JsonConfig`
+1. 调用级 `JSONConfig`
 2. 注解级 `@AJSON` 系列(见 §7)
 3. 实现级 SPI 默认能力
 
 ### 8.3 向后兼容
 
-- 现有 `Map<String,Object> config` 方法**保留但标记 `@Deprecated`**,内部转译为 `JsonConfig`(从 Map 读取已知 key),避免破坏现有调用方。
-- 现有场景方法(`toJSONStringSnake` 等)保留,内部委托到等价 `JsonConfig` 组合。
+- 现有 `Map<String,Object> config` 方法**保留但标记 `@Deprecated`**,内部转译为 `JSONConfig`(从 Map 读取已知 key),避免破坏现有调用方。
+- 现有场景方法(`toJSONStringSnake` 等)保留,内部委托到等价 `JSONConfig` 组合。
 
 ---
 
@@ -324,8 +324,8 @@ JSONUtil.parseObject(json, clazz, config);
 
 | 阶段 | 内容 | 依赖 |
 |---|---|---|
-| **阶段一** | 定义 `SerializeFeature` / `DeserializeFeature` / `NamingStyle` / `OutputFormat` / `NullStrategy` / `FieldMapping` 枚举,`JsonConfig` 配置对象;对每个候选 Feature 做三框架支持度评审(§9.1),确定"通用/部分/不纳入";补齐行为快照测试(见 `Jackson3Migration.md` 阶段一) | 无 |
-| **阶段二** | 定义统一注解 `@AJSONField` 等;`json-core` 增加 `JsonConfig` 版方法(旧方法委托兼容) | 阶段一 |
+| **阶段一** | 定义 `SerializeFeature` / `DeserializeFeature` / `NamingStyle` / `OutputFormat` / `NullStrategy` / `FieldMapping` 枚举,`JSONConfig` 配置对象;对每个候选 Feature 做三框架支持度评审(§9.1),确定"通用/部分/不纳入";补齐行为快照测试(见 `Jackson3Migration.md` 阶段一) | 无 |
+| **阶段二** | 定义统一注解 `@AJSONField` 等;`json-core` 增加 `JSONConfig` 版方法(旧方法委托兼容) | 阶段一 |
 | **阶段三** | 三个实现层逐个落地 Feature 映射(建议先 jackson,因有 `Jackson3Migration` 计划叠加) | 阶段二 |
 | **阶段四** | 全项目回归 + 文档(映射对照表、使用示例) | 阶段三 |
 
@@ -338,7 +338,7 @@ JSONUtil.parseObject(json, clazz, config);
 | 风险 | 概率 | 影响 | 应对 |
 |---|---|---|---|
 | 三框架 Feature 语义存在本质差异 | 高 | 中 | 收敛清单(§9)先行对齐;差异点以文档明示 |
-| `JsonConfig` 引入后旧 `Map config` 调用方迁移 | 中 | 中 | 旧方法保留并委托,标记 `@Deprecated`,提供迁移指引 |
+| `JSONConfig` 引入后旧 `Map config` 调用方迁移 | 中 | 中 | 旧方法保留并委托,标记 `@Deprecated`,提供迁移指引 |
 | `autoType` / `writeClassName` 安全风险 | 中 | 高 | 默认关闭,仅显式开启,文档加安全警告 |
 | 统一注解与各框架原生注解冲突 | 低 | 低 | 明确优先级:`@AJSON*` 优先,原生注解兜底 |
 | 与 Jackson3Migration 并行时的双份适配 | 中 | 中 | 建议串行(先 Feature 后迁移),见 §10 |
@@ -347,9 +347,9 @@ JSONUtil.parseObject(json, clazz, config);
 
 ## 12. 验收标准
 
-- [ ] Feature 枚举与 `JsonConfig` 定义完备,默认值兼容现有行为
+- [ ] Feature 枚举与 `JSONConfig` 定义完备,默认值兼容现有行为
 - [ ] 每个 Feature 完成三框架支持度评审(§9.1),通用 Feature 三框架全部落地;部分支持的明确降级策略
-- [ ] 三框架实现层对核心 Feature(`naming` / `output` / `nullStrategy` / `dateFormat`)行为一致(同一 `JsonConfig` 输出相同 JSON)
+- [ ] 三框架实现层对核心 Feature(`naming` / `output` / `nullStrategy` / `dateFormat`)行为一致(同一 `JSONConfig` 输出相同 JSON)
 - [ ] 统一注解 `@AJSONField` 在三个实现下均生效
 - [ ] 现有 `JSONProvider` / `JSONUtil` 旧方法全部保留,行为不变
 - [ ] 行为快照测试 + Feature 专项测试全绿
@@ -359,5 +359,5 @@ JSONUtil.parseObject(json, clazz, config);
 ## 13. 待办 / 下一步
 
 1. 评审本提案,确认 Feature 清单是否完整、命名是否合理。
-2. 确认 `JsonConfig` 与 `@AJSON*` 注解的归属模块(`json-core` 或 `annotation-api`)。
+2. 确认 `JSONConfig` 与 `@AJSON*` 注解的归属模块(`json-core` 或 `annotation-api`)。
 3. 排期阶段一(Feature 抽象定义 + 行为快照测试)。

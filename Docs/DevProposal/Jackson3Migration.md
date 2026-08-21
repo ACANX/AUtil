@@ -6,7 +6,7 @@
 > 适用范围:`autil-json` 模块群(重点为 `json-jackson`)
 > 关联提交:`a90ae38 refactor(json): 调整SPI加载优先级为jackson>gson>fastjson2`
 > 关联提案:
-> - `Docs/DevProposal/JsonFeatureProposal.md` — Feature 特性规范(定义 `JsonConfig` 等配置载体与 Feature 语义)
+> - `Docs/DevProposal/JsonFeatureProposal.md` — Feature 特性规范(定义 `JSONConfig` 等配置载体与 Feature 语义)
 > - `Docs/DevProposal/HttpApiJsonProposal.md` — `JSONSerialization` 通用 REST/RPC 序列化接口(Provider 需实现 `serialize` / `deserialize`)
 
 ---

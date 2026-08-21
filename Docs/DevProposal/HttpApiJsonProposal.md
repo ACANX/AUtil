@@ -5,7 +5,7 @@
 > 日期:2026-08-21
 > 适用范围:`autil-json` 模块群(`json-core` SPI 契约、`json-jackson` / `json-gson` / `json-fastjson` 三实现)
 > 关联提案:
-> - `Docs/DevProposal/JsonFeatureProposal.md` — Feature 特性规范(定义 `JsonConfig` 等配置载体与 Feature 语义)
+> - `Docs/DevProposal/JsonFeatureProposal.md` — Feature 特性规范(定义 `JSONConfig` 等配置载体与 Feature 语义)
 > - `Docs/DevProposal/Jackson3Migration.md` — Jackson 2 → 3 平滑迁移(阶段一行为快照测试、阶段三默认实现切换)
 
 ---
@@ -27,10 +27,10 @@
 ### 1.2 配置需求(C)
 
 - **[C-01] 默认值需与场景吻合**:默认行为面向「传输层约定」,无需额外配置即可覆盖绝大多数 REST/RPC/SDK 调用(→ §5.2)。
-- **[C-02] 配置参数类型为 `JsonConfig`**:采用 `JsonFeatureProposal.md` §8.1 定义的 `JsonConfig` 配置对象,替代失效的 `Map<String,Object>`(→ §5.4、§6.1)。
+- **[C-02] 配置参数类型为 `JSONConfig`**:采用 `JsonFeatureProposal.md` §8.1 定义的 `JSONConfig` 配置对象,替代失效的 `Map<String,Object>`(→ §5.4、§6.1)。
 - **[C-03] 配置可覆盖序列化输出细节**:调用方可覆盖 null 策略、日期格式、输出格式(紧凑/缩进)等(→ §5.4、§6.2)。
 - **[C-04] 配置可覆盖反序列化容错细节**:调用方可覆盖未知字段处理、未知枚举、基本类型 null 等容错策略(→ §5.4、§6.3)。
-- **[C-05] 无配置时零负担**:未传配置时按默认值直接执行,不强制调用方构造 `JsonConfig`(→ §5.4、§5.5)。
+- **[C-05] 无配置时零负担**:未传配置时按默认值直接执行,不强制调用方构造 `JSONConfig`(→ §5.4、§5.5)。
 
 ### 1.3 场景需求(S)
 
@@ -38,7 +38,7 @@
 - **[S-02] HTTP REST API 响应体反序列化**:客户端把下划线 JSON 响应体反序列化为小驼峰 Java Bean(→ §7.2)。
 - **[S-03] RPC 接口入参/出参转换**:RPC 调用方与提供方之间的参数/返回值 JSON 转换(→ §7.3)。
 - **[S-04] SDK 客户端 HTTP 请求/响应**:SDK 内部统一的 JSON 转换入口,行为可被 SDK 使用方覆盖(→ §7.4)。
-- **[S-05] 配置差异隔离**:不同场景(如 A 接口要求紧凑输出、B 接口要求特定日期格式)通过传入不同 `JsonConfig` 隔离,互不影响(→ §5.4)。
+- **[S-05] 配置差异隔离**:不同场景(如 A 接口要求紧凑输出、B 接口要求特定日期格式)通过传入不同 `JSONConfig` 隔离,互不影响(→ §5.4)。
 
 ### 1.4 扩展性需求(E)
 
@@ -65,14 +65,14 @@
 4. **泛型/集合目标支持不足**——RPC 出参、集合响应需要按 `Type` 反序列化,现有入口不统一。
 5. **职责未独立**——通用序列化语义混在 `JSONProvider` 接口中,不利于单独复用与演进;抽为独立接口 `JSONSerialization` 后,语义清晰、可独立测试、可被 `JSONProvider` 之外的实现复用。
 
-`JsonFeatureProposal.md` 已定义 `JsonConfig` 配置对象与 Feature 语义,本提案是其在「传输层通用接口」上的落地面。
+`JsonFeatureProposal.md` 已定义 `JSONConfig` 配置对象与 Feature 语义,本提案是其在「传输层通用接口」上的落地面。
 
 ### 2.2 目标
 
 定义**独立接口 `JSONSerialization`**,提供两个通用方法,形成面向 REST/RPC/SDK 的统一 JSON 转换入口:
 
-- **`serialize`**:默认**下划线**输出,可按场景传入 `JsonConfig` 覆盖输出细节。
-- **`deserialize`**:默认**下划线→小驼峰**映射,可按场景传入 `JsonConfig` 覆盖容错与映射细节。
+- **`serialize`**:默认**下划线**输出,可按场景传入 `JSONConfig` 覆盖输出细节。
+- **`deserialize`**:默认**下划线→小驼峰**映射,可按场景传入 `JSONConfig` 覆盖容错与映射细节。
 
 `JSONProvider` 继承 `JSONSerialization`,SPI 装配的 Provider 天然具备该能力。
 
@@ -83,7 +83,7 @@
 ## 3. 设计原则
 
 1. **默认即用**——不传配置即可覆盖绝大多数传输层场景,配置用于覆盖少数差异。
-2. **配置驱动**——所有可变行为通过 `JsonConfig`(见 `JsonFeatureProposal.md` §8.1)表达,不新增按场景硬编码的方法。
+2. **配置驱动**——所有可变行为通过 `JSONConfig`(见 `JsonFeatureProposal.md` §8.1)表达,不新增按场景硬编码的方法。
 3. **框架无关**——接口定义在 `json-core`,三个实现层各自映射到底层框架(见 `JsonFeatureProposal.md` §3)。
 4. **接口职责独立**——通用序列化/反序列化抽为 `JSONSerialization` 接口,`JSONProvider` 以继承方式获得该能力;接口可独立复用、独立演进。
 5. **向后兼容**——新增接口与继承关系不修改、不删除、不重签名任何现有方法(见 §8.1)。
@@ -97,7 +97,7 @@
 |---|---|---|
 | 载体 | `JSONProvider` 上的场景方法 | 独立 `JSONSerialization` 接口(`JSONProvider` 继承) |
 | 目标 | 单一场景硬编码(驼峰 / Snake / Pretty / Storage) | 传输层通用(序列化下划线、反序列化小驼峰) |
-| 配置 | `Map<String,Object>` 全链路丢弃 | `JsonConfig` 全链路生效 |
+| 配置 | `Map<String,Object>` 全链路丢弃 | `JSONConfig` 全链路生效 |
 | 默认命名 | 随方法名定死 | 下划线(序列化) / 下划线→小驼峰(反序列化) |
 | 泛型支持 | 部分方法支持 `Type` | 统一支持 `Class` / `Type` |
 | 与 Feature 体系 | 无关联 | 完全对齐(§6) |
@@ -114,7 +114,7 @@
 /**
  * 通用 JSON 序列化/反序列化契约:面向 HTTP REST / RPC / SDK 客户端的传输层场景。
  * 默认语义:序列化输出下划线字段;反序列化将下划线 JSON 字段映射为小驼峰 Java 字段。
- * 两个方法均接受 {@link JsonConfig} 配置参数,可按场景覆盖默认行为。
+ * 两个方法均接受 {@link JSONConfig} 配置参数,可按场景覆盖默认行为。
  */
 @Alpha
 public interface JSONSerialization {
@@ -129,7 +129,7 @@ public interface JSONSerialization {
      * @return JSON 字符串
      */
     @Alpha
-    String serialize(Object object, JsonConfig config);
+    String serialize(Object object, JSONConfig config);
 
     /**
      * 通用反序列化:适用于 HTTP REST 响应体、RPC 出参、SDK 响应体。
@@ -143,7 +143,7 @@ public interface JSONSerialization {
      * @return 反序列化结果
      */
     @Alpha
-    <T> T deserialize(String jsonStr, Type targetType, JsonConfig config);
+    <T> T deserialize(String jsonStr, Type targetType, JSONConfig config);
 }
 ```
 
@@ -166,12 +166,12 @@ public interface JSONProvider extends JSONSerialization {
 
 ```java
 public static String serialize(Object object) { ... }                    // 无配置,默认
-public static String serialize(Object object, JsonConfig config) { ... }
+public static String serialize(Object object, JSONConfig config) { ... }
 public static <T> T deserialize(String json, Class<T> clazz) { ... }
-public static <T> T deserialize(String json, Type type, JsonConfig config) { ... }
+public static <T> T deserialize(String json, Type type, JSONConfig config) { ... }
 ```
 
-> **为何新增独立接口而非改造**:`serialize` 与 `toJSONStringSnake` 都默认下划线,但前者**接受 `JsonConfig` 且为传输层专用语义**,职责不同;抽为 `JSONSerialization` 接口使通用序列化能力与场景化方法解耦,改造旧方法会破坏现有调用方,违背 §3 原则 5(见 §8.1)。
+> **为何新增独立接口而非改造**:`serialize` 与 `toJSONStringSnake` 都默认下划线,但前者**接受 `JSONConfig` 且为传输层专用语义**,职责不同;抽为 `JSONSerialization` 接口使通用序列化能力与场景化方法解耦,改造旧方法会破坏现有调用方,违背 §3 原则 5(见 §8.1)。
 
 ### 5.2 序列化默认值(对应需求 M-03)
 
@@ -180,7 +180,7 @@ public static <T> T deserialize(String json, Type type, JsonConfig config) { ...
 | 命名风格 | `NamingStyle.SNAKE_CASE` | REST/RPC 传输层通用约定(下划线) |
 | 输出格式 | `OutputFormat.COMPACT` | 请求体/响应体通常紧凑传输 |
 | null 字段 | `NullStrategy.SKIP` | 请求参数通常不携带 null,省流量 |
-| 日期格式 | `JsonConfig` 未配置时的全局默认 | 依赖 `JsonFeatureProposal.md` §5.4 的统一格式 |
+| 日期格式 | `JSONConfig` 未配置时的全局默认 | 依赖 `JsonFeatureProposal.md` §5.4 的统一格式 |
 | 枚举 | `EnumStyle.NAME` | 传输层枚举默认用名称 |
 
 ### 5.3 反序列化默认值(对应需求 M-04)
@@ -192,24 +192,24 @@ public static <T> T deserialize(String json, Type type, JsonConfig config) { ...
 | 未知枚举 | `unknownEnumValue.NULL`(或 `DEFAULT`) | 容错,不因枚举演进抛错 |
 | 基本类型 null | 默认(非 FAIL) | 容错 |
 
-> **与 `parseObjectSnake` 的关系**:`parseObjectSnake(json, Class)` 等价于「`FieldMapping.SNAKE_TO_CAMEL` + 无其他配置」的简写;`deserialize` 的 `JsonConfig` 版本是其**可配置超集**,旧方法保留兼容(见 §8.1)。
+> **与 `parseObjectSnake` 的关系**:`parseObjectSnake(json, Class)` 等价于「`FieldMapping.SNAKE_TO_CAMEL` + 无其他配置」的简写;`deserialize` 的 `JSONConfig` 版本是其**可配置超集**,旧方法保留兼容(见 §8.1)。
 
 ### 5.4 配置参数:按场景覆盖(对应需求 M-05、C-02、C-05)
 
-- 方法签名中 `JsonConfig config` 可为 `null`:`null` 时按 §5.2 / §5.3 默认值执行,**调用方零负担**。
-- 传入 `JsonConfig` 时,其设置**逐项覆盖**默认值;未设置的项仍用默认值(合并语义)。
-- 不同场景传入不同 `JsonConfig`,互不影响(对应需求 S-05):
+- 方法签名中 `JSONConfig config` 可为 `null`:`null` 时按 §5.2 / §5.3 默认值执行,**调用方零负担**。
+- 传入 `JSONConfig` 时,其设置**逐项覆盖**默认值;未设置的项仍用默认值(合并语义)。
+- 不同场景传入不同 `JSONConfig`,互不影响(对应需求 S-05):
 
 ```java
 // 场景 A:默认(下划线、紧凑、null 不输出)
 JSONUtil.serialize(user);
 
 // 场景 B:接口要求 null 也输出(便于对方兜底)
-JsonConfig cfgB = JsonConfig.builder().nullStrategy(NullStrategy.ALWAYS).build();
+JSONConfig cfgB = JSONConfig.builder().nullStrategy(NullStrategy.ALWAYS).build();
 JSONUtil.serialize(user, cfgB);
 
 // 场景 C:接口要求特定日期格式 + 缩进
-JsonConfig cfgC = JsonConfig.builder()
+JSONConfig cfgC = JSONConfig.builder()
         .dateFormat("yyyy-MM-dd HH:mm:ss")
         .output(OutputFormat.PRETTY, 2)
         .build();
@@ -219,7 +219,7 @@ JSONUtil.serialize(user, cfgC);
 User user = JSONUtil.deserialize(respJson, User.class);
 
 // 响应反序列化:覆盖为仅同名字段严格映射
-JsonConfig strict = JsonConfig.builder().fieldMapping(FieldMapping.EXACT).build();
+JSONConfig strict = JSONConfig.builder().fieldMapping(FieldMapping.EXACT).build();
 User user2 = JSONUtil.deserialize(respJson, User.class, strict);
 ```
 
@@ -237,14 +237,14 @@ User user2 = JSONUtil.deserialize(respJson, User.class, strict);
 
 | 本提案 | 依赖的 Feature 提案内容 |
 |---|---|
-| `JsonConfig` 配置对象 | `JsonFeatureProposal.md` §8.1 定义、§8.3 向后兼容 |
+| `JSONConfig` 配置对象 | `JsonFeatureProposal.md` §8.1 定义、§8.3 向后兼容 |
 | `NamingStyle` / `OutputFormat` / `NullStrategy` / `FieldMapping` | `JsonFeatureProposal.md` §5.1 / §5.2 / §5.3 / §6.1 定义 |
 | 日期格式、枚举、未知字段等容错 Feature | `JsonFeatureProposal.md` §5.4 / §5.5 / §6.2 定义 |
 | Feature 支持度矩阵(三框架门槛) | `JsonFeatureProposal.md` §9.1 判定哪些 Feature 可作为通用配置 |
 
-**依赖关系**:本提案的配置项**全部复用** Feature 提案的枚举与 `JsonConfig`,不新增平行概念;Feature 提案新增 Feature 时,`JSONSerialization` 无需改签名(对应 E-01)。
+**依赖关系**:本提案的配置项**全部复用** Feature 提案的枚举与 `JSONConfig`,不新增平行概念;Feature 提案新增 Feature 时,`JSONSerialization` 无需改签名(对应 E-01)。
 
-**顺序建议**:先落地 `JsonFeatureProposal.md` 的 `JsonConfig` 与核心枚举(其阶段一),本提案即可在此之上实施。
+**顺序建议**:先落地 `JsonFeatureProposal.md` 的 `JSONConfig` 与核心枚举(其阶段一),本提案即可在此之上实施。
 
 ### 6.2 与 `Jackson3Migration.md` 的关系
 
@@ -255,16 +255,16 @@ User user2 = JSONUtil.deserialize(respJson, User.class, strict);
 ### 6.3 依赖顺序
 
 ```
-JsonFeatureProposal(JsonConfig + 枚举)  →  本提案(JSONSerialization 接口 + 默认语义)  →  Jackson3Migration(换实现)
+JsonFeatureProposal(JSONConfig + 枚举)  →  本提案(JSONSerialization 接口 + 默认语义)  →  Jackson3Migration(换实现)
 ```
 
-三者可并行评审,但**实施上有先后**:本提案依赖 Feature 提案的 `JsonConfig`;若 Feature 提案延后,本提案可先以内部等价配置对象占位,后续再收敛(见 §10)。
+三者可并行评审,但**实施上有先后**:本提案依赖 Feature 提案的 `JSONConfig`;若 Feature 提案延后,本提案可先以内部等价配置对象占位,后续再收敛(见 §10)。
 
 ---
 
 ## 7. 场景映射
 
-以下四个场景均可由 `JSONSerialization` 两个方法覆盖;**默认配置即可满足绝大多数情况**,差异通过传入 `JsonConfig` 覆盖。
+以下四个场景均可由 `JSONSerialization` 两个方法覆盖;**默认配置即可满足绝大多数情况**,差异通过传入 `JSONConfig` 覆盖。
 
 ### 7.1 HTTP REST API 请求参数序列化(S-01)
 
@@ -300,7 +300,7 @@ RpcResult<List<Order>> result = JSONUtil.deserialize(
 
 ### 7.4 SDK 客户端 HTTP 请求/响应(S-04)
 
-- SDK 内部统一使用 `serialize` / `deserialize` 作为 JSON 转换入口,默认调用即可;同时把 `JsonConfig` 作为可覆盖点暴露给使用方:
+- SDK 内部统一使用 `serialize` / `deserialize` 作为 JSON 转换入口,默认调用即可;同时把 `JSONConfig` 作为可覆盖点暴露给使用方:
 
 ```java
 public class ApiClient {
@@ -309,7 +309,7 @@ public class ApiClient {
         String respBody = http.post(uri, body);
         return JSONUtil.deserialize(respBody, respClass, this.globalConfig);
     }
-    // 使用方可通过 setGlobalConfig(JsonConfig) 覆盖默认传输行为
+    // 使用方可通过 setGlobalConfig(JSONConfig) 覆盖默认传输行为
 }
 ```
 
@@ -320,14 +320,14 @@ public class ApiClient {
 ### 8.1 向后兼容
 
 - **零破坏**:新增 `JSONSerialization` 接口;`JSONProvider` 仅**增加继承关系**,不修改、不删除、不重签名现有任何方法。
-- **实现层**:现有三个 Provider 实现类因 `JSONProvider extends JSONSerialization` 而需补实现 `serialize` / `deserialize`;`JSONSerialization` 提供 `default` 实现(委托到现有方法 + 忽略 `JsonConfig`)兜底,保证编译不破;完整支持由后续 Feature 阶段补齐。
-- **旧方法保留**:`toJSONStringSnake` / `parseObjectSnake` 等继续可用,与 `serialize` / `deserialize` 并存;后者是其"可配置超集",旧方法内部可委托到等价 `JsonConfig` 组合(与 `JsonFeatureProposal.md` §8.3 一致)。
+- **实现层**:现有三个 Provider 实现类因 `JSONProvider extends JSONSerialization` 而需补实现 `serialize` / `deserialize`;`JSONSerialization` 提供 `default` 实现(委托到现有方法 + 忽略 `JSONConfig`)兜底,保证编译不破;完整支持由后续 Feature 阶段补齐。
+- **旧方法保留**:`toJSONStringSnake` / `parseObjectSnake` 等继续可用,与 `serialize` / `deserialize` 并存;后者是其"可配置超集",旧方法内部可委托到等价 `JSONConfig` 组合(与 `JsonFeatureProposal.md` §8.3 一致)。
 
 ### 8.2 风险登记
 
 | 风险 | 概率 | 影响 | 应对 |
 |---|---|---|---|
-| `JsonConfig` 未落地导致依赖缺失 | 中 | 高 | 与 Feature 提案阶段一并实施;本提案作为其第一落地场景 |
+| `JSONConfig` 未落地导致依赖缺失 | 中 | 高 | 与 Feature 提案阶段一并实施;本提案作为其第一落地场景 |
 | 三实现层对「下划线」「未知字段」语义不一致 | 中 | 中 | 复用 Feature 提案 §9 收敛清单与行为快照测试 |
 | 默认「忽略未知字段」可能掩盖响应结构错误 | 低 | 低 | 文档明示;需要严格场景传 `EXACT` / `FAIL` 配置 |
 | `serialize` / `deserialize` 与 `toJSONString*` / `parseObject*` 语义重叠引发困惑 | 低 | 低 | §5.5 命名与文档说明职责边界 |
@@ -344,7 +344,7 @@ public class ApiClient {
 - [ ] `JSONSerialization` 接口定义 `serialize` / `deserialize` 两个方法,`JSONProvider` 继承之
 - [ ] `JSONUtil` 暴露 `serialize` / `deserialize` 静态方法
 - [ ] 不传配置时:`serialize` 输出下划线、紧凑、null 跳过;`deserialize` 下划线→小驼峰、忽略未知字段(行为快照测试固化)
-- [ ] 传 `JsonConfig` 时:命名 / null / 日期 / 输出格式 / 字段映射等**逐项可覆盖**,未配置项保持默认
+- [ ] 传 `JSONConfig` 时:命名 / null / 日期 / 输出格式 / 字段映射等**逐项可覆盖**,未配置项保持默认
 - [ ] `Class` 与 `Type`(泛型 / 集合)目标反序列化均可用
 - [ ] 三个实现层(含后续 jackson3)行为一致;现有方法全部保留,行为不变
 - [ ] 与 `JsonFeatureProposal.md` / `Jackson3Migration.md` 的依赖关系、实施顺序在文档中明确
@@ -354,5 +354,5 @@ public class ApiClient {
 ## 10. 待办 / 下一步
 
 1. 评审本提案,确认接口命名(`JSONSerialization`)、方法命名(`serialize` / `deserialize`)与配置语义。
-2. 与 `JsonFeatureProposal.md` 评审合并推进:其阶段一(`JsonConfig` + 枚举)是本提案的前置。
+2. 与 `JsonFeatureProposal.md` 评审合并推进:其阶段一(`JSONConfig` + 枚举)是本提案的前置。
 3. 排期:Feature 提案阶段一 → 本提案接口落地 + 行为快照 → 三实现层映射 → 纳入 `Jackson3Migration` 快照回归。
