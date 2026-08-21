@@ -73,8 +73,8 @@ jobs:
   # ============================================================
   # 单元测试（Build/Compile 成功后执行）
   # ============================================================
-  test:
-    name: Test
+  unit-test:
+    name: UnitTest
     runs-on: ubuntu-latest
     needs: build-compile
     strategy:
@@ -181,18 +181,23 @@ jobs:
             }
 
   # ============================================================
-  # 构建产物（Build/Compile 成功后执行）
+  # 构建产物（Build/Compile + UnitTest + QualityGate 均成功后执行）
   # workflow_dispatch 或 V1.3.x / feat/V1.3.0/Local / dependa 分支 push 时执行
   # ============================================================
-  artifact:
-    name: Artifacts
+  build-maven-artifacts:
+    name: BuildMavenArtifacts
     runs-on: ubuntu-latest
-    needs: build-compile
+    needs: [build-compile, unit-test, qualityGate]
+    # 需 UnitTest 成功、质量门成功（workflow_dispatch 时质量门被显式跳过，视为通过）；
+    # 且满足分支/触发方式白名单
     if: |
-      github.event_name == 'workflow_dispatch'
-      || github.ref == 'refs/heads/V1.3.x'
-      || github.ref == 'refs/heads/feat/V1.3.0/Local'
-      || github.ref == 'refs/heads/dependa'
+      needs.unit-test.result == 'success'
+      && needs.build-compile.result == 'success'
+      && (needs.qualityGate.result == 'success' || needs.qualityGate.result == 'skipped')
+      && (github.event_name == 'workflow_dispatch'
+          || github.ref == 'refs/heads/V1.3.x'
+          || github.ref == 'refs/heads/feat/V1.3.0/Local'
+          || github.ref == 'refs/heads/dependa')
 
     steps:
       - name: CheckoutCode
