@@ -25,7 +25,7 @@ class ZipUtilTest {
         System.out.println(savePath);
         try {
             URL url = ZipUtilTest.class.getProtectionDomain().getCodeSource().getLocation();
-            String path = url.getPath().substring(1)+ "properties/config.properties";
+            String path = url.getPath() + "properties/config.properties";
             System.out.println(path);
             ZipUtil.zipFile(path, savePath);
             System.out.println("压缩成功！");
@@ -52,7 +52,7 @@ class ZipUtilTest {
         try {
             InputStream is = ZipUtilTest.class.getResourceAsStream("/properties");
             URL url = ZipUtilTest.class.getProtectionDomain().getCodeSource().getLocation();
-            String path = url.getPath().substring(1)+ "properties";
+            String path = url.getPath() + "properties";
             System.out.println(path);
             ZipUtil.zipDirectory(path, savePath);
             System.out.println("压缩成功！");
