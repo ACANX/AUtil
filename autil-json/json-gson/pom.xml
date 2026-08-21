@@ -28,6 +28,14 @@
             <artifactId>json-core</artifactId>
             <version>${project.parent.version}</version>
         </dependency>
+        <!-- 契约测试基类（test-jar） -->
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>json-core</artifactId>
+            <version>${project.parent.version}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>

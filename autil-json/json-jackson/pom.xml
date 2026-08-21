@@ -33,6 +33,14 @@
             <artifactId>json-core</artifactId>
             <version>${revision}</version>
         </dependency>
+        <!-- 契约测试基类（test-jar） -->
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>json-core</artifactId>
+            <version>${revision}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
