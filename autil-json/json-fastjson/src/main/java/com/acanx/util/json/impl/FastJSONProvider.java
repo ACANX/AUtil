@@ -7,6 +7,7 @@ import com.acanx.util.json.FieldMapping;
 import com.acanx.util.json.JSONConfig;
 import com.acanx.util.json.JSONProvider;
 import com.acanx.util.json.FastJSON2Util;
+import com.acanx.util.json.JsonConfigResolver;
 import com.acanx.util.json.JsonNullChecker;
 import com.acanx.util.json.NamingStyle;
 import com.acanx.util.json.NullStrategy;
@@ -216,8 +217,7 @@ public class FastJSONProvider implements JSONProvider {
             JsonNullChecker.checkNullFields(object);
         }
         // 日期格式：未配置时使用全局默认格式（与 Jackson/Gson 对齐，保证三框架一致）
-        String df = c.getDateFormat() != null && !c.getDateFormat().isBlank()
-                ? c.getDateFormat() : JSONConfig.DEFAULT_DATE_FORMAT;
+        String df = JsonConfigResolver.dateFormat(c);
         // 组合命名 + 日期格式 + features（Context(String format, Feature...) 构造器一步到位）
         JSONWriter.Context context = new JSONWriter.Context(df, buildSerializeFeatures(c));
         NameFilter nameFilter = buildNameFilter(c);
@@ -237,7 +237,7 @@ public class FastJSONProvider implements JSONProvider {
      * @return NameFilter，可为 null
      */
     private NameFilter buildNameFilter(JSONConfig c) {
-        NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
+        NamingStyle naming = JsonConfigResolver.naming(c);
         if (naming == NamingStyle.SNAKE_CASE) {
             return NameFilter.of(PropertyNamingStrategy.SnakeCase);
         }
@@ -258,16 +258,16 @@ public class FastJSONProvider implements JSONProvider {
      */
     private JSONWriter.Feature[] buildSerializeFeatures(JSONConfig c) {
         List<JSONWriter.Feature> features = new ArrayList<>();
-        NullStrategy ns = c.getNullStrategy() != null ? c.getNullStrategy() : NullStrategy.SKIP;
+        NullStrategy ns = JsonConfigResolver.nullStrategy(c);
         if (ns == NullStrategy.ALWAYS) {
             features.add(JSONWriter.Feature.WriteNulls);
         }
-        OutputFormat of = c.getOutput() != null ? c.getOutput() : OutputFormat.COMPACT;
+        OutputFormat of = JsonConfigResolver.output(c);
         if (of == OutputFormat.PRETTY) {
-            int indent = c.getIndent() != null ? c.getIndent() : 2;
+            int indent = JsonConfigResolver.indent(c);
             features.add(indent >= 4 ? JSONWriter.Feature.PrettyFormatWith4Space : JSONWriter.Feature.PrettyFormatWith2Space);
         }
-        EnumStyle es = c.getEnumStyle() != null ? c.getEnumStyle() : EnumStyle.NAME;
+        EnumStyle es = JsonConfigResolver.enumStyle(c);
         if (es == EnumStyle.TO_STRING) {
             features.add(JSONWriter.Feature.WriteEnumUsingToString);
         } else if (es == EnumStyle.ORDINAL) {
@@ -306,7 +306,7 @@ public class FastJSONProvider implements JSONProvider {
     public <T> T deserialize(String jsonStr, Type targetType, JSONConfig config) {
         JSONConfig c = config == null ? JSONConfig.builder().build() : config;
         // 字段映射（默认 SNAKE_TO_CAMEL / SMART → SupportSmartMatch）
-        FieldMapping fm = c.getFieldMapping() != null ? c.getFieldMapping() : FieldMapping.SNAKE_TO_CAMEL;
+        FieldMapping fm = JsonConfigResolver.fieldMapping(c);
         List<JSONReader.Feature> features = new ArrayList<>();
         if (fm == FieldMapping.SMART || fm == FieldMapping.SNAKE_TO_CAMEL) {
             features.add(JSONReader.Feature.SupportSmartMatch);
@@ -332,8 +332,7 @@ public class FastJSONProvider implements JSONProvider {
         if (c.isDeserializeEnabled(DeserializeFeature.SUPPORT_NON_PUBLIC_FIELD)) {
             features.add(JSONReader.Feature.FieldBased);
         }
-        String df = c.getDateFormat() != null && !c.getDateFormat().isBlank()
-                ? c.getDateFormat() : JSONConfig.DEFAULT_DATE_FORMAT;
+        String df = JsonConfigResolver.dateFormat(c);
         JSONReader.Feature[] featureArr = features.toArray(new JSONReader.Feature[0]);
         // (String, Type, String format, JSONReader.Feature...) 签名（源码确认存在）
         return JSON.parseObject(jsonStr, targetType, df, featureArr);

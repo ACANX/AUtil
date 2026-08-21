@@ -330,8 +330,8 @@ public class JacksonUtil {
         }
         ObjectMapper mapper = buildSerializeMapper(c);
         try {
-            if (c.getOutput() == OutputFormat.PRETTY) {
-                int indent = c.getIndent() != null ? c.getIndent() : 2;
+            if (JsonConfigResolver.output(c) == OutputFormat.PRETTY) {
+                int indent = JsonConfigResolver.indent(c);
                 return mapper.writer(createPrettyPrinter(indent)).writeValueAsString(object);
             }
             return mapper.writeValueAsString(object);
@@ -373,17 +373,17 @@ public class JacksonUtil {
     private static ObjectMapper buildSerializeMapper(JSONConfig c) {
         ObjectMapper mapper = new ObjectMapper();
         // 命名风格（默认 SNAKE_CASE）
-        NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
+        NamingStyle naming = JsonConfigResolver.naming(c);
         applyNamingStrategy(mapper, naming);
         // null 策略（默认 SKIP）
-        NullStrategy ns = c.getNullStrategy() != null ? c.getNullStrategy() : NullStrategy.SKIP;
+        NullStrategy ns = JsonConfigResolver.nullStrategy(c);
         if (ns == NullStrategy.SKIP) {
             mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         }
         // 日期格式（默认全局默认格式）
-        mapper.registerModule(createJavaTimeModule(resolveDateFormat(c)));
+        mapper.registerModule(createJavaTimeModule(JsonConfigResolver.dateFormat(c)));
         // 枚举方式（默认 NAME）
-        EnumStyle es = c.getEnumStyle() != null ? c.getEnumStyle() : EnumStyle.NAME;
+        EnumStyle es = JsonConfigResolver.enumStyle(c);
         if (es == EnumStyle.TO_STRING) {
             mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
         } else if (es == EnumStyle.ORDINAL) {
@@ -417,21 +417,20 @@ public class JacksonUtil {
     private static ObjectMapper buildDeserializeMapper(JSONConfig c) {
         ObjectMapper mapper = new ObjectMapper();
         // 字段映射（默认 SNAKE_TO_CAMEL）
-        FieldMapping fm = c.getFieldMapping() != null ? c.getFieldMapping() : FieldMapping.SNAKE_TO_CAMEL;
+        FieldMapping fm = JsonConfigResolver.fieldMapping(c);
         applyFieldMapping(mapper, fm);
         // 未知字段（默认 IGNORE）
-        UnknownFieldHandling uf = c.getUnknownFieldHandling() != null
-                ? c.getUnknownFieldHandling() : UnknownFieldHandling.IGNORE;
+        UnknownFieldHandling uf = JsonConfigResolver.unknownFieldHandling(c);
         mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, uf == UnknownFieldHandling.FAIL);
         // 未知枚举（默认 NULL）
-        UnknownEnumValue ue = c.getUnknownEnumValue() != null ? c.getUnknownEnumValue() : UnknownEnumValue.NULL;
+        UnknownEnumValue ue = JsonConfigResolver.unknownEnumValue(c);
         if (ue == UnknownEnumValue.NULL) {
             mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL);
         } else if (ue == UnknownEnumValue.DEFAULT) {
             mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
         }
         // 日期格式（默认全局默认格式）
-        mapper.registerModule(createJavaTimeModule(resolveDateFormat(c)));
+        mapper.registerModule(createJavaTimeModule(JsonConfigResolver.dateFormat(c)));
         // 补充反序列化 Feature（部分支持项按降级策略处理）
         if (c.isDeserializeEnabled(DeserializeFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)) {
             mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
@@ -482,16 +481,6 @@ public class JacksonUtil {
         }
     }
 
-    /**
-     * 解析日期格式：未配置时使用全局默认格式
-     *
-     * @param c JSONConfig
-     * @return 日期格式 pattern
-     */
-    private static String resolveDateFormat(JSONConfig c) {
-        String df = c.getDateFormat();
-        return df != null && !df.isBlank() ? df : JSONConfig.DEFAULT_DATE_FORMAT;
-    }
 
     /**
      * 创建指定缩进的美化输出器

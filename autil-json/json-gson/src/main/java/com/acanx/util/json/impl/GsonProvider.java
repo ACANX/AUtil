@@ -5,6 +5,7 @@ import com.acanx.util.json.FieldMapping;
 import com.acanx.util.json.JSONConfig;
 import com.acanx.util.json.JSONProvider;
 import com.acanx.util.json.GsonUtil;
+import com.acanx.util.json.JsonConfigResolver;
 import com.acanx.util.json.JsonNullChecker;
 import com.acanx.util.json.NamingStyle;
 import com.acanx.util.json.NullStrategy;
@@ -239,7 +240,7 @@ public class GsonProvider implements JSONProvider {
         // 日期格式（默认全局默认格式，与 Jackson 对齐）
         registerDateAdapter(builder, c);
         // 命名风格（默认 SNAKE_CASE）
-        NamingStyle naming = c.getNaming() != null ? c.getNaming() : NamingStyle.SNAKE_CASE;
+        NamingStyle naming = JsonConfigResolver.naming(c);
         switch (naming) {
             case SNAKE_CASE -> builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
             case UPPER_CAMEL -> builder.setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE);
@@ -247,12 +248,12 @@ public class GsonProvider implements JSONProvider {
             default -> { /* LOWER_CAMEL：IDENTITY 默认 */ }
         }
         // null 策略（默认 SKIP；Gson 默认不输出 null，ALWAYS 需显式开启）
-        NullStrategy ns = c.getNullStrategy() != null ? c.getNullStrategy() : NullStrategy.SKIP;
+        NullStrategy ns = JsonConfigResolver.nullStrategy(c);
         if (ns == NullStrategy.ALWAYS) {
             builder.serializeNulls();
         }
         // 输出格式（PRETTY：Gson 固定缩进 2）
-        OutputFormat of = c.getOutput() != null ? c.getOutput() : OutputFormat.COMPACT;
+        OutputFormat of = JsonConfigResolver.output(c);
         if (of == OutputFormat.PRETTY) {
             builder.setPrettyPrinting();
         }
@@ -274,7 +275,7 @@ public class GsonProvider implements JSONProvider {
         // 日期格式（默认全局默认格式，与 Jackson 对齐）
         registerDateAdapter(builder, c);
         // 字段映射（默认 SNAKE_TO_CAMEL；SMART/CAMEL_TO_SNAKE Gson 无原生能力，降级为默认）
-        FieldMapping fm = c.getFieldMapping() != null ? c.getFieldMapping() : FieldMapping.SNAKE_TO_CAMEL;
+        FieldMapping fm = JsonConfigResolver.fieldMapping(c);
         if (fm == FieldMapping.SNAKE_TO_CAMEL) {
             builder.setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES);
         }
@@ -290,8 +291,8 @@ public class GsonProvider implements JSONProvider {
      * @param c       JSONConfig
      */
     private void registerDateAdapter(GsonBuilder builder, JSONConfig c) {
-        String df = c.getDateFormat();
-        if (df != null && !df.isBlank() && !JSONConfig.DEFAULT_DATE_FORMAT.equals(df)) {
+        String df = JsonConfigResolver.dateFormat(c);
+        if (!JSONConfig.DEFAULT_DATE_FORMAT.equals(df)) {
             builder.registerTypeAdapter(LocalDateTime.class, new DateFormatAdapter(df));
         } else {
             builder.registerTypeAdapter(LocalDateTime.class, new Iso8601Adapter());
