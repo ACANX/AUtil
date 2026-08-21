@@ -53,7 +53,7 @@
                     <encoding>UTF-8</encoding>
                     <!-- 本模块是注解处理器提供者，编译自身时无需触发注解处理，避免 javac 尝试实例化 services 声明的 Processor -->
                     <proc>none</proc>
-                    <!-- fork 模式：注解处理器在 forked JVM 中运行时需要 JVM 级 --add-exports 才能访问 javac 内部 API -->
+                    <!-- fork 模式：注解处理器在 forked JVM 中运行时需要 JVM 级 add-exports 才能访问 javac 内部 API -->
                     <fork>true</fork>
                     <jvmArgs>
                         <jvmArg>--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</jvmArg>
