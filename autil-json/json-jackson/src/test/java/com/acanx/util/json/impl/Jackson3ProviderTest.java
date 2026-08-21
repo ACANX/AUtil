@@ -2,8 +2,8 @@ package com.acanx.util.json.impl;
 
 import com.acanx.meta.model.test.json.model.User;
 import com.acanx.util.json.JSONProvider;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -16,12 +16,12 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
- * JacksonProvider 行为快照测试（Jackson 2 SPI 适配器）
+ * Jackson3Provider 行为快照测试（Jackson 3 SPI 适配器）
  *
- * <p>验证 Provider 的 SPI 契约行为（见 Docs/DevProposal/Jackson3Migration.md 阶段一），
- * 与 {@code Jackson3ProviderTest} 使用同一套断言数据。</p>
+ * <p>与 {@code JacksonProviderTest}（Jackson 2）使用<b>同一套断言数据</b>，
+ * 验证双 Provider 行为一致（见 Docs/DevProposal/Jackson3Migration.md 阶段二）。</p>
  */
-class JacksonProviderTest {
+class Jackson3ProviderTest {
 
     private static final LocalDateTime CREATE_TIME = LocalDateTime.of(2023, 1, 1, 12, 0, 0, 123_456_000);
     private static final User ALICE = new User(11, "Alice", CREATE_TIME);
@@ -31,18 +31,18 @@ class JacksonProviderTest {
     private static final String JSON_ARRAY_SNAKE = "[{\"user_id\":11,\"user_name\":\"Alice\",\"create_time\":\"2023-01-01T12:00:00.123456\"},"
             + "{\"user_id\":12,\"user_name\":\"Bob\",\"create_time\":\"2023-01-01T13:00:00.123456\"}]";
 
-    /** 被测 Provider：Jackson 2 实现 */
-    private final JSONProvider provider = new JacksonProvider();
+    /** 被测 Provider：Jackson 3 实现 */
+    private final JSONProvider provider = new Jackson3Provider();
 
     @Test
     void isAvailable() {
-        // 默认 auto 模式下 Jackson 2 可用
+        // 本模块测试 classpath 携带 Jackson 3（optional 依赖），auto 模式下 Jackson 3 可用
         assertTrue(provider.isAvailable());
     }
 
     @Test
     void getProviderName() {
-        assertEquals("Jackson", provider.getProviderName());
+        assertEquals("Jackson3", provider.getProviderName());
     }
 
     @Test

@@ -2,6 +2,7 @@ package com.acanx.util.json.impl;
 
 import com.acanx.annotation.Alpha;
 import com.acanx.util.json.JSONProvider;
+import com.acanx.util.json.JacksonMode;
 import com.acanx.util.json.JacksonUtil;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -18,18 +19,13 @@ public class JacksonProvider implements JSONProvider {
     private final ObjectMapper mapper = new ObjectMapper();
 
     /**
-     *   可用性判断
+     *   可用性判断：由三态开关仲裁（默认可用，仅强制 jackson3 时关闭）
      *
      * @return      可用性标识
      */
     @Override
     public boolean isAvailable() {
-        try {
-            Class.forName("com.fasterxml.jackson.databind.ObjectMapper");
-            return true;
-        } catch (ClassNotFoundException e) {
-            return false;
-        }
+        return JacksonMode.isJackson2Active();
     }
 
 
