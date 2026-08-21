@@ -256,14 +256,11 @@ public class FastJSONProvider implements JSONProvider {
         // 日期格式：未配置时使用全局默认格式（与 Jackson/Gson 对齐，保证三框架一致）
         String df = c.getDateFormat() != null && !c.getDateFormat().isBlank()
                 ? c.getDateFormat() : JSONConfig.DEFAULT_DATE_FORMAT;
-        // 日期格式需走 JSONWriter.Context（组合命名 + 日期格式 + features）
-        JSONWriter.Context context = new JSONWriter.Context();
+        // 组合命名 + 日期格式 + features（Context(String format, Feature...) 构造器一步到位）
+        JSONWriter.Feature[] featureArr = features.toArray(new JSONWriter.Feature[0]);
+        JSONWriter.Context context = new JSONWriter.Context(df, featureArr);
         if (nameFilter != null) {
             context.setNameFilter(nameFilter);
-        }
-        context.setDateFormat(df);
-        if (!features.isEmpty()) {
-            context.setFeatures(features.toArray(new JSONWriter.Feature[0]));
         }
         try (JSONWriter writer = JSONWriter.of(context)) {
             writer.writeAny(object);
@@ -318,7 +315,7 @@ public class FastJSONProvider implements JSONProvider {
         String df = c.getDateFormat() != null && !c.getDateFormat().isBlank()
                 ? c.getDateFormat() : JSONConfig.DEFAULT_DATE_FORMAT;
         JSONReader.Feature[] featureArr = features.toArray(new JSONReader.Feature[0]);
-        // 使用 (String, Type, String format, Filter, Feature...) 五参签名，避免与带 long features 的重载歧义
-        return JSON.parseObject(jsonStr, targetType, df, (com.alibaba.fastjson2.filter.Filter) null, featureArr);
+        // (String, Type, String format, JSONReader.Feature...) 签名（源码确认存在）
+        return JSON.parseObject(jsonStr, targetType, df, featureArr);
     }
 }
