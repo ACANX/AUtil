@@ -67,7 +67,10 @@ public class BaseHTTP {
             // 4. 设置请求方法及请求体
             String method = config.getMethod().toUpperCase();
             boolean isBodyAllowed = (!HTTPConst.GET.equalsIgnoreCase(method) && !HTTPConst.DELETE.equalsIgnoreCase(method));
-            if (isBodyAllowed && StringUtil.isNotBlank(config.getBody())) {
+            if (isBodyAllowed && config.getBodyBytes() != null && config.getBodyBytes().length > 0) {
+                // 原始字节请求体（二进制保真，如文件直传）；与 String 体互斥，优先使用
+                requestBuilder.method(method, HttpRequest.BodyPublishers.ofByteArray(config.getBodyBytes()));
+            } else if (isBodyAllowed && StringUtil.isNotBlank(config.getBody())) {
                 requestBuilder.method(method, HttpRequest.BodyPublishers.ofString(config.getBody()));
             } else {
                 requestBuilder.method(method, HttpRequest.BodyPublishers.noBody());
