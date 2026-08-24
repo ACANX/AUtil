@@ -83,7 +83,7 @@ public Builder bodyBytes(byte[] bodyBytes) {
 
 ```java
 boolean isBodyAllowed = (!HTTPConst.GET.equalsIgnoreCase(method) && !HTTPConst.DELETE.equalsIgnoreCase(method));
-if (isBodyAllowed && config.getBodyBytes() != null && config.getBodyBytes().length > 0) {
+if (isBodyAllowed && null != config.getBodyBytes() && config.getBodyBytes().length > 0) {
     // 原始字节请求体（二进制保真，如文件直传）；与 String 体互斥，优先使用
     requestBuilder.method(method, HttpRequest.BodyPublishers.ofByteArray(config.getBodyBytes()));
 } else if (isBodyAllowed && StringUtil.isNotBlank(config.getBody())) {

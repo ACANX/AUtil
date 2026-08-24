@@ -1,6 +1,7 @@
 package com.acanx.util.http;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.c.Const;
 import com.acanx.c.HTTPConst;
 import com.acanx.c.MimeConst;
 import com.acanx.util.URLUtil;
@@ -67,7 +68,7 @@ public class BaseHTTP {
             // 4. 设置请求方法及请求体
             String method = config.getMethod().toUpperCase();
             boolean isBodyAllowed = (!HTTPConst.GET.equalsIgnoreCase(method) && !HTTPConst.DELETE.equalsIgnoreCase(method));
-            if (isBodyAllowed && config.getBodyBytes() != null && config.getBodyBytes().length > 0) {
+            if (isBodyAllowed && null != config.getBodyBytes() && config.getBodyBytes().length > 0) {
                 // 原始字节请求体（二进制保真，如文件直传）；与 String 体互斥，优先使用
                 requestBuilder.method(method, HttpRequest.BodyPublishers.ofByteArray(config.getBodyBytes()));
             } else if (isBodyAllowed && StringUtil.isNotBlank(config.getBody())) {
@@ -84,7 +85,7 @@ public class BaseHTTP {
                 String cookies = config.getCookies().entrySet().stream()
                         .map(e -> URLUtil.encodeParameter(e))
                         .collect(Collectors.joining("; "));
-                requestBuilder.header("Cookie", cookies);
+                requestBuilder.header(HTTPConst.COOKIE, cookies);
             }
             // 7. 发送请求并获取响应
             HttpResponse<String> httpResponse = client.send(requestBuilder.build(), HttpResponse.BodyHandlers.ofString());
@@ -119,7 +120,7 @@ public class BaseHTTP {
         if (params == null || params.isEmpty()) {
             return baseUrl;
         }
-        StringJoiner sj = new StringJoiner("&", baseUrl.contains("?") ? "&" : "?", "");
+        StringJoiner sj = new StringJoiner(Const.STR_AND, baseUrl.contains(Const.STR_QUESTION) ? Const.STR_AND : Const.STR_QUESTION, Const.STR_EMPTY);
         for (Map.Entry<String, String> entry : params.entrySet()) {
             sj.add(URLUtil.encodeParameter(entry));
         }
@@ -235,7 +236,15 @@ public class BaseHTTP {
      */
     @Alpha
     public static HResponse post(String url, Map<String, String> params, Map<String, String> cookie, Map<String, String> headers, String body) {
-        return getHttpResponse(HRequest.builder().method(HTTPConst.POST).url(url).params(params).contentType(MimeConst.JSON).cookies(cookie).headers(headers).body(body).build());
+        return getHttpResponse(HRequest.builder()
+                .method(HTTPConst.POST)
+                .url(url)
+                .params(params)
+                .contentType(MimeConst.JSON)
+                .cookies(cookie)
+                .headers(headers)
+                .body(body)
+                .build());
     }
 
 
@@ -250,7 +259,7 @@ public class BaseHTTP {
     public static HResponse postForm(String url, Map<String, String> formData) {
         String formBody = formData.entrySet().stream()
                 .map(e -> URLUtil.encodeParameter(e.getKey(), e.getValue()))
-                .collect(Collectors.joining("&"));
+                .collect(Collectors.joining(Const.STR_AND));
         return getHttpResponse(HRequest.builder().method(HTTPConst.POST).url(url).contentType(MimeConst.X_WWW_FORM_URLENCODED).body(formBody).build());
     }
 
