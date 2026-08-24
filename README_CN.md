@@ -43,6 +43,8 @@ AUtil(ACANX-Util) ACANX开源的工具库，封装了字符串、文件、IO、�
 
 - V1.0.x  for JDK8
 
+- V1.3.x  for JDK21
+
 - V2.x    for JDK25
 
 
