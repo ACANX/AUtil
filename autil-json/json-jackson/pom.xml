@@ -33,21 +33,47 @@
             <artifactId>json-core</artifactId>
             <version>${revision}</version>
         </dependency>
+        <!-- 契约测试基类（test-jar） -->
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>json-core</artifactId>
+            <version>${revision}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <!-- jackson-annotations 显式声明为 compile（非 optional）：
+             Jackson 3（tools.jackson 3.2.2）要求 annotations ≥ 2.22，
+             显式声明确保下游默认获得满足要求的版本（issue #176）；
+             版本与 jackson-databind 2.x 传递的一致（2.22），依赖树无版本冲突 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.annotations.version}</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <!-- Jackson 3：迁移期新增，optional 保证默认不传递给下游；
+             jsr310 已合入 databind（tools.jackson.databind.ext.javatime），无需单独依赖；
+             注解仍为 com.fasterxml.jackson.annotation（2.x），与 Jackson 2 共用同一 artifact，无类冲突 -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson3.version}</version>
+            <optional>true</optional>
+        </dependency>
 
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
-            <version>2.0.17</version>
+            <version>${slf4j-api.version}</version>
             <scope>compile</scope>
         </dependency>
 
@@ -73,6 +99,8 @@
                 <configuration>
                     <source>${java.version}</source>
                     <target>${java.version}</target>
+                    <!-- 本模块不依赖注解处理器，禁用自动发现，避免加载 CopierAstProcessor 等处理器导致 JDK 21 编译失败 -->
+                    <proc>none</proc>
                 </configuration>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->

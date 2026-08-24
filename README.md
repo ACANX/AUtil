@@ -20,7 +20,7 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 <dependency>
   <groupId>com.acanx.util</groupId>
   <artifactId>autil-core</artifactId>
-  <version>0.4.5.2</version>
+  <version>1.3.0</version>
 </dependency>
 ```
 
@@ -75,3 +75,8 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 
 - Minimum JDK version requirement: JDK8
 - It is recommended to upgrade to JDK11 for better results
+
+# Referance
+- [AUtil Overview - Sonatype](https://central.sonatype.com/artifact/com.acanx.util/autil/overview)
+- [AUtil - MvnRepository](https://mvnrepository.com/artifact/com.acanx.util/autil)
+- [AUtil-Core - MvnRepository](https://mvnrepository.com/artifact/com.acanx.util/autil-core)

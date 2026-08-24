@@ -30,7 +30,7 @@
         <dependency>
             <groupId>com.google.auto.service</groupId>
             <artifactId>auto-service</artifactId>
-            <version>1.1.1</version>
+            <version>${auto-service.version}</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
@@ -51,7 +51,18 @@
                     <source>${java.version}</source>
                     <target>${java.version}</target>
                     <encoding>UTF-8</encoding>
+                    <!-- 本模块是注解处理器提供者，编译自身时无需触发注解处理，避免 javac 尝试实例化 services 声明的 Processor -->
+                    <proc>none</proc>
+                    <!-- fork 模式：注解处理器在 forked JVM 中运行时需要 JVM 级 add-exports 才能访问 javac 内部 API -->
                     <fork>true</fork>
+                    <jvmArgs>
+                        <jvmArg>--add-exports=jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-exports=jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-exports=jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-exports=jdk.compiler/com.sun.tools.javac.util=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-exports=jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</jvmArg>
+                        <jvmArg>--add-exports=jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</jvmArg>
+                    </jvmArgs>
                     <compilerArgs combine.children="append">
                         <arg>-parameters</arg>
                         <arg>--add-exports</arg>
@@ -66,12 +77,6 @@
                         <arg>jdk.compiler/com.sun.tools.javac.model=ALL-UNNAMED</arg>
                         <arg>--add-exports</arg>
                         <arg>jdk.compiler/com.sun.tools.javac.api=ALL-UNNAMED</arg>
-                        <arg>--add-opens</arg>
-                        <arg>jdk.compiler/com.sun.tools.javac.code=ALL-UNNAMED</arg>
-                        <arg>--add-opens</arg>
-                        <arg>jdk.compiler/com.sun.tools.javac.processing=ALL-UNNAMED</arg>
-                        <arg>--add-opens</arg>
-                        <arg>jdk.compiler/com.sun.tools.javac.tree=ALL-UNNAMED</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>
