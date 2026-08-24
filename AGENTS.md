@@ -13,6 +13,15 @@
 
 例外：代码标识符（类名、方法名、变量名）、提交信息的 type 前缀（`feat:`/`chore:` 等）、日志与异常中面向机器解析的部分，保持既有英文习惯。
 
+## Java 测试方法名约定（强制）
+
+**Java 单元测试方法名禁止使用简体中文汉字，必须使用英文。**（规范出处：`Docs/DevSpec/JavaTestSpec.md`，明令禁止）
+
+- ✅ 正确：`serializePrettyIndent2()`、`prettyFormatLineEndingsAlwaysLf()`
+- ❌ 错误：`serializePretty缩进2()`、`toJSONStringPrettyFormat换行符固定LF()`
+- JUnit 方法名无外部引用，一律使用英文（小驼峰），即使测试场景描述用中文也仅体现在方法体内注释
+- 历史教训：2026-08-24 跨平台差异修复中再次出现中文测试方法名，违反此前约定；存量违规（27 个，7 个测试文件）需逐步清理
+
 需要用其他语言时会明确说明。
 
 ## 文件命名约定

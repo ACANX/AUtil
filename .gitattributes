@@ -1,0 +1,26 @@
+# 统一入库行尾为 LF，消除 Windows/Linux 跨平台行尾漂移（issue #185）
+# 背景：Docs/DevLog/2026-08-24-CrossPlatformDiffPostmortem.md（Windows 换行符差异致测试失败）
+
+# 文本文件统一 LF（Java 文本块恒为 \n，行尾噪音会污染 diff 与快照断言）
+*.java    text eol=lf
+*.md      text eol=lf
+*.xml     text eol=lf
+*.yml     text eol=lf
+*.yaml    text eol=lf
+*.json    text eol=lf
+*.properties text eol=lf
+*.sh      text eol=lf
+
+# Windows 脚本保留 CRLF（cmd/bat 依赖）
+*.bat     text eol=crlf
+*.cmd     text eol=crlf
+
+# 二进制文件不做行尾/差异处理
+*.png     binary
+*.jpg     binary
+*.jpeg    binary
+*.gif     binary
+*.ico     binary
+*.jar     binary
+*.zip     binary
+*.class   binary
