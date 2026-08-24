@@ -133,7 +133,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        java-version: "${{ fromJson(github.event.inputs && format('[\"{0}\"]', github.event.inputs.javaVersion) || (github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && (github.base_ref == 'main' || github.head_ref == 'main')) ? '[\"25\",\"21\"]' : '[\"25\"]') }}"
+        # 短路求值：dispatch 跟随输入 > main 场景全矩阵 > 其他仅 25（避免三元 ?: 的优先级歧义）
+        java-version: "${{ fromJson(github.event.inputs && format('[\"{0}\"]', github.event.inputs.javaVersion) || (github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && (github.base_ref == 'main' || github.head_ref == 'main')) && '[\"25\",\"21\"]' || '[\"25\"]') }}"
 
     steps:
       - name: CheckoutCode
