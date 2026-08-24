@@ -3,6 +3,7 @@ package com.acanx.util.json.impl;
 import com.acanx.annotation.Alpha;
 import com.acanx.util.json.JSONConfig;
 import com.acanx.util.json.JSONProvider;
+import com.acanx.util.json.Jackson3Environment;
 import com.acanx.util.json.Jackson3Util;
 import com.acanx.util.json.JacksonMode;
 
