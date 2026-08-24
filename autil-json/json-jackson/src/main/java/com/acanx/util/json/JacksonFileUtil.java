@@ -95,31 +95,75 @@ public class JacksonFileUtil {
 
     /**
      * 在文件系统目录中递归查找JSON文件（用于开发环境）
+     *
+     * <p>通过 {@link #collectJsonFile} 递归收集，保持认知复杂度 ≤ 15（Sonar S3776）。</p>
+     *
+     * @param directory 起始目录
+     * @param basePath 基准路径（用于生成相对路径）
+     * @param jsonFiles 收集结果的列表
      */
     public static void findJsonFilesInDirectory(File directory, String basePath, List<String> jsonFiles) {
-        if (directory.exists() && directory.isDirectory()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (File file : files) {
-                    if (file.isDirectory()) {
-                        findJsonFilesInDirectory(file, basePath, jsonFiles);
-                    } else if (file.getName().endsWith(".json")) {
-                        // 转换为相对于basePath的路径（纯字符串处理，避免 Windows 路径反斜杠
-                        // 作为正则转义符触发 PatternSyntaxException）
-                        String fullPath = file.getPath().replace(File.separator, "/");
-                        String normalizedBase = basePath.replace(File.separator, "/");
-                        String relativePath = fullPath;
-                        if (fullPath.startsWith(normalizedBase)) {
-                            relativePath = fullPath.substring(normalizedBase.length());
-                            while (relativePath.startsWith("/")) {
-                                relativePath = relativePath.substring(1);
-                            }
-                        }
-                        jsonFiles.add(basePath + "/" + relativePath);
-                    }
-                }
+        if (!isReadableDirectory(directory)) {
+            return;
+        }
+        File[] files = directory.listFiles();
+        if (files == null) {
+            return;
+        }
+        for (File file : files) {
+            collectJsonFile(file, basePath, jsonFiles);
+        }
+    }
+
+    /**
+     * 判断目录是否存在且可读
+     *
+     * @param directory 目录
+     * @return 是否为可读目录
+     */
+    private static boolean isReadableDirectory(File directory) {
+        return directory != null && directory.isDirectory();
+    }
+
+    /**
+     * 收集单个文件：目录则递归，JSON 文件则转为相对路径加入结果
+     *
+     * @param file 文件或目录
+     * @param basePath 基准路径
+     * @param jsonFiles 收集结果的列表
+     */
+    private static void collectJsonFile(File file, String basePath, List<String> jsonFiles) {
+        if (file.isDirectory()) {
+            findJsonFilesInDirectory(file, basePath, jsonFiles);
+            return;
+        }
+        if (!file.getName().endsWith(".json")) {
+            return;
+        }
+        jsonFiles.add(toRelativePath(file, basePath));
+    }
+
+    /**
+     * 将文件绝对路径转换为相对 basePath 的路径
+     *
+     * <p>纯字符串处理（分隔符统一归一化为 {@code /} 后 {@code startsWith} + {@code substring}），
+     * 避免 Windows 路径反斜杠作为正则转义符触发 PatternSyntaxException。</p>
+     *
+     * @param file 文件
+     * @param basePath 基准路径
+     * @return 相对路径（前缀 basePath + "/"）
+     */
+    private static String toRelativePath(File file, String basePath) {
+        String fullPath = file.getPath().replace(File.separator, "/");
+        String normalizedBase = basePath.replace(File.separator, "/");
+        String relativePath = fullPath;
+        if (fullPath.startsWith(normalizedBase)) {
+            relativePath = fullPath.substring(normalizedBase.length());
+            while (relativePath.startsWith("/")) {
+                relativePath = relativePath.substring(1);
             }
         }
+        return basePath + "/" + relativePath;
     }
 
 
