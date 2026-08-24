@@ -1817,8 +1817,8 @@ public class StringUtil {
             return token;
         }
         int len = token.length();
-        int start = Math.max(0, Math.min(a, len - 1));
-        int end = Math.max(start, Math.min(b, len - 1));
+        int start = Math.clamp(a, 0, len - 1);
+        int end = Math.clamp(b, start, len - 1);
 
         char[] chars = token.toCharArray();
         for (int i = start; i <= end; i++) {
