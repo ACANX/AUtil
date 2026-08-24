@@ -1765,6 +1765,69 @@ public class StringUtil {
 
 
     /**
+     * <p>将字符串中指定范围 [a, b]（包含两端）的字符替换为 {@code '*'}（默认掩码字符）。</p>
+     *
+     * <p>边界会自动裁剪到有效范围，不会抛出 {@code IndexOutOfBoundsException}：
+     * 起始索引裁剪为 {@code max(0, min(a, len-1))}，结束索引裁剪为 {@code max(start, min(b, len-1))}。</p>
+     *
+     * <pre>
+     * StringUtil.maskToken(null, 2, 5)           = null
+     * StringUtil.maskToken("", 2, 5)             = ""
+     * StringUtil.maskToken("abcdefghijkl", 2, 5) = "ab****ghijkl"
+     * StringUtil.maskToken("ABCDE12345", 0, 9)   = "**********"
+     * StringUtil.maskToken("ABCDE12345", 5, 2)   = "ABCDE*2345"
+     * StringUtil.maskToken("abc", 1, 99)         = "a**"
+     * StringUtil.maskToken("abc", -5, 1)         = "**c"
+     * </pre>
+     *
+     * @param token 要掩码的字符串，可以为 null
+     * @param a     起始索引（包含），从 0 开始
+     * @param b     结束索引（包含），从 0 开始
+     * @return 掩码后的字符串；如果输入为 null 或空字符串则原样返回
+     * @since 1.3.1
+     */
+    @Alpha
+    public static String maskToken(String token, int a, int b) {
+        return maskToken(token, a, b, '*');
+    }
+
+    /**
+     * <p>将字符串中指定范围 [a, b]（包含两端）的字符替换为指定的掩码字符。</p>
+     *
+     * <p>边界处理与 {@link #maskToken(String, int, int)} 一致，会自动裁剪到有效范围，不会抛出
+     * {@code IndexOutOfBoundsException}。</p>
+     *
+     * <pre>
+     * StringUtil.maskToken(null, 2, 5, '#')           = null
+     * StringUtil.maskToken("", 2, 5, '#')             = ""
+     * StringUtil.maskToken("abcdefghijkl", 2, 5, '#') = "ab####ghijkl"
+     * StringUtil.maskToken("ABCDE12345", 2, 6, 'x')   = "ABxxxxx345"
+     * </pre>
+     *
+     * @param token    要掩码的字符串，可以为 null
+     * @param a        起始索引（包含），从 0 开始
+     * @param b        结束索引（包含），从 0 开始
+     * @param maskChar 掩码字符
+     * @return 掩码后的字符串；如果输入为 null 或空字符串则原样返回
+     * @since 1.3.1
+     */
+    @Alpha
+    public static String maskToken(String token, int a, int b, char maskChar) {
+        if (token == null || token.isEmpty()) {
+            return token;
+        }
+        int len = token.length();
+        int start = Math.max(0, Math.min(a, len - 1));
+        int end = Math.max(start, Math.min(b, len - 1));
+
+        char[] chars = token.toCharArray();
+        for (int i = start; i <= end; i++) {
+            chars[i] = maskChar;
+        }
+        return new String(chars);
+    }
+
+    /**
      * 生成固定长度数字字符串,不足位时前面补零
      * @param no 原始数字
      * @param length 目标字符串长度
