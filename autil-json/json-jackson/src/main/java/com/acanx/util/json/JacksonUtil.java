@@ -140,7 +140,10 @@ public class JacksonUtil {
     }
 
     /**
-     * 对象转JSON字符串（下划线风格）
+     * 对象转JSON字符串（下划线风格 + 美化输出）
+     *
+     * <p>使用固定 {@code "\n"} 换行（经 {@link #createPrettyPrinter(int)}），
+     * 保证输出跨平台一致（Jackson 默认缩进器跟随系统换行符，Windows 上会输出 {@code "\r\n"}）。</p>
      *
      * @param object   对象
      * @return         序列化后的字符串
@@ -160,7 +163,7 @@ public class JacksonUtil {
                     .configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false)
                     // 日期格式（按需设置）
                     .findAndRegisterModules();
-            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+            return mapper.writer(createPrettyPrinter(2)).writeValueAsString(object);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Object to JSON conversion failed", e);
         }
@@ -484,12 +487,16 @@ public class JacksonUtil {
     /**
      * 创建指定缩进的美化输出器
      *
+     * <p>换行符固定为 {@code "\n"}（不跟随系统 {@code line.separator}），保证输出跨平台一致；
+     * 数组缩进保持 Jackson 默认的单空格风格，仅固定换行符。</p>
+     *
      * @param indent 缩进空格数
      * @return DefaultPrettyPrinter
      */
     private static DefaultPrettyPrinter createPrettyPrinter(int indent) {
         DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
         printer.indentObjectsWith(new DefaultIndenter(" ".repeat(Math.max(1, indent)), "\n"));
+        printer.indentArraysWith(new DefaultIndenter(" ", "\n"));
         return printer;
     }
 
