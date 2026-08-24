@@ -117,6 +117,59 @@ jobs:
           retention-days: 7
 
   # ============================================================
+  # Windows 单元测试（跨平台契约守护，issue #183）
+  # 独立 job 而非矩阵 os 维度：避免 check 名变化（UnitTest (21, windows)）
+  # 破坏 VBranch ruleset 的 required status checks 匹配。
+  # JDK 矩阵策略（折中方案仅限于非 main 分支递交）：
+  #   - 非 main 分支（push/PR 到 common、V1.3.x 等）：仅 JDK 25，控制 runner 成本
+  #   - main 分支递交（push 到 main / PR 目标或来源为 main）：win/ubuntu × JDK 21/25
+  #     全矩阵组合完整验证，确保不遗漏
+  #   - workflow_dispatch：跟随手动选择的 JDK 版本
+  # ============================================================
+  unit-test-windows:
+    name: UnitTestWindows
+    runs-on: windows-latest
+    needs: build-compile
+    strategy:
+      fail-fast: false
+      matrix:
+        # 短路求值：dispatch 跟随输入 > main 场景全矩阵 > 其他仅 25（避免三元 ?: 的优先级歧义）
+        java-version: "${{ fromJson(github.event.inputs && format('[\"{0}\"]', github.event.inputs.javaVersion) || (github.event_name == 'push' && github.ref == 'refs/heads/main' || github.event_name == 'pull_request' && (github.base_ref == 'main' || github.head_ref == 'main')) && '[\"25\",\"21\"]' || '[\"25\"]') }}"
+
+    steps:
+      - name: CheckoutCode
+        id: checkout
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref || github.ref }}
+
+      - name: SetupJava
+        id: setupJava
+        uses: actions/setup-java@v5
+        with:
+          java-version: ${{ matrix.java-version }}
+          distribution: 'temurin'
+          cache: 'maven'
+
+      - name: RunUnitTests
+        shell: bash
+        run: >
+          ./mvnw test
+          -Pdev
+          --no-transfer-progress
+        env:
+          JAVA_OPTS: -Xmx512m
+
+      - name: UploadTestResults
+        if: always()
+        id: uploadTestResultsWin
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-results-windows-jdk${{ matrix.java-version }}
+          path: '**/target/surefire-reports/*.xml'
+          retention-days: 7
+
+  # ============================================================
   # 代码质量卡点（静态分析，Build/Compile 成功后执行）
   # workflow_dispatch 跳过以节省资源（手动触发时仅关注编译/测试结果）
   # ============================================================
@@ -189,11 +242,12 @@ jobs:
   build-maven-artifacts:
     name: BuildMavenArtifacts
     runs-on: ubuntu-latest
-    needs: [build-compile, unit-test, qualityGate]
-    # 需 UnitTest 成功、质量门成功（workflow_dispatch 时质量门被显式跳过，视为通过）；
+    needs: [build-compile, unit-test, unit-test-windows, qualityGate]
+    # 需 UnitTest 成功、Windows 单元测试成功、质量门成功（workflow_dispatch 时质量门被显式跳过，视为通过）；
     # 且满足分支/触发方式白名单
     if: |
       needs.unit-test.result == 'success'
+      && needs.unit-test-windows.result == 'success'
       && needs.build-compile.result == 'success'
       && (needs.qualityGate.result == 'success' || needs.qualityGate.result == 'skipped')
       && (github.event_name == 'workflow_dispatch'
