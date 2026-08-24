@@ -75,7 +75,7 @@ public abstract class AbstractSerializationContractTest {
      * 做字节级断言，防止任何实现回归。</p>
      */
     @Test
-    void toJSONStringPrettyFormat换行符固定LF() {
+    void prettyFormatLineEndingsAlwaysLf() {
         String json = provider().toJSONStringPrettyFormat(ALICE);
         assertTrue(json.contains("\n"), "pretty 输出应包含换行");
         assertFalse(json.contains("\r"), "pretty 输出行尾必须为 \\n，不得出现 \\r\\n（跨平台契约）");
@@ -98,7 +98,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void normalizeLineEndings跨平台行为() {
+    void normalizeLineEndingsCrossPlatform() {
         assertEquals("a\nb\n", normalizeLineEndings("a\r\nb\r"));
         assertEquals("a\nb\nc", normalizeLineEndings("a\nb\nc"));
         assertEquals(null, normalizeLineEndings(null));
