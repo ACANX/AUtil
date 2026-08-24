@@ -95,7 +95,7 @@ class Jackson3EnvironmentTest {
      */
     @Test
     void minVersionConstantMatchesIssue() {
-        assertEquals(2, Jackson3Environment.MIN_JACKSON_ANNOTATIONS_VERSION.getMajor());
-        assertEquals(22, Jackson3Environment.MIN_JACKSON_ANNOTATIONS_VERSION.getMinor());
+        assertEquals(2, Jackson3Environment.MIN_JACKSON_ANNOTATIONS_VERSION.getMajorVersion());
+        assertEquals(22, Jackson3Environment.MIN_JACKSON_ANNOTATIONS_VERSION.getMinorVersion());
     }
 }
