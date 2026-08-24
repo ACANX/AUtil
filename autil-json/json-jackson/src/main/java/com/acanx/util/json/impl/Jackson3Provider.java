@@ -3,8 +3,11 @@ package com.acanx.util.json.impl;
 import com.acanx.annotation.Alpha;
 import com.acanx.util.json.JSONConfig;
 import com.acanx.util.json.JSONProvider;
+import com.acanx.util.json.Jackson3Environment;
 import com.acanx.util.json.Jackson3Util;
 import com.acanx.util.json.JacksonMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -26,14 +29,41 @@ import java.util.Map;
  */
 public class Jackson3Provider implements JSONProvider {
 
+    private static final Logger logger = LoggerFactory.getLogger(Jackson3Provider.class);
+
+    /**
+     * 默认构造：ServiceLoader SPI 实例化需要 public 无参构造器
+     */
+    public Jackson3Provider() {
+        // ServiceLoader 实例化需要 public 无参构造器
+    }
+
     /**
      * 可用性判断：由三态开关仲裁（显式 jackson3 / auto 且 classpath 有 Jackson 3 时为可用）
+     *
+     * <p><b>annotations 版本探测（issue #176）：</b>SPI 加载时校验 jackson-annotations 是否
+     * 满足 Jackson 3 最低要求（≥ 2.22）。显式 jackson3 模式下版本不足直接抛清晰异常；
+     * auto 模式下版本不足打印警告并回落 Jackson 2（避免 NoClassDefFoundError）。</p>
      *
      * @return 可用性标识
      */
     @Override
     public boolean isAvailable() {
-        return JacksonMode.isJackson3Active();
+        if (!JacksonMode.isJackson3Active()) {
+            return false;
+        }
+        if (JacksonMode.resolve() == JacksonMode.JACKSON3) {
+            // 显式启用 Jackson 3：环境不满足直接快速失败，给出清晰指引
+            Jackson3Environment.ensureSupported();
+            return true;
+        }
+        // auto：SPI 加载时探测 annotations 版本，不足则回落 Jackson 2（不炸掉 JSONUtil）
+        if (Jackson3Environment.isSupported()) {
+            return true;
+        }
+        logger.warn("classpath 存在 Jackson 3 但 jackson-annotations < 2.22，已回落 Jackson 2；"
+                + "请升级 jackson-annotations，或加 -Dautil.json.jackson.mode=jackson2 强制回退（issue #176）。");
+        return false;
     }
 
     /**

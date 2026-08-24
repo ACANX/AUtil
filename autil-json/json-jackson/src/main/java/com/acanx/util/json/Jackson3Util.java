@@ -56,6 +56,11 @@ public class Jackson3Util {
         // 工具类，禁止实例化
     }
 
+    static {
+        // Jackson 3 运行环境校验（issue #176）：annotations 版本不足时给出清晰异常，替代 NoClassDefFoundError
+        Jackson3Environment.ensureSupported();
+    }
+
     /**
      * 自定义日期时间格式（与 JacksonUtil/Gson 对齐）
      */
@@ -176,13 +181,17 @@ public class Jackson3Util {
     /**
      * 对象转JSON字符串（下划线 + 美化输出）
      *
+     * <p>使用固定 {@code "\n"} 换行（经 {@link #createPrettyPrinter(int)}），
+     * 保证输出跨平台一致（Jackson 默认缩进器跟随系统换行符，Windows 上会输出 {@code "\r\n"}）。</p>
+     *
      * @param object 对象
      * @return 序列化后的字符串
      */
     @Alpha
     public static String toJSONStringPrettyFormat(Object object) {
         return createSnakeMapper()
-                .writerWithDefaultPrettyPrinter()
+                .writer()
+                .with(createPrettyPrinter(2))
                 .writeValueAsString(object);
     }
 
@@ -461,12 +470,16 @@ public class Jackson3Util {
     /**
      * 创建指定缩进的美化输出器
      *
+     * <p>换行符固定为 {@code "\n"}（不跟随系统 {@code line.separator}），保证输出跨平台一致；
+     * 数组缩进保持 Jackson 默认的单空格风格，仅固定换行符。</p>
+     *
      * @param indent 缩进空格数
      * @return DefaultPrettyPrinter
      */
     private static DefaultPrettyPrinter createPrettyPrinter(int indent) {
         DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
         printer.indentObjectsWith(new DefaultIndenter(" ".repeat(Math.max(1, indent)), "\n"));
+        printer.indentArraysWith(new DefaultIndenter(" ", "\n"));
         return printer;
     }
 
