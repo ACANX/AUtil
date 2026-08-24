@@ -2,6 +2,9 @@ package com.acanx.util;
 
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+
 /** 
 * StringUtil Tester. 
 * 
@@ -85,5 +88,32 @@ public class StringUtilTest {
         // 驼峰转下划线
         // 预期结果：are_you_o_k
         System.out.println(StringUtil.camelToSnakeCase(camel));
+    }
+
+
+    @Test
+    void maskTokenTest() {
+        // 默认 '*' 掩码，[a, b] 包含两端
+        assertEquals("ab****ghijkl", StringUtil.maskToken("abcdefghijkl", 2, 5));
+        assertEquals("AB*****345", StringUtil.maskToken("ABCDE12345", 2, 6));
+        assertEquals("**********", StringUtil.maskToken("ABCDE12345", 0, 9));
+        assertEquals("a*cd", StringUtil.maskToken("abcd", 1, 1));
+
+        // 边界裁剪：索引越界（上界/负值）不抛异常
+        assertEquals("a**", StringUtil.maskToken("abc", 1, 99));
+        assertEquals("**c", StringUtil.maskToken("abc", -5, 1));
+
+        // a > b 时不会抛出异常，按裁剪后的有效范围处理
+        assertEquals("ABCDE*2345", StringUtil.maskToken("ABCDE12345", 5, 2));
+
+        // null / 空字符串原样返回
+        assertNull(StringUtil.maskToken(null, 2, 5));
+        assertEquals("", StringUtil.maskToken("", 2, 5));
+
+        // 指定掩码字符
+        assertEquals("ab####ghijkl", StringUtil.maskToken("abcdefghijkl", 2, 5, '#'));
+        assertEquals("ABxxxxx345", StringUtil.maskToken("ABCDE12345", 2, 6, 'x'));
+        assertNull(StringUtil.maskToken(null, 2, 5, '#'));
+        assertEquals("", StringUtil.maskToken("", 2, 5, '#'));
     }
 }
