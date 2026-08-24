@@ -490,10 +490,14 @@ public class JacksonUtil {
      * <p>换行符固定为 {@code "\n"}（不跟随系统 {@code line.separator}），保证输出跨平台一致；
      * 数组缩进保持 Jackson 默认的单空格风格，仅固定换行符。</p>
      *
+     * <p><b>镜像说明：</b>与 {@link Jackson3Util#createPrettyPrinter(int)} 为 Jackson 2/3 镜像实现
+     * （{@code com.fasterxml.jackson.core.util} 与 {@code tools.jackson.core.util} 为不同包的同名 API），
+     * 无法提取共享，故以 {@code NOSONAR} 抑制 DuplicatedBlocks 告警。</p>
+     *
      * @param indent 缩进空格数
      * @return DefaultPrettyPrinter
      */
-    private static DefaultPrettyPrinter createPrettyPrinter(int indent) {
+    private static DefaultPrettyPrinter createPrettyPrinter(int indent) { // NOSONAR: Jackson 2/3 镜像实现，不同包同名 API 无法共享
         DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
         printer.indentObjectsWith(new DefaultIndenter(" ".repeat(Math.max(1, indent)), "\n"));
         printer.indentArraysWith(new DefaultIndenter(" ", "\n"));
