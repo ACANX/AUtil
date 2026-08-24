@@ -32,6 +32,13 @@ public class Jackson3Provider implements JSONProvider {
     private static final Logger logger = LoggerFactory.getLogger(Jackson3Provider.class);
 
     /**
+     * 默认构造：ServiceLoader SPI 实例化需要 public 无参构造器
+     */
+    public Jackson3Provider() {
+        // ServiceLoader 实例化需要 public 无参构造器
+    }
+
+    /**
      * 可用性判断：由三态开关仲裁（显式 jackson3 / auto 且 classpath 有 Jackson 3 时为可用）
      *
      * <p><b>annotations 版本探测（issue #176）：</b>SPI 加载时校验 jackson-annotations 是否

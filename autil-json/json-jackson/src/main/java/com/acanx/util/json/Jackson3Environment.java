@@ -1,6 +1,7 @@
 package com.acanx.util.json;
 
 import com.acanx.annotation.Alpha;
+import com.acanx.util.json.impl.Jackson3Provider;
 import com.fasterxml.jackson.annotation.JacksonAnnotation;
 import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.core.util.VersionUtil;
