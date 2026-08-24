@@ -6,6 +6,8 @@ import com.acanx.util.json.JSONProvider;
 import com.acanx.util.json.Jackson3Environment;
 import com.acanx.util.json.Jackson3Util;
 import com.acanx.util.json.JacksonMode;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -26,6 +28,8 @@ import java.util.Map;
  * @since 1.3.0
  */
 public class Jackson3Provider implements JSONProvider {
+
+    private static final Logger logger = LoggerFactory.getLogger(Jackson3Provider.class);
 
     /**
      * 可用性判断：由三态开关仲裁（显式 jackson3 / auto 且 classpath 有 Jackson 3 时为可用）
@@ -50,9 +54,8 @@ public class Jackson3Provider implements JSONProvider {
         if (Jackson3Environment.isSupported()) {
             return true;
         }
-        System.err.println("[WARN][json-jackson] classpath 存在 Jackson 3 但 jackson-annotations < 2.22，"
-                + "已回落 Jackson 2；请升级 jackson-annotations，或加 -Dautil.json.jackson.mode=jackson2 强制回退"
-                + "（issue #176）。");
+        logger.warn("classpath 存在 Jackson 3 但 jackson-annotations < 2.22，已回落 Jackson 2；"
+                + "请升级 jackson-annotations，或加 -Dautil.json.jackson.mode=jackson2 强制回退（issue #176）。");
         return false;
     }
 
