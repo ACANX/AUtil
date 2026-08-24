@@ -15,7 +15,7 @@
 
 ## Java 测试方法名约定（强制）
 
-**Java 单元测试方法名禁止使用简体中文汉字，必须使用英文。**
+**Java 单元测试方法名禁止使用简体中文汉字，必须使用英文。**（规范出处：`Docs/DevSpec/JavaTestSpec.md`，明令禁止）
 
 - ✅ 正确：`serializePrettyIndent2()`、`prettyFormatLineEndingsAlwaysLf()`
 - ❌ 错误：`serializePretty缩进2()`、`toJSONStringPrettyFormat换行符固定LF()`
