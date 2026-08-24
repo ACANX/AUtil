@@ -225,6 +225,7 @@ private static int getPriority(String className) {
 - **Jackson 2 保持 compile**:现有下游依赖 `json-jackson` 获得 Jackson 2 实现,不能变 optional。
 - **Jackson 3 设为 optional**:默认不传递给下游;启用 Jackson 3 的下游自行声明 Jackson 3 依赖。
 - **类加载安全性**:`Jackson3Provider` 编译期引用 `tools.jackson.*`;当开关未启用时,`isAvailable()` 返回 false,Provider **不会被实例化**,其字段/方法签名中的 `tools.jackson` 类型不会被 JVM 解析(惰性加载),**不会抛 `NoClassDefFoundError`**。`isAvailable()` 内部用 `Class.forName` + catch 探测,天然免疫缺失依赖。
+- **annotations 版本约束(issue #176)**:Jackson 3(tools.jackson 3.2.2)复用 `com.fasterxml.jackson.core:jackson-annotations`(2.x 坐标),但要求 **annotations ≥ 2.22**。json-jackson 已**显式声明 annotations 2.22 为 compile 依赖**(非 optional),保证下游默认获得满足要求的版本;同时在 SPI 加载时(`Jackson3Provider.isAvailable()` 经 `Jackson3Environment`)探测实际版本——显式 `jackson3` 模式不足即抛清晰异常,`auto` 模式不足打印警告并回落 Jackson 2,替代原始 `NoClassDefFoundError`。
 - **切换默认(阶段三)的本质**:依赖 scope 对调(Jackson 3 改 compile、Jackson 2 改 optional)+ `mode` 默认 `auto`。
 
 ### 5.4 开关使用示例
@@ -287,6 +288,7 @@ mvn test -Dautil.json.jackson.mode=jackson2
 | 优先级仲裁不稳定(同名 Provider 同分) | 高 | 高 | 阶段二同步落地显式优先级表 |
 | 双 Jackson 依赖共存的传递冲突(如 Jackson 3 引入 `com.fasterxml.*` 传递依赖) | 低 | 中 | 实施时核实;若有则 `<exclusions>` 排除 |
 | `optional` 下启用 Jackson 3 但未引入依赖 → `NoClassDefFoundError` | 低 | 中 | `isAvailable()` 用 `Class.forName` 探测 + 文档提示;未启用不会实例化 |
+| Jackson 3 需 jackson-annotations ≥ 2.22,下游版本不足 → 序列化 `NoClassDefFoundError` | 中 | 高 | 显式声明 annotations 2.22 为 compile 依赖(传递保证);SPI 加载时 `Jackson3Environment` 探测版本,不足时显式模式抛清晰异常 / auto 模式警告回落(issue #176) |
 | 开关拼写/取值错误 | 低 | 低 | `resolve()` 未知取值安全兜底为 `auto` |
 | 下游项目升级后报错 | 中 | 高 | 开关回滚(一行 `jackson2`);依赖 scope 回退;观察期 |
 | 无回归测试网 | 高 | 高 | 阶段一补行为快照测试 |
@@ -335,3 +337,14 @@ mvn test -Dautil.json.jackson.mode=jackson2
 - ⏳ 阶段四：观察期结束后删除 `JacksonProvider` / Jackson 2 依赖 / SPI 旧条目。
 - ⏳ `auto + 无 Jackson 3 依赖` 场景的验收：在本模块无法模拟（optional 依赖对模块自身测试可见），由下游无 Jackson 依赖模块（json-fastjson / json-gson）与 CI 参数化覆盖。
 - ⏳ `JSONSerialization.serialize/deserialize`：随 `HttpApiJsonProposal.md` 实施顺序落地（接口尚未定义）。
+
+### 2026-08-24：修复 issue #176（annotations 版本约束）
+
+**问题**：tools.jackson 3.2.2 需要 jackson-annotations ≥ 2.22；下游若被其他依赖将 annotations 覆盖为旧版本，启用 Jackson 3 序列化时直接 `NoClassDefFoundError`。
+
+**修复（三管齐下）**：
+
+- ✅ pom：父 pom 新增 `jackson.annotations.version=2.22` 属性（annotations 版本线独立于 databind/core，无 2.22.2）；json-jackson 显式声明 `com.fasterxml.jackson.core:jackson-annotations` 为 **compile（非 optional）**，与 databind 2.x 传递版本一致，保证下游默认获得满足要求的版本。
+- ✅ 运行时探测：新增 `Jackson3Environment`（版本解析自 jar MANIFEST `Implementation-Version`，无法解析时放行不误伤）；`Jackson3Provider.isAvailable()` SPI 加载时探测——显式 `jackson3` 模式不足抛清晰异常（含升级/回退指引），`auto` 模式不足警告并回落 Jackson 2；`Jackson3Util` 静态初始化兜底校验。
+- ✅ 测试：新增 `Jackson3EnvironmentTest`（最低版本边界 2.22.0/2.22 通过、2.21.9/2.13 拒绝、null 放行、当前环境解析与校验不抛）。
+- ✅ 文档：本文件 §5.3 / §8 同步更新。

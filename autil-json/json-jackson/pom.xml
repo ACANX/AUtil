@@ -46,6 +46,15 @@
             <artifactId>jackson-databind</artifactId>
             <version>${jackson.version}</version>
         </dependency>
+        <!-- jackson-annotations 显式声明为 compile（非 optional）：
+             Jackson 3（tools.jackson 3.2.2）要求 annotations ≥ 2.22，
+             显式声明确保下游默认获得满足要求的版本（issue #176）；
+             版本与 jackson-databind 2.x 传递的一致（2.22），依赖树无版本冲突 -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-annotations</artifactId>
+            <version>${jackson.annotations.version}</version>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
