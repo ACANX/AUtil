@@ -56,6 +56,11 @@ public class Jackson3Util {
         // 工具类，禁止实例化
     }
 
+    static {
+        // Jackson 3 运行环境校验（issue #176）：annotations 版本不足时给出清晰异常，替代 NoClassDefFoundError
+        Jackson3Environment.ensureSupported();
+    }
+
     /**
      * 自定义日期时间格式（与 JacksonUtil/Gson 对齐）
      */
