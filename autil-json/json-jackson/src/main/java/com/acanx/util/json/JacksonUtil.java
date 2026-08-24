@@ -2,8 +2,13 @@ package com.acanx.util.json;
 
 import com.acanx.annotation.Alpha;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.SerializableString;
+import com.fasterxml.jackson.core.io.CharacterEscapes;
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.core.util.DefaultIndenter;
+import com.fasterxml.jackson.core.util.DefaultPrettyPrinter;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.MapperFeature;
@@ -45,12 +50,26 @@ public class JacksonUtil {
             // 日期格式（按需设置）
             .findAndRegisterModules();
 
+    /**
+     * 自定义日期时间格式（与 Gson 的 Iso8601Adapter 对齐）
+     */
+    private static final String DATE_TIME_PATTERN = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS";
 
     // 自定义日期时间格式
     private static JavaTimeModule createJavaTimeModule() {
+        return createJavaTimeModule(DATE_TIME_PATTERN);
+    }
+
+    /**
+     * 创建按指定格式注册 LocalDateTime 序列化/反序列化规则的模块
+     *
+     * @param pattern 日期时间格式
+     * @return JavaTimeModule
+     */
+    private static JavaTimeModule createJavaTimeModule(String pattern) {
         JavaTimeModule module = new JavaTimeModule();
         // 配置LocalDateTime序列化和反序列化规则
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSSSS");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern);
         module.addSerializer(LocalDateTime.class, new LocalDateTimeSerializer(formatter));
         module.addDeserializer(LocalDateTime.class, new LocalDateTimeDeserializer(formatter));
         return module;
@@ -289,6 +308,204 @@ public class JacksonUtil {
                     .readValue(json, listType);
         } catch (IOException e) {
             throw new RuntimeException("JSON to Object conversion failed", e);
+        }
+    }
+
+    /**
+     * 通用序列化（见 Docs/DevProposal/HttpApiJsonProposal.md）
+     *
+     * <p>默认：下划线命名、紧凑输出、null 跳过、全局默认日期格式；
+     * 可通过 {@link JSONConfig} 逐项覆盖。</p>
+     *
+     * @param object Java对象
+     * @param config 序列化配置，可为 null（按默认值执行）
+     * @return JSON字符串
+     */
+    @Alpha
+    public static String serialize(Object object, JSONConfig config) {
+        JSONConfig c = config == null ? JSONConfig.builder().build() : config;
+        if (c.getNullStrategy() == NullStrategy.THROW) {
+            JsonNullChecker.checkNullFields(object);
+        }
+        ObjectMapper mapper = buildSerializeMapper(c);
+        try {
+            if (JsonConfigResolver.output(c) == OutputFormat.PRETTY) {
+                int indent = JsonConfigResolver.indent(c);
+                return mapper.writer(createPrettyPrinter(indent)).writeValueAsString(object);
+            }
+            return mapper.writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException("Object to JSON conversion failed", e);
+        }
+    }
+
+    /**
+     * 通用反序列化（见 Docs/DevProposal/HttpApiJsonProposal.md）
+     *
+     * <p>默认：下划线 JSON → 小驼峰 Java 字段、忽略未知字段、未知枚举转 null；
+     * 可通过 {@link JSONConfig} 逐项覆盖。</p>
+     *
+     * @param json  JSON字符串
+     * @param type  目标类型（Class 或 Type，支持泛型/集合）
+     * @param config 反序列化配置，可为 null（按默认值执行）
+     * @param <T>   目标类型参数
+     * @return 反序列化结果
+     */
+    @Alpha
+    public static <T> T deserialize(String json, Type type, JSONConfig config) {
+        JSONConfig c = config == null ? JSONConfig.builder().build() : config;
+        ObjectMapper mapper = buildDeserializeMapper(c);
+        try {
+            JavaType javaType = mapper.getTypeFactory().constructType(type);
+            return mapper.readValue(json, javaType);
+        } catch (IOException e) {
+            throw new IllegalStateException("JSON to Object conversion failed", e);
+        }
+    }
+
+    /**
+     * 构建序列化 ObjectMapper（按 JSONConfig 映射）
+     *
+     * @param c JSONConfig（非 null）
+     * @return ObjectMapper
+     */
+    private static ObjectMapper buildSerializeMapper(JSONConfig c) {
+        ObjectMapper mapper = new ObjectMapper();
+        // 命名风格（默认 SNAKE_CASE）
+        NamingStyle naming = JsonConfigResolver.naming(c);
+        applyNamingStrategy(mapper, naming);
+        // null 策略（默认 SKIP）
+        NullStrategy ns = JsonConfigResolver.nullStrategy(c);
+        if (ns == NullStrategy.SKIP) {
+            mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+        }
+        // 日期格式（默认全局默认格式）
+        mapper.registerModule(createJavaTimeModule(JsonConfigResolver.dateFormat(c)));
+        // 枚举方式（默认 NAME）
+        EnumStyle es = JsonConfigResolver.enumStyle(c);
+        if (es == EnumStyle.TO_STRING) {
+            mapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+        } else if (es == EnumStyle.ORDINAL) {
+            mapper.enable(SerializationFeature.WRITE_ENUMS_USING_INDEX);
+        }
+        // 补充序列化 Feature（部分支持项按降级策略处理）
+        if (c.isSerializeEnabled(SerializeFeature.SORT_MAP_KEYS)) {
+            mapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+        }
+        if (c.isSerializeEnabled(SerializeFeature.FAIL_ON_EMPTY_BEANS)) {
+            mapper.enable(SerializationFeature.FAIL_ON_EMPTY_BEANS);
+        }
+        if (c.isSerializeEnabled(SerializeFeature.DISABLE_HTML_ESCAPE)) {
+            mapper.getFactory().setCharacterEscapes(new NoHtmlCharacterEscapes());
+        }
+        if (c.isSerializeEnabled(SerializeFeature.ESCAPE_NON_ASCII)) {
+            mapper.enable(JsonGenerator.Feature.ESCAPE_NON_ASCII);
+        }
+        if (c.isSerializeEnabled(SerializeFeature.SORT_PROPERTIES_ALPHABETICALLY)) {
+            mapper.enable(MapperFeature.SORT_PROPERTIES_ALPHABETICALLY);
+        }
+        return mapper;
+    }
+
+    /**
+     * 构建反序列化 ObjectMapper（按 JSONConfig 映射）
+     *
+     * @param c JSONConfig（非 null）
+     * @return ObjectMapper
+     */
+    private static ObjectMapper buildDeserializeMapper(JSONConfig c) {
+        ObjectMapper mapper = new ObjectMapper();
+        // 字段映射（默认 SNAKE_TO_CAMEL）
+        FieldMapping fm = JsonConfigResolver.fieldMapping(c);
+        applyFieldMapping(mapper, fm);
+        // 未知字段（默认 IGNORE）
+        UnknownFieldHandling uf = JsonConfigResolver.unknownFieldHandling(c);
+        mapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, uf == UnknownFieldHandling.FAIL);
+        // 未知枚举（默认 NULL）
+        UnknownEnumValue ue = JsonConfigResolver.unknownEnumValue(c);
+        if (ue == UnknownEnumValue.NULL) {
+            mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_AS_NULL);
+        } else if (ue == UnknownEnumValue.DEFAULT) {
+            mapper.enable(DeserializationFeature.READ_UNKNOWN_ENUM_VALUES_USING_DEFAULT_VALUE);
+        }
+        // 日期格式（默认全局默认格式）
+        mapper.registerModule(createJavaTimeModule(JsonConfigResolver.dateFormat(c)));
+        // 补充反序列化 Feature（部分支持项按降级策略处理）
+        if (c.isDeserializeEnabled(DeserializeFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)) {
+            mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+        }
+        if (c.isDeserializeEnabled(DeserializeFeature.FAIL_ON_NULL_FOR_PRIMITIVES)) {
+            mapper.enable(DeserializationFeature.FAIL_ON_NULL_FOR_PRIMITIVES);
+        }
+        if (c.isDeserializeEnabled(DeserializeFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY)) {
+            mapper.enable(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY);
+        }
+        if (c.isDeserializeEnabled(DeserializeFeature.ACCEPT_EMPTY_STRING_AS_NULL)) {
+            mapper.enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+        }
+        if (c.isDeserializeEnabled(DeserializeFeature.UNWRAP_ROOT_VALUE)) {
+            mapper.enable(DeserializationFeature.UNWRAP_ROOT_VALUE);
+        }
+        return mapper;
+    }
+
+    /**
+     * 应用序列化命名策略（LOWER_CAMEL 使用默认小驼峰，不设置）
+     *
+     * @param mapper ObjectMapper
+     * @param naming 命名风格
+     */
+    private static void applyNamingStrategy(ObjectMapper mapper, NamingStyle naming) {
+        if (naming == NamingStyle.SNAKE_CASE) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        } else if (naming == NamingStyle.UPPER_CAMEL) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.UPPER_CAMEL_CASE);
+        } else if (naming == NamingStyle.KEBAB_CASE) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.KEBAB_CASE);
+        }
+        // LOWER_CAMEL：默认小驼峰，不设置
+    }
+
+    /**
+     * 应用反序列化字段映射（EXACT 使用默认同名字段；CAMEL_TO_SNAKE 反向映射框架无原生能力，降级为同名字段）
+     *
+     * @param mapper ObjectMapper
+     * @param fm     字段映射规则
+     */
+    private static void applyFieldMapping(ObjectMapper mapper, FieldMapping fm) {
+        if (fm == FieldMapping.SNAKE_TO_CAMEL) {
+            mapper.setPropertyNamingStrategy(PropertyNamingStrategies.SNAKE_CASE);
+        } else if (fm == FieldMapping.SMART) {
+            mapper.enable(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES);
+        }
+    }
+
+
+    /**
+     * 创建指定缩进的美化输出器
+     *
+     * @param indent 缩进空格数
+     * @return DefaultPrettyPrinter
+     */
+    private static DefaultPrettyPrinter createPrettyPrinter(int indent) {
+        DefaultPrettyPrinter printer = new DefaultPrettyPrinter();
+        printer.indentObjectsWith(new DefaultIndenter(" ".repeat(Math.max(1, indent)), "\n"));
+        return printer;
+    }
+
+    /**
+     * 关闭 HTML 特殊字符转义的转义表薄壳（转义表由 {@link JsonEscapeTables} 统一提供）
+     */
+    private static final class NoHtmlCharacterEscapes extends CharacterEscapes {
+
+        @Override
+        public int[] getEscapeCodesForAscii() {
+            return JsonEscapeTables.noHtmlEscapes();
+        }
+
+        @Override
+        public SerializableString getEscapeSequence(int ch) {
+            return null;
         }
     }
 }

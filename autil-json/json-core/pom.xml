@@ -29,6 +29,13 @@
             <version>${revision}</version>
             <scope>compile</scope>
         </dependency>
+        <!-- 契约测试基类共享：model-test 提供跨模块统一测试模型 -->
+        <dependency>
+            <groupId>com.acanx.meta.model</groupId>
+            <artifactId>model-test</artifactId>
+            <version>${meta-open.version}</version>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter</artifactId>
@@ -49,6 +56,19 @@
                     <!-- 本模块不依赖注解处理器，禁用自动发现，避免加载 CopierAstProcessor 等处理器导致 JDK 21 编译失败 -->
                     <proc>none</proc>
                 </configuration>
+            </plugin>
+            <!-- 生成测试 jar（供各实现模块的契约测试子类继承基类） -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${maven-jar-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>test-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <!-- 生成Javadoc，关闭doclint,避免注解检查不通过 -->
             <plugin>

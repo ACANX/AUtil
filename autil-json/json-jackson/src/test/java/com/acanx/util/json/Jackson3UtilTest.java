@@ -1,8 +1,8 @@
 package com.acanx.util.json;
 
 import com.acanx.meta.model.test.json.model.User;
-import com.fasterxml.jackson.core.type.TypeReference;
 import org.junit.jupiter.api.Test;
+import tools.jackson.core.type.TypeReference;
 
 import java.lang.reflect.Type;
 import java.time.LocalDateTime;
@@ -13,14 +13,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * JacksonUtil 行为快照测试（Jackson 2 基线）
+ * Jackson3Util 行为快照测试（Jackson 3 对照）
  *
- * <p>锁定 Jackson 2 当前行为，作为 Jackson 2 → 3 迁移的回归锚点
- * （见 Docs/DevProposal/Jackson3Migration.md 阶段一）。</p>
- *
- * <p>与 {@code Jackson3UtilTest} 使用同一套断言数据，用于验证双 Provider 行为一致。</p>
+ * <p>与 {@code JacksonUtilTest}（Jackson 2 基线）使用<b>同一套断言数据</b>，
+ * 验证双 Provider 行为一致（见 Docs/DevProposal/Jackson3Migration.md 阶段二）。</p>
  */
-class JacksonUtilTest {
+class Jackson3UtilTest {
 
     /** 固定时间，保证序列化结果可确定（格式 yyyy-MM-dd'T'HH:mm:ss.SSSSSS） */
     private static final LocalDateTime CREATE_TIME = LocalDateTime.of(2023, 1, 1, 12, 0, 0, 123_456_000);
@@ -38,7 +36,7 @@ class JacksonUtilTest {
     @Test
     void toJSONString() {
         // 默认驼峰输出，null 字段保留
-        String json = JacksonUtil.toJSONString(ALICE);
+        String json = Jackson3Util.toJSONString(ALICE);
         assertEquals("{\"userId\":11,\"userName\":\"Alice\",\"password\":null,\"email\":null,"
                 + "\"createTime\":\"2023-01-01T12:00:00.123456\"}", json);
     }
@@ -46,7 +44,7 @@ class JacksonUtilTest {
     @Test
     void toJSONStringSnake() {
         // 下划线输出，null 字段保留
-        String json = JacksonUtil.toJSONStringSnake(ALICE);
+        String json = Jackson3Util.toJSONStringSnake(ALICE);
         assertEquals("{\"user_id\":11,\"user_name\":\"Alice\",\"password\":null,\"email\":null,"
                 + "\"create_time\":\"2023-01-01T12:00:00.123456\"}", json);
     }
@@ -54,14 +52,14 @@ class JacksonUtilTest {
     @Test
     void toJSONStringForStorage() {
         // ForStorage：忽略 null 字段，紧凑输出
-        String json = JacksonUtil.toJSONStringForStorage(ALICE);
+        String json = Jackson3Util.toJSONStringForStorage(ALICE);
         assertEquals("{\"userId\":11,\"userName\":\"Alice\",\"createTime\":\"2023-01-01T12:00:00.123456\"}", json);
     }
 
     @Test
     void toJSONStringPrettyFormat() {
         // 下划线 + 美化输出，null 字段保留
-        String json = JacksonUtil.toJSONStringPrettyFormat(ALICE);
+        String json = Jackson3Util.toJSONStringPrettyFormat(ALICE);
         assertEquals("""
                 {
                   "user_id" : 11,
@@ -75,7 +73,7 @@ class JacksonUtilTest {
     @Test
     void parseObject() {
         // 驼峰 JSON → 对象
-        User user = JacksonUtil.parseObject(JSON_CAMEL, User.class);
+        User user = Jackson3Util.parseObject(JSON_CAMEL, User.class);
         assertNotNull(user);
         assertEquals(11, user.getUserId());
         assertEquals("Alice", user.getUserName());
@@ -85,7 +83,7 @@ class JacksonUtilTest {
     @Test
     void parseObjectSnake() {
         // 下划线 JSON → 对象（下划线转驼峰）
-        User user = JacksonUtil.parseObjectSnake(JSON_SNAKE, User.class);
+        User user = Jackson3Util.parseObjectSnake(JSON_SNAKE, User.class);
         assertNotNull(user);
         assertEquals(11, user.getUserId());
         assertEquals("Alice", user.getUserName());
@@ -94,9 +92,9 @@ class JacksonUtilTest {
 
     @Test
     void parseObjectWithType() {
-        // 泛型反序列化：Map<String, List<User>>（共享 MAPPER 为下划线策略）
+        // 泛型反序列化：Map<String, List<User>>（与 JacksonUtil 一致，走下划线策略）
         Type type = new TypeReference<Map<String, List<User>>>() {}.getType();
-        Map<String, List<User>> result = JacksonUtil.parseObject(JSON_MAP_SNAKE, type);
+        Map<String, List<User>> result = Jackson3Util.parseObject(JSON_MAP_SNAKE, type);
         assertNotNull(result);
         assertEquals(1, result.get("a").size());
         assertEquals("Alice", result.get("a").get(0).getUserName());
@@ -106,8 +104,8 @@ class JacksonUtilTest {
 
     @Test
     void parseObjectWithTypeReference() {
-        // TypeReference 反序列化（共享 MAPPER 为下划线策略）
-        List<User> list = JacksonUtil.parseObject(JSON_ARRAY_SNAKE, new TypeReference<List<User>>() {});
+        // TypeReference 反序列化（与 JacksonUtil 一致，走下划线策略）
+        List<User> list = Jackson3Util.parseObject(JSON_ARRAY_SNAKE, new TypeReference<List<User>>() {});
         assertNotNull(list);
         assertEquals(2, list.size());
         assertEquals("Alice", list.get(0).getUserName());
@@ -117,7 +115,7 @@ class JacksonUtilTest {
     @Test
     void parseArray() {
         // 下划线数组 JSON → List<User>
-        List<User> users = JacksonUtil.parseArray(JSON_ARRAY_SNAKE, User.class);
+        List<User> users = Jackson3Util.parseArray(JSON_ARRAY_SNAKE, User.class);
         assertNotNull(users);
         assertEquals(2, users.size());
         assertEquals(11, users.get(0).getUserId());
@@ -128,19 +126,10 @@ class JacksonUtilTest {
     @Test
     void parseArraySnake() {
         // 下划线数组 JSON → List<User>
-        List<User> users = JacksonUtil.parseArraySnake(JSON_ARRAY_SNAKE, User.class);
+        List<User> users = Jackson3Util.parseArraySnake(JSON_ARRAY_SNAKE, User.class);
         assertNotNull(users);
         assertEquals(2, users.size());
         assertEquals(11, users.get(0).getUserId());
         assertEquals("Bob", users.get(1).getUserName());
-    }
-
-    @Test
-    void parseObjectFromSnakeDeprecatedAlias() {
-        // 已废弃别名与 parseObjectSnake 行为一致
-        User user = JacksonUtil.parseObjectFromSnake(JSON_SNAKE, User.class);
-        assertNotNull(user);
-        assertEquals(11, user.getUserId());
-        assertEquals("Alice", user.getUserName());
     }
 }

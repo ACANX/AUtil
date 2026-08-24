@@ -1,1 +1,2 @@
 com.acanx.util.json.impl.JacksonProvider
+com.acanx.util.json.impl.Jackson3Provider

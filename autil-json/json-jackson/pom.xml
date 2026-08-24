@@ -33,6 +33,14 @@
             <artifactId>json-core</artifactId>
             <version>${revision}</version>
         </dependency>
+        <!-- 契约测试基类（test-jar） -->
+        <dependency>
+            <groupId>com.acanx.util</groupId>
+            <artifactId>json-core</artifactId>
+            <version>${revision}</version>
+            <type>test-jar</type>
+            <scope>test</scope>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
@@ -42,6 +50,15 @@
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
+        </dependency>
+        <!-- Jackson 3：迁移期新增，optional 保证默认不传递给下游；
+             jsr310 已合入 databind（tools.jackson.databind.ext.javatime），无需单独依赖；
+             注解仍为 com.fasterxml.jackson.annotation（2.x），与 Jackson 2 共用同一 artifact，无类冲突 -->
+        <dependency>
+            <groupId>tools.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson3.version}</version>
+            <optional>true</optional>
         </dependency>
 
         <dependency>

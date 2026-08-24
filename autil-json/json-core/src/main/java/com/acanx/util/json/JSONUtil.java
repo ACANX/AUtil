@@ -22,6 +22,18 @@ import java.util.ServiceLoader;
  */
 public class JSONUtil {
     /**
+     *   Provider 显式优先级表（见 Docs/DevProposal/Jackson3Migration.md §5.2）
+     *   jackson3 > jackson2 > gson > fastjson2
+     *   <p>注意：必须声明在 static 块之前（static 块排序时会调用 getPriority）</p>
+     */
+    private static final Map<String, Integer> PRIORITIES = Map.of(
+            "com.acanx.util.json.impl.Jackson3Provider", 4,
+            "com.acanx.util.json.impl.JacksonProvider",  3,
+            "com.acanx.util.json.impl.GsonProvider",     2,
+            "com.acanx.util.json.impl.FastJSONProvider", 1
+    );
+
+    /**
      *  服务提供者
      */
     private static final JSONProvider PROVIDER;
@@ -51,22 +63,12 @@ public class JSONUtil {
     }
 
     /**
-     *  工具的优先级
+     *  工具的优先级（显式表查找，未知类名兜底为 0）
      * @param className   类名
      * @return            优先级
      */
     private static int getPriority(String className) {
-        System.out.println(className);
-        if (className.toLowerCase().contains("jackson")) {
-            return 3;
-        }
-        if (className.toLowerCase().contains("gson")) {
-            return 2;
-        }
-        if (className.toLowerCase().contains("fastjson")) {
-            return 1;
-        }
-        return 0;
+        return PRIORITIES.getOrDefault(className, 0);
     }
 
 
@@ -87,7 +89,9 @@ public class JSONUtil {
      * @param obj  Java对象
      * @param config 序列化配置
      * @return  对象序列化后的JSON字符串
+     * @deprecated 请使用 {@link #serialize(Object, JSONConfig)}（本方法 config 参数在各实现中全链路被丢弃）
      */
+    @Deprecated(since = "1.3.0", forRemoval = true)
     public static String toJSONString(Object obj, Map<String, Object> config) {
         return PROVIDER.toJSONString(obj, config);
     }
@@ -134,7 +138,9 @@ public class JSONUtil {
      * @throws NoSuchMethodException NoSuchMethodException
      * @throws InstantiationException InstantiationException
      * @throws IllegalAccessException IllegalAccessException
+     * @deprecated 请使用 {@link #deserialize(String, Class, JSONConfig)}（本方法 config 参数在各实现中全链路被丢弃）
      */
+    @Deprecated(since = "1.3.0", forRemoval = true)
     public static <T> T parseObject(String json, Class<T> clazz, Map<String, Object> config)
             throws InvocationTargetException, NoSuchMethodException, InstantiationException, IllegalAccessException {
         return PROVIDER.parseObject(json, clazz);
@@ -241,5 +247,69 @@ public class JSONUtil {
         return PROVIDER.parseArraySnake(text, objectClass);
     }
 
+
+    /**
+     *   通用序列化：默认下划线输出、紧凑、null 跳过（见 HttpApiJsonProposal.md §5.2）
+     *
+     * @param object Java对象
+     * @return      JSON字符串
+     */
+    @Alpha
+    public static String serialize(Object object) {
+        return PROVIDER.serialize(object, null);
+    }
+
+    /**
+     *   通用序列化：可按场景传入 {@link JSONConfig} 覆盖默认行为
+     *
+     * @param object Java对象
+     * @param config 序列化配置，可为 null（按默认值执行）
+     * @return      JSON字符串
+     */
+    @Alpha
+    public static String serialize(Object object, JSONConfig config) {
+        return PROVIDER.serialize(object, config);
+    }
+
+    /**
+     *   通用反序列化：默认下划线 JSON → 小驼峰 Java 字段（见 HttpApiJsonProposal.md §5.3）
+     *
+     * @param json  JSON字符串
+     * @param clazz 目标类型
+     * @param <T>   目标类型参数
+     * @return      反序列化结果
+     */
+    @Alpha
+    public static <T> T deserialize(String json, Class<T> clazz) {
+        return PROVIDER.deserialize(json, clazz, null);
+    }
+
+    /**
+     *   通用反序列化：可按场景传入 {@link JSONConfig} 覆盖容错与映射细节
+     *
+     * @param json   JSON字符串
+     * @param clazz  目标类型
+     * @param config 反序列化配置，可为 null（按默认值执行）
+     * @param <T>    目标类型参数
+     * @return       反序列化结果
+     */
+    @Alpha
+    public static <T> T deserialize(String json, Class<T> clazz, JSONConfig config) {
+        return PROVIDER.deserialize(json, clazz, config);
+    }
+
+    /**
+     *   通用反序列化（泛型/集合目标）：如 RPC 出参、集合响应
+     *
+     * @param json       JSON字符串
+     * @param targetType 目标类型（Class 或 Type）
+     * @param config     反序列化配置，可为 null（按默认值执行）
+     * @param <T>        目标类型参数
+     * @return           反序列化结果
+     */
+    @Alpha
+    public static <T> T deserialize(String json, Type targetType, JSONConfig config) {
+        return PROVIDER.deserialize(json, targetType, config);
+    }
 
 }

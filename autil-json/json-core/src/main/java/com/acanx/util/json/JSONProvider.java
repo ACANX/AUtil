@@ -13,7 +13,7 @@ import java.util.Map;
  * @since 0.2.0.5
  */
 @Alpha
-public interface JSONProvider {
+public interface JSONProvider extends JSONSerialization {
 
     /**
      *  是否可用
@@ -157,4 +157,41 @@ public interface JSONProvider {
     @Alpha
     <T> List<T> parseArraySnake(String text, Class<T> objectClass);
 
+    /**
+     *   通用序列化兜底实现（见 HttpApiJsonProposal.md §8.1）
+     *
+     *   <p>默认语义：下划线输出（委托 toJSONStringSnake），忽略 config。
+     *   各实现层应覆写本方法以完整支持 {@link JSONConfig}；
+     *   未覆写时保证编译不破、行为可用的降级实现。</p>
+     *
+     * @param object Java对象
+     * @param config 序列化配置（兜底实现忽略）
+     * @return       JSON字符串
+     */
+    @Override
+    default String serialize(Object object, JSONConfig config) {
+        return toJSONStringSnake(object);
+    }
+
+    /**
+     *   通用反序列化兜底实现（见 HttpApiJsonProposal.md §8.1）
+     *
+     *   <p>默认语义：下划线→小驼峰（Class 目标走 parseObjectSnake），忽略 config。
+     *   各实现层应覆写本方法以完整支持 {@link JSONConfig}；
+     *   未覆写时保证编译不破、行为可用的降级实现。</p>
+     *
+     * @param jsonStr    JSON字符串
+     * @param targetType 目标类型（Class 或 Type）
+     * @param config     反序列化配置（兜底实现忽略）
+     * @param <T>        目标类型参数
+     * @return           反序列化结果
+     */
+    @Override
+    @SuppressWarnings("unchecked")
+    default <T> T deserialize(String jsonStr, Type targetType, JSONConfig config) {
+        if (targetType instanceof Class) {
+            return parseObjectSnake(jsonStr, (Class<T>) targetType);
+        }
+        return parseObject(jsonStr, targetType);
+    }
 }

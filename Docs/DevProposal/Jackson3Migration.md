@@ -306,6 +306,32 @@ mvn test -Dautil.json.jackson.mode=jackson2
 
 ## 10. 待办 / 下一步
 
-1. 评审本方案,确认:三态开关命名(`autil.json.jackson.mode`)、`optional` 依赖策略、阶段三依赖 scope 对调的时机。
-2. 排期阶段一(行为快照测试),这是后续一切的前提。
-3. 阶段二落地时,与 `JsonFeatureProposal.md` / `HttpApiJsonProposal.md` 的实施顺序保持一致(Feature 抽象 → 通用接口 → 换实现)。
+1. 评审本方案，确认：三态开关命名（`autil.json.jackson.mode`）、`optional` 依赖策略、阶段三依赖 scope 对调的时机。
+2. 排期阶段一（行为快照测试），这是后续一切的前提。
+3. 阶段二落地时，与 `JsonFeatureProposal.md` / `HttpApiJsonProposal.md` 的实施顺序保持一致（Feature 抽象 → 通用接口 → 换实现）。
+
+---
+
+## 11. 实施记录
+
+### 2026-08-21：阶段一 + 阶段二已落地
+
+**已实施：**
+
+- ✅ 阶段一：行为快照测试全绿（Jackson 2 基线）——重写 `JacksonUtilTest` / `JacksonProviderTest`，新增 `JacksonFileUtilTest`，全部改为 JUnit 5 断言（替换空壳/打印式测试）；`JSONProviderTest` 空壳已补实。
+- ✅ 阶段二：不新增模块，`json-jackson` 内 `JacksonProvider` / `Jackson3Provider` 双 Provider 共存（SPI 双注册）；`JSONUtil.getPriority` 改为显式优先级表（jackson3=4 > jackson2=3 > gson=2 > fastjson2=1）；三态开关 `JacksonMode`（`-Dautil.json.jackson.mode=auto|jackson3|jackson2`）默认 `auto`；现有下游零影响（Jackson 3 依赖 `optional`，不传递）。
+- ✅ 阶段二验收：新增 `JacksonModeTest`（四态验证）、`Jackson3UtilTest` / `Jackson3ProviderTest`（与 Jackson 2 同一套断言对照）。
+
+**关键实现要点：**
+
+- Jackson 3 依赖：`tools.jackson.core:jackson-databind:3.2.2`（`optional`）；jsr310 已合入 databind（`tools.jackson.databind.ext.javatime`），无需单独依赖；注解仍为 `com.fasterxml.jackson.annotation`（2.22，与 Jackson 2 共用同一 artifact，无类冲突）。
+- 类加载安全：`Jackson3Provider` 不持有任何 `tools.jackson.*` 字段，Jackson 3 API 全部经 `Jackson3Util` 方法体内惰性调用；classpath 无 Jackson 3 时 `isAvailable()` 返回 false，不会 `NoClassDefFoundError`。
+- 行为对齐：`parseObject(String, Type/TypeReference)` 沿用 Jackson 2 共享 MAPPER 的**下划线策略**语义；自定义 LocalDateTime 格式（`yyyy-MM-dd'T'HH:mm:ss.SSSSSS`）经 `SimpleModule` 注册，Jackson 3 内置 `JavaTimeInitializer` 先注册、用户模块后注册，自定义格式生效。
+- 开关使用：`mvn test -Dautil.json.jackson.mode=jackson3`（预演）/ `jackson2`（回滚）/ 默认 `auto`。
+
+**未实施（待决策）：**
+
+- ⏳ 阶段三：依赖 scope 对调（Jackson 3 改 compile）→ 默认实现切换为 Jackson 3，需观察期后由 ACANX 决策时机。
+- ⏳ 阶段四：观察期结束后删除 `JacksonProvider` / Jackson 2 依赖 / SPI 旧条目。
+- ⏳ `auto + 无 Jackson 3 依赖` 场景的验收：在本模块无法模拟（optional 依赖对模块自身测试可见），由下游无 Jackson 依赖模块（json-fastjson / json-gson）与 CI 参数化覆盖。
+- ⏳ `JSONSerialization.serialize/deserialize`：随 `HttpApiJsonProposal.md` 实施顺序落地（接口尚未定义）。
