@@ -50,7 +50,7 @@
       <central-publishing-maven-plugin.version>0.11.0</central-publishing-maven-plugin.version>
 
       <meta-open.version>0.8.9</meta-open.version>
-      <slf4j-api.version>2.0.18</slf4j-api.version>
+      <slf4j-api.version>2.0.19</slf4j-api.version>
       <lombok.version>1.18.46</lombok.version>
 
       <fastjson2.version>2.0.64</fastjson2.version>
