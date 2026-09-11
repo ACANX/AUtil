@@ -40,10 +40,10 @@
       <java.version>21</java.version>
       <maven.compiler.source>21</maven.compiler.source>
       <maven.compiler.target>21</maven.compiler.target>
-      <maven-compiler-plugin.version>3.15.0</maven-compiler-plugin.version>
+      <maven-compiler-plugin.version>3.16.0</maven-compiler-plugin.version>
       <maven-jar-plugin.version>3.4.2</maven-jar-plugin.version>
       <maven-deploy-plugin.version>3.1.4</maven-deploy-plugin.version>
-      <maven-surefire-plugin.version>3.5.6</maven-surefire-plugin.version>
+      <maven-surefire-plugin.version>3.6.0</maven-surefire-plugin.version>
       <maven-source-plugin.version>3.4.0</maven-source-plugin.version>
       <maven-javadoc-plugin.version>3.12.0</maven-javadoc-plugin.version>
       <maven-gpg-plugin.version>3.2.8</maven-gpg-plugin.version>
@@ -52,9 +52,9 @@
 
       <meta-open.version>0.8.9</meta-open.version>
       <slf4j-api.version>2.0.18</slf4j-api.version>
-      <lombok.version>1.18.46</lombok.version>
+      <lombok.version>1.18.48</lombok.version>
 
-      <fastjson2.version>2.0.64</fastjson2.version>
+      <fastjson2.version>2.0.65</fastjson2.version>
       <jackson.version>2.22.2</jackson.version>
       <jackson3.version>3.2.2</jackson3.version>
       <!-- jackson-annotations 版本线独立于 databind/core（2.22，无 2.22.2）；
