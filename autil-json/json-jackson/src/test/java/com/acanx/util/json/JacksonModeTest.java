@@ -25,19 +25,19 @@ class JacksonModeTest {
     }
 
     @Test
-    void auto默认值() {
+    void autoIsDefault() {
         System.clearProperty(MODE_PROPERTY);
         assertEquals(JacksonMode.AUTO, JacksonMode.resolve());
     }
 
     @Test
-    void auto显式指定() {
+    void autoExplicitValue() {
         System.setProperty(MODE_PROPERTY, "auto");
         assertEquals(JacksonMode.AUTO, JacksonMode.resolve());
     }
 
     @Test
-    void jackson3显式启用() {
+    void jackson3ExplicitEnabled() {
         System.setProperty(MODE_PROPERTY, "jackson3");
         assertEquals(JacksonMode.JACKSON3, JacksonMode.resolve());
         // 强制 jackson3：Jackson 3 激活、Jackson 2 关闭
@@ -46,7 +46,7 @@ class JacksonModeTest {
     }
 
     @Test
-    void jackson2显式回退() {
+    void jackson2ExplicitFallback() {
         System.setProperty(MODE_PROPERTY, "jackson2");
         assertEquals(JacksonMode.JACKSON2, JacksonMode.resolve());
         // 强制 jackson2：Jackson 3 关闭、Jackson 2 激活
@@ -55,7 +55,7 @@ class JacksonModeTest {
     }
 
     @Test
-    void auto且classpath有Jackson3时Jackson3激活() {
+    void autoJackson3ActiveWhenOnClasspath() {
         // 本模块测试 classpath 携带 Jackson 3（compile 依赖），auto 模式应探测到并激活
         System.clearProperty(MODE_PROPERTY);
         assertTrue(JacksonMode.isJackson3Active());
@@ -64,7 +64,7 @@ class JacksonModeTest {
     }
 
     @Test
-    void 未知取值安全兜底为auto() {
+    void unknownValueFallsBackToAuto() {
         System.setProperty(MODE_PROPERTY, "unknown-mode");
         assertEquals(JacksonMode.AUTO, JacksonMode.resolve());
         // 兜底后按 auto 行为处理
@@ -73,7 +73,7 @@ class JacksonModeTest {
     }
 
     @Test
-    void 取值大小写不敏感() {
+    void valueResolveCaseInsensitive() {
         System.setProperty(MODE_PROPERTY, "JACKSON3");
         assertEquals(JacksonMode.JACKSON3, JacksonMode.resolve());
         System.setProperty(MODE_PROPERTY, "Jackson2");

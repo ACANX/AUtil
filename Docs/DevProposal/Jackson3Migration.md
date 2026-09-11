@@ -366,7 +366,7 @@ mvn test -Dautil.json.jackson.mode=jackson2
 
 **风险与回退**：
 
-- 回退开关：`-Dautil.json.jackson.mode=jackson2` 强制 Jackson 2（`JacksonModeTest#jackson2显式回退` 覆盖）。
+- 回退开关：`-Dautil.json.jackson.mode=jackson2` 强制 Jackson 2（`JacksonModeTest#jackson2ExplicitFallback` 覆盖）。
 - 彻底回退：恢复本依赖的 `<optional>true</optional>` 并重新发布。
 - annotations 版本约束沿用 issue #176 的运行时探测：下游若将 annotations 覆盖为低于 2.22 的版本，显式 `jackson3` 模式抛清晰异常，`auto` 模式警告并回落 Jackson 2。
 
