@@ -15,7 +15,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class JSONConfigTest {
 
     @Test
-    void 空配置未设置项为null() {
+    void emptyConfigLeavesFieldsNull() {
         JSONConfig config = JSONConfig.builder().build();
         assertNull(config.getNaming());
         assertNull(config.getOutput());
@@ -29,7 +29,7 @@ class JSONConfigTest {
     }
 
     @Test
-    void builder链式设置() {
+    void builderChainedSettings() {
         JSONConfig config = JSONConfig.builder()
                 .naming(NamingStyle.SNAKE_CASE)
                 .output(OutputFormat.PRETTY, 4)
@@ -52,14 +52,14 @@ class JSONConfigTest {
     }
 
     @Test
-    void output单参数缩进默认未设置() {
+    void outputSingleArgLeavesIndentUnset() {
         JSONConfig config = JSONConfig.builder().output(OutputFormat.PRETTY).build();
         assertEquals(OutputFormat.PRETTY, config.getOutput());
         assertNull(config.getIndent());
     }
 
     @Test
-    void serializeFeature开关() {
+    void serializeFeatureToggle() {
         JSONConfig config = JSONConfig.builder()
                 .enable(SerializeFeature.SORT_MAP_KEYS, SerializeFeature.ESCAPE_NON_ASCII)
                 .disable(SerializeFeature.ESCAPE_NON_ASCII)
@@ -70,7 +70,7 @@ class JSONConfigTest {
     }
 
     @Test
-    void deserializeFeature开关() {
+    void deserializeFeatureToggle() {
         JSONConfig config = JSONConfig.builder()
                 .enable(DeserializeFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES)
                 .build();
@@ -79,7 +79,7 @@ class JSONConfigTest {
     }
 
     @Test
-    void customFeature扩展点() {
+    void customFeatureExtensionPoint() {
         JSONConfig config = JSONConfig.builder()
                 .customFeature("key1", "value1")
                 .customFeature("key2", 42)
@@ -90,7 +90,7 @@ class JSONConfigTest {
     }
 
     @Test
-    void 默认日期格式常量() {
+    void defaultDateFormatConstant() {
         assertEquals("yyyy-MM-dd'T'HH:mm:ss.SSSSSS", JSONConfig.DEFAULT_DATE_FORMAT);
     }
 }

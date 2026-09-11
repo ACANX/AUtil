@@ -45,7 +45,7 @@ public abstract class AbstractSerializationContractTest {
     protected abstract Type mapListUserType();
 
     @Test
-    void serialize默认下划线紧凑null跳过() {
+    void serializeDefaultSnakeCompactNullSkip() {
         String json = provider().serialize(ALICE, null);
         assertTrue(json.contains("\"user_id\":11"), json);
         assertTrue(json.contains("\"user_name\":\"Alice\""), json);
@@ -59,7 +59,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void serializePretty缩进2() {
+    void serializePrettyIndent2() {
         JSONConfig cfg = JSONConfig.builder().output(OutputFormat.PRETTY).build();
         String json = provider().serialize(ALICE, cfg);
         assertTrue(json.contains("\n"), "PRETTY 应包含换行");
@@ -132,7 +132,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void deserialize默认下划线转驼峰() {
+    void deserializeDefaultSnakeToLowerCamel() {
         User user = provider().deserialize(JSON_SNAKE, User.class, null);
         assertEquals(11, user.getUserId());
         assertEquals("Alice", user.getUserName());
@@ -140,7 +140,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void deserialize未知字段默认忽略() {
+    void deserializeUnknownFieldDefaultIgnore() {
         String json = "{\"user_id\":11,\"user_name\":\"Alice\",\"unknown_field\":\"x\"}";
         User user = provider().deserialize(json, User.class, null);
         assertEquals(11, user.getUserId());
@@ -157,7 +157,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void deserialize泛型Type目标() {
+    void deserializeGenericTypeTarget() {
         String json = "{\"a\":[{\"user_id\":11,\"user_name\":\"Alice\",\"create_time\":\"2023-01-01T12:00:00.123456\"}],"
                 + "\"z\":[{\"user_id\":12,\"user_name\":\"Bob\",\"create_time\":\"2023-01-01T13:00:00.123456\"}]}";
         java.util.Map<String, java.util.List<User>> result = provider().deserialize(json, mapListUserType(), null);
