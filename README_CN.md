@@ -20,7 +20,7 @@ AUtil(ACANX-Util) ACANX开源的工具库，封装了字符串、文件、IO、�
 <dependency>
   <groupId>com.acanx.util</groupId>
   <artifactId>autil-core</artifactId>
-  <version>1.3.0</version>
+  <version>1.3.1</version>
 </dependency>
 ```
 
@@ -42,6 +42,8 @@ AUtil(ACANX-Util) ACANX开源的工具库，封装了字符串、文件、IO、�
 - V0.5.x  for JDK25
 
 - V1.0.x  for JDK8
+
+- V1.3.x  for JDK21
 
 - V2.x    for JDK25
 

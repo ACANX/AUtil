@@ -339,6 +339,10 @@ public class Const {
     public static final Character CHAR_COMMA = ',';
     /**  CHAR_BREAK */
     public static final Character CHAR_BREAK = ',';
+    /**  CHAR_AND */
+    public static final Character CHAR_AND = '&';
+    /**  CHAR_AT */
+    public static final Character CHAR_AT = '@';
 
 
     /**
@@ -437,6 +441,8 @@ public class Const {
     public static final String STR_VERTICAL = "|";
     /**  STR_AND  */
     public static final String STR_AND = "&";
+    /**  STR_AND  */
+    public static final String STR_QUESTION = "?";
     /**  STR_FORWARD_SLASH  */
     public static final String STR_FORWARD_SLASH = "/";
     /**  STR_SINGLE_QUOTES  */
@@ -466,10 +472,12 @@ public class Const {
     /**  STR_BASE_62  */
     public static final String STR_BASE_62 = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
 
+    /**  LOCALHOST  */
+    public static final String LOCALHOST = "localhost";
     /**  STR_ANYHOST_VALUE  */
     public static final String STR_ANYHOST_VALUE = "0.0.0.0";
     /**  STR_LOCALHOST_KEY  */
-    public static final String STR_LOCALHOST_KEY = "localhost";
+    public static final String STR_LOCALHOST_KEY = LOCALHOST;
     /**  STR_LOCALHOST_VALUE  */
     public static final String STR_LOCALHOST_VALUE = "127.0.0.1";
 

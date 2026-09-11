@@ -104,10 +104,17 @@ public class JacksonFileUtil {
                     if (file.isDirectory()) {
                         findJsonFilesInDirectory(file, basePath, jsonFiles);
                     } else if (file.getName().endsWith(".json")) {
-                        // 转换为相对于basePath的路径
-                        String relativePath = file.getPath()
-                                .replace(File.separator, "/")
-                                .replaceFirst(".*" + basePath + "/?", "");
+                        // 转换为相对于basePath的路径（纯字符串处理，避免 Windows 路径反斜杠
+                        // 作为正则转义符触发 PatternSyntaxException）
+                        String fullPath = file.getPath().replace(File.separator, "/");
+                        String normalizedBase = basePath.replace(File.separator, "/");
+                        String relativePath = fullPath;
+                        if (fullPath.startsWith(normalizedBase)) {
+                            relativePath = fullPath.substring(normalizedBase.length());
+                            while (relativePath.startsWith("/")) {
+                                relativePath = relativePath.substring(1);
+                            }
+                        }
                         jsonFiles.add(basePath + "/" + relativePath);
                     }
                 }

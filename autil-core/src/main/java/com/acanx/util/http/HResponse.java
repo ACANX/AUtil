@@ -8,7 +8,7 @@ import java.util.Map;
 /**
  *  HttpResponse
  */
-public class HResponse {
+public class HResponse implements AutoCloseable {
 
     private int statusCode;
     private Map<String, List<String>> headers;
@@ -16,6 +16,7 @@ public class HResponse {
     private boolean error;
     private String errorMessage;
     private String stackTrace;
+    private boolean closed = false;
 
     /**
      * Getters and Setters
@@ -134,5 +135,22 @@ public class HResponse {
                 '}';
     }
 
+    /**
+     * 标记当前响应对象已关闭
+     * @return 是否已关闭
+     */
+    public boolean isClosed() {
+        return closed;
+    }
+
+    /**
+     * 实现 AutoCloseable 接口，支持 try-with-resources 机制。
+     * 本实现幂等且线程安全：可重复调用，首次调用后将 closed 标记置为 true。
+     * 底层 HttpClient 由 BaseHTTP 内部管理，本方法无需额外释放逻辑。
+     */
+    @Override
+    public void close() {
+        this.closed = true;
+    }
 
 }

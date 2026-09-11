@@ -32,7 +32,7 @@ public class LongUtil {
     /**
      *  将Long类型的时间戳转换成String 类型的时间格式，
      *
-     * @param time Long类型的时间
+     * @param time Long类型的（毫秒）时间
      * @param format  时间格式如：yyyy-MM-dd HH:mm:ss
      * @return        String类型的时间字符串
      *

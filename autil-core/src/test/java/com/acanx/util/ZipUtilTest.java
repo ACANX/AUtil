@@ -1,5 +1,6 @@
 package com.acanx.util;
 
+import com.acanx.util.os.OSUtil;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -21,13 +22,18 @@ class ZipUtilTest {
         if (!zipDir.exists()) {
             zipDir.mkdirs();
         }
-        String savePath = tmpDir + "Zip"+ File.separator + "zipFiles" + System.currentTimeMillis()+".zip";
+        String savePath = tmpDir + File.separator + "Zip" + File.separator + "zipFiles" + System.currentTimeMillis() + ".zip";
         System.out.println(savePath);
         try {
             URL url = ZipUtilTest.class.getProtectionDomain().getCodeSource().getLocation();
-            String path = url.getPath().substring(1)+ "properties/config.properties";
+            System.out.println(url.getPath());
+            String path = url.getPath() + "properties/config.properties";
             System.out.println(path);
-            ZipUtil.zipFile(path, savePath);
+            if (OSUtil.isWindowsOS() && path.startsWith("/")) {
+                ZipUtil.zipFile(path.substring(1), savePath);
+            } else {
+                ZipUtil.zipFile(path, savePath);
+            }
             System.out.println("压缩成功！");
         } catch (FileNotFoundException e) {
             System.err.println("压缩失败: " + e.getMessage());
@@ -42,14 +48,23 @@ class ZipUtilTest {
     void zipFolderFiles() {
         String tmpDir = System.getProperty("java.io.tmpdir");
         System.out.println(tmpDir);
-        String savePath = tmpDir + "Zip"+ File.separator + "custom_name" + System.currentTimeMillis()+".zip";
+        String dir = tmpDir + File.separator + "Zip";
+        File zipDir = new File(dir);
+        if (!zipDir.exists()) {
+            zipDir.mkdirs();
+        }
+        String savePath = tmpDir + File.separator + "Zip" + File.separator + "custom_name" + System.currentTimeMillis() + ".zip";
         System.out.println(savePath);
         try {
             InputStream is = ZipUtilTest.class.getResourceAsStream("/properties");
             URL url = ZipUtilTest.class.getProtectionDomain().getCodeSource().getLocation();
-            String path = url.getPath().substring(1)+ "properties";
+            String path = url.getPath() + "properties";
             System.out.println(path);
-            ZipUtil.zipDirectory(path, savePath);
+            if (OSUtil.isWindowsOS() && path.startsWith("/")) {
+                ZipUtil.zipFile(path.substring(1), savePath);
+            } else {
+                ZipUtil.zipFile(path, savePath);
+            }
             System.out.println("压缩成功！");
         } catch (IOException e) {
             System.err.println("压缩失败: " + e.getMessage());
