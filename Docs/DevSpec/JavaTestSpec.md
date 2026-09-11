@@ -43,10 +43,9 @@ void 空配置未设置项为null() { ... }                    // ❌ 含中文
 
 - 2026-08-24：跨平台差异修复中再次出现中文测试方法名（契约测试基类），违反此前约定，被 ACANX 严厉批评
 - 此前 00ad9cd 提交已确立"测试方法名改为英文"，本次为再犯，故升级为明令禁止的强制规范
-- 存量违规（截至 2026-09-11）：20 个中文测试方法名（6 个测试文件），需逐步清理；`JacksonModeTest` 已清理完毕
-  - `json-core`：`JSONConfigTest`（7）、`AbstractSerializationContractTest`（5）
-  - `json-jackson`：`JSONProviderTest`（2）、`JacksonSerializationContractTest`（2）、`Jackson3SerializationContractTest`（2）
-  - `json-fastjson`：`FastjsonSerializationContractTest`（2）
+- 存量违规：**已全部清理完毕**（2026-09-11）
+  - 清理前共 20 个中文测试方法名，分布于 6 个测试文件：`json-core` 的 `JSONConfigTest`（7）、`AbstractSerializationContractTest`（5）；`json-jackson` 的 `JSONProviderTest`（2）、`JacksonSerializationContractTest`（2）、`Jackson3SerializationContractTest`（2）；`json-fastjson` 的 `FastjsonSerializationContractTest`（2）
+  - 另有 `JacksonModeTest`（7）随 PR #200 清理；至此全仓清零
 
 ### 检查方式
 
