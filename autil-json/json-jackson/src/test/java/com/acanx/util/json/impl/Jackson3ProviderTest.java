@@ -36,7 +36,7 @@ class Jackson3ProviderTest {
 
     @Test
     void isAvailable() {
-        // 本模块测试 classpath 携带 Jackson 3（optional 依赖），auto 模式下 Jackson 3 可用
+        // 本模块测试 classpath 携带 Jackson 3（compile 依赖），auto 模式下 Jackson 3 可用
         assertTrue(provider.isAvailable());
     }
 
