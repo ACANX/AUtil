@@ -128,7 +128,7 @@
 ### 阶段三:切换默认实现(可回滚)
 
 - **观察期**:默认 `mode=auto`(见 §5.1)。发布后默认行为仍为 Jackson 2(因下游无 Jackson 3 依赖),不受影响;**预演环境**显式加 Jackson 3 依赖 + `mode=jackson3` 验证。
-- **切换默认**:确认稳定后,将依赖 scope **对调**——Jackson 3 改为 compile、Jackson 2 改为 optional,使默认 classpath 携带 Jackson 3,`auto` 模式自动选中 Jackson 3 Provider。
+- **切换默认**:确认稳定后,把 Jackson 3 依赖改为 compile,使默认 classpath 携带 Jackson 3,`auto` 模式自动选中 Jackson 3 Provider。原方案另含“Jackson 2 改 optional”的一半(合称**对调**),因其对下游具破坏性,**实际未随本阶段实施**,归入阶段四——实施结果见 §11(2026-09-11)。
 - **回滚**:一行操作即可——`-Dautil.json.jackson.mode=jackson2`(强制 Jackson 2),或把 pom 依赖 scope 换回。
 - **全项目(含 `autil-core` / `autil-test` / `autil-incubator`)跑一遍测试与构建**。
 - **交付物**:默认实现切换为 Jackson 3 + 全项目回归通过 + 回滚开关文档。
@@ -222,19 +222,19 @@ private static int getPriority(String className) {
 
 ### 5.3 依赖 scope 与类加载安全性
 
-- **Jackson 2 保持 compile**:现有下游依赖 `json-jackson` 获得 Jackson 2 实现,不能变 optional。
-- **Jackson 3 设为 optional**:默认不传递给下游;启用 Jackson 3 的下游自行声明 Jackson 3 依赖。
+- **Jackson 2 保持 compile**:现有下游依赖 `json-jackson` 获得 Jackson 2 实现,不能变 optional(阶段四清理前不清除)。
+- **Jackson 3 改为 compile(阶段三,issue #193)**:取消 `optional`,默认随 `json-jackson` 传递给下游,使 `auto` 模式在下游默认选中 Jackson 3 实现;回退方式为 `-Dautil.json.jackson.mode=jackson2`,或恢复该依赖的 `optional`。
 - **类加载安全性**:`Jackson3Provider` 编译期引用 `tools.jackson.*`;当开关未启用时,`isAvailable()` 返回 false,Provider **不会被实例化**,其字段/方法签名中的 `tools.jackson` 类型不会被 JVM 解析(惰性加载),**不会抛 `NoClassDefFoundError`**。`isAvailable()` 内部用 `Class.forName` + catch 探测,天然免疫缺失依赖。
 - **annotations 版本约束(issue #176)**:Jackson 3(tools.jackson 3.2.2)复用 `com.fasterxml.jackson.core:jackson-annotations`(2.x 坐标),但要求 **annotations ≥ 2.22**。json-jackson 已**显式声明 annotations 2.22 为 compile 依赖**(非 optional),保证下游默认获得满足要求的版本;同时在 SPI 加载时(`Jackson3Provider.isAvailable()` 经 `Jackson3Environment`)探测实际版本——显式 `jackson3` 模式不足即抛清晰异常,`auto` 模式不足打印警告并回落 Jackson 2,替代原始 `NoClassDefFoundError`。
-- **切换默认(阶段三)的本质**:依赖 scope 对调(Jackson 3 改 compile、Jackson 2 改 optional)+ `mode` 默认 `auto`。
+- **切换默认(阶段三)的本质**:Jackson 3 依赖改 compile(已实施,见 §11)+ `mode` 默认 `auto`。原方案中的“对调”另一半(Jackson 2 改 optional)对现有下游有破坏性(下游将失去 Jackson 2 实现),不与本阶段捆绑,保留至阶段四清理时一并处理。
 
 ### 5.4 开关使用示例
 
 ```bash
-# 默认(自适应):classpath 无 Jackson 3 → Jackson 2
+# 默认(自适应):classpath 有 Jackson 3 → Jackson 3(阶段三起,编译期依赖已传递到下游)
 mvn test
 
-# 预演:显式启用 Jackson 3(需自行引入 Jackson 3 依赖)
+# 预演/显式启用 Jackson 3(阶段三起 Jackson 3 已随依赖传递,通常无需自行引入)
 mvn test -Dautil.json.jackson.mode=jackson3
 
 # 排障/回滚:强制 Jackson 2
@@ -301,7 +301,7 @@ mvn test -Dautil.json.jackson.mode=jackson2
 - [ ] 阶段一:行为快照测试全绿(Jackson 2 基线)
 - [ ] 阶段二:不新增模块,`json-jackson` 内 `JacksonProvider` / `Jackson3Provider` 双 Provider 共存;`getPriority` 为显式优先级表;开关默认 `auto` 且默认行为为 Jackson 2,现有下游零影响
 - [ ] 阶段二:三个开关取值分别验证生效 Provider(`jackson3` → Jackson3,`jackson2` → Jackson2,`auto` 有/无 Jackson 3 依赖各验一次)
-- [ ] 阶段三:依赖 scope 对调后默认实现为 Jackson 3,全项目构建与测试通过;回滚开关 `jackson2` 验证有效
+- [ ] 阶段三:依赖 scope 切换后默认实现为 Jackson 3,全项目构建与测试通过;回滚开关 `jackson2` 验证有效(Jackson 3 改 compile 已实施,见 §11;Jackson 2 改 optional 未实施,归入阶段四)
 - [ ] 阶段四:旧依赖/旧 Provider 删除后全绿
 
 ---
@@ -333,9 +333,10 @@ mvn test -Dautil.json.jackson.mode=jackson2
 
 **未实施（待决策）：**
 
-- ⏳ 阶段三：依赖 scope 对调（Jackson 3 改 compile）→ 默认实现切换为 Jackson 3，需观察期后由 ACANX 决策时机。
+- ✅ 阶段三（Jackson 3 侧）：`tools.jackson.core:jackson-databind` 取消 `optional`，改为 compile 正常传递——已于 2026-09-11 落地（issue #193，见下）。
+- ⏳ 阶段三（Jackson 2 侧）：`com.fasterxml.jackson.core:jackson-databind` 改 `optional`（原“对调”方案的另一半）。该改动会让现有下游失去 Jackson 2 实现，具破坏性，归入阶段四清理时一并处理。
 - ⏳ 阶段四：观察期结束后删除 `JacksonProvider` / Jackson 2 依赖 / SPI 旧条目。
-- ⏳ `auto + 无 Jackson 3 依赖` 场景的验收：在本模块无法模拟（optional 依赖对模块自身测试可见），由下游无 Jackson 依赖模块（json-fastjson / json-gson）与 CI 参数化覆盖。
+- ⏳ `auto + 无 Jackson 3 依赖` 场景的验收：在本模块无法模拟（Jackson 3 现为 compile 依赖，对模块自身测试始终可见），由下游无 Jackson 依赖模块（json-fastjson / json-gson）与 CI 参数化覆盖。
 - ⏳ `JSONSerialization.serialize/deserialize`：随 `HttpApiJsonProposal.md` 实施顺序落地（接口尚未定义）。
 
 ### 2026-08-24：修复 issue #176（annotations 版本约束）
@@ -348,3 +349,25 @@ mvn test -Dautil.json.jackson.mode=jackson2
 - ✅ 运行时探测：新增 `Jackson3Environment`（版本解析自 jar MANIFEST `Implementation-Version`，无法解析时放行不误伤）；`Jackson3Provider.isAvailable()` SPI 加载时探测——显式 `jackson3` 模式不足抛清晰异常（含升级/回退指引），`auto` 模式不足警告并回落 Jackson 2；`Jackson3Util` 静态初始化兜底校验。
 - ✅ 测试：新增 `Jackson3EnvironmentTest`（最低版本边界 2.22.0/2.22 通过、2.21.9/2.13 拒绝、null 放行、当前环境解析与校验不抛）。
 - ✅ 文档：本文件 §5.3 / §8 同步更新。
+
+### 2026-09-11：阶段三（Jackson 3 侧）落地（issue #193）
+
+**问题**：`json-jackson` 中 `tools.jackson.core:jackson-databind` 标记了 `optional`，不向下游传递。下游 classpath 因此始终没有 Jackson 3，`auto` 模式只能选中 Jackson 2，阶段二的“切换默认”永远无法生效。
+
+**改动**：
+
+- ✅ pom：`autil-json/json-jackson/pom.xml` 移除该依赖的 `<optional>true</optional>`（`<scope>` 未显式声明，即 Maven 默认的 `compile`），Jackson 3 改为正常传递；同时重写上方注释，说明取消 optional 的原因、`auto` 模式的仲裁依据（优先级表 jackson3=4 > jackson2=3）与回退方式。
+- ✅ 注释同步：`JacksonModeTest` / `Jackson3ProviderTest` 中“optional 依赖”的表述改为“compile 依赖”。
+
+**行为变化（下游可见）**：
+
+- 下游依赖 `json-jackson` 将**默认获得** `tools.jackson.core:jackson-databind:3.2.2` 及其传递依赖（`jackson-core` 3.x、`com.fasterxml.jackson.core:jackson-annotations` 2.22）。
+- `auto` 模式在下游由 Jackson 2 切换为 **Jackson 3**；Jackson 2 依赖仍为 compile 保留，两者共存，注解 artifact 共用无类冲突。
+
+**风险与回退**：
+
+- 回退开关：`-Dautil.json.jackson.mode=jackson2` 强制 Jackson 2（`JacksonModeTest#jackson2显式回退` 覆盖）。
+- 彻底回退：恢复本依赖的 `<optional>true</optional>` 并重新发布。
+- annotations 版本约束沿用 issue #176 的运行时探测：下游若将 annotations 覆盖为低于 2.22 的版本，显式 `jackson3` 模式抛清晰异常，`auto` 模式警告并回落 Jackson 2。
+
+**未实施**：Jackson 2 依赖的 `optional` 化（原“对调”方案的另一半），见上方「未实施」清单。
