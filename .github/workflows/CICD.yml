@@ -160,7 +160,7 @@ jobs:
       - name: ReportCommitStatus
         if: always()
         id: commitStatus
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const allPassed = true;
