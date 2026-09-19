@@ -54,7 +54,7 @@ jobs:
     steps:
       - name: CheckoutCode
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
 
@@ -87,7 +87,7 @@ jobs:
     steps:
       - name: CheckoutCode
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
 
@@ -129,7 +129,7 @@ jobs:
     steps:
       - name: CheckoutCode
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
 
@@ -205,7 +205,7 @@ jobs:
     steps:
       - name: CheckoutCode
         id: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
         with:
           ref: ${{ github.event.inputs.ref || github.ref }}
 
