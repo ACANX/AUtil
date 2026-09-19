@@ -1,0 +1,14 @@
+# EditorConfig：与 .gitattributes 配套，统一编辑体验（issue #185）
+# https://editorconfig.org
+
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Windows 脚本保留 CRLF
+[*.{bat,cmd}]
+end_of_line = crlf

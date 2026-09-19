@@ -38,7 +38,7 @@ class FastjsonSerializationContractTest extends AbstractSerializationContractTes
     }
 
     @Test
-    void deserialize未知字段Fail抛异常() {
+    void deserializeUnknownFieldFailThrow() {
         JSONConfig cfg = JSONConfig.builder().unknownFieldHandling(UnknownFieldHandling.FAIL).build();
         String json = "{\"user_id\":11,\"unknown_field\":\"x\"}";
         assertThrows(RuntimeException.class, () -> provider().deserialize(json, User.class, cfg));
@@ -52,7 +52,7 @@ class FastjsonSerializationContractTest extends AbstractSerializationContractTes
     }
 
     @Test
-    void serializePretty缩进4() {
+    void serializePrettyIndent4() {
         JSONConfig cfg = JSONConfig.builder().output(OutputFormat.PRETTY, 4).build();
         String json = provider().serialize(ALICE, cfg);
         assertTrue(json.contains("    \"user_id\""), "缩进 4 空格");

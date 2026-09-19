@@ -60,14 +60,15 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.version}</version>
         </dependency>
-        <!-- Jackson 3：迁移期新增，optional 保证默认不传递给下游；
+        <!-- Jackson 3：阶段三（issue #193）起取消 optional，改按 compile 正常传递——
+             下游默认获得 Jackson 3，auto 模式按优先级表（jackson3=4 > jackson2=3）选中 Jackson 3 实现；
+             回退方式：-Dautil.json.jackson.mode=jackson2，或恢复本依赖的 optional；
              jsr310 已合入 databind（tools.jackson.databind.ext.javatime），无需单独依赖；
              注解仍为 com.fasterxml.jackson.annotation（2.x），与 Jackson 2 共用同一 artifact，无类冲突 -->
         <dependency>
             <groupId>tools.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>${jackson3.version}</version>
-            <optional>true</optional>
         </dependency>
 
         <dependency>
