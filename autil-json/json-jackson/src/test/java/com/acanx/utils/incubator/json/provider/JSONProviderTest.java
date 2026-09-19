@@ -41,7 +41,7 @@ class JSONProviderTest {
     }
 
     @Test
-    void serialize门面默认下划线() {
+    void serializeFacadeDefaultsSnake() {
         User user = new User(11, "Alice", CREATE_TIME);
         String json = JSONUtil.serialize(user);
         assertNotNull(json);
@@ -50,7 +50,7 @@ class JSONProviderTest {
     }
 
     @Test
-    void deserialize门面默认下划线转驼峰() {
+    void deserializeFacadeDefaultsSnakeToLowerCamel() {
         String json = "{\"user_id\":11,\"user_name\":\"Alice\",\"create_time\":\"2023-01-01T12:00:00.123456\"}";
         User user = JSONUtil.deserialize(json, User.class);
         assertNotNull(user);

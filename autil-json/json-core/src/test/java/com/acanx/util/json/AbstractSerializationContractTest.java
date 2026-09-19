@@ -45,7 +45,7 @@ public abstract class AbstractSerializationContractTest {
     protected abstract Type mapListUserType();
 
     @Test
-    void serialize默认下划线紧凑null跳过() {
+    void serializeDefaultSnakeCompactNullSkip() {
         String json = provider().serialize(ALICE, null);
         assertTrue(json.contains("\"user_id\":11"), json);
         assertTrue(json.contains("\"user_name\":\"Alice\""), json);
@@ -59,11 +59,49 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void serializePretty缩进2() {
+    void serializePrettyIndent2() {
         JSONConfig cfg = JSONConfig.builder().output(OutputFormat.PRETTY).build();
         String json = provider().serialize(ALICE, cfg);
         assertTrue(json.contains("\n"), "PRETTY 应包含换行");
         assertTrue(json.contains("  \"user_id\""), "默认缩进 2 空格");
+        assertFalse(json.contains("\r"), "PRETTY 行尾必须为 \\n（跨平台契约，Windows 不得出现 \\r\\n）");
+    }
+
+    /**
+     * 跨平台契约（issue #184）：toJSONStringPrettyFormat 输出行尾必须恒为 \\n
+     *
+     * <p>Jackson 默认缩进器跟随系统 line.separator（Windows 为 \\r\\n），json-jackson
+     * 已固定为 \\n；fastjson2 / Gson 的 pretty 输出硬编码 \\n。此处对全部 Provider
+     * 做字节级断言，防止任何实现回归。</p>
+     */
+    @Test
+    void prettyFormatLineEndingsAlwaysLf() {
+        String json = provider().toJSONStringPrettyFormat(ALICE);
+        assertTrue(json.contains("\n"), "pretty 输出应包含换行");
+        assertFalse(json.contains("\r"), "pretty 输出行尾必须为 \\n，不得出现 \\r\\n（跨平台契约）");
+    }
+
+    /**
+     * 行尾归一化辅助（issue #186）：\\r\\n → \\n
+     *
+     * <p>实现层已保证输出恒为 \\n，此方法用于防御未来新增实现/第三方输出回归：
+     * 快照断言统一先归一化再比较（双保险）。</p>
+     *
+     * @param s 原始字符串，可为 null
+     * @return 归一化后的字符串；null 原样返回
+     */
+    protected static String normalizeLineEndings(String s) {
+        if (s == null) {
+            return null;
+        }
+        return s.replace("\r\n", "\n").replace("\r", "\n");
+    }
+
+    @Test
+    void normalizeLineEndingsCrossPlatform() {
+        assertEquals("a\nb\n", normalizeLineEndings("a\r\nb\r"));
+        assertEquals("a\nb\nc", normalizeLineEndings("a\nb\nc"));
+        assertEquals(null, normalizeLineEndings(null));
     }
 
     @Test
@@ -94,7 +132,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void deserialize默认下划线转驼峰() {
+    void deserializeDefaultSnakeToLowerCamel() {
         User user = provider().deserialize(JSON_SNAKE, User.class, null);
         assertEquals(11, user.getUserId());
         assertEquals("Alice", user.getUserName());
@@ -102,7 +140,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void deserialize未知字段默认忽略() {
+    void deserializeUnknownFieldDefaultIgnore() {
         String json = "{\"user_id\":11,\"user_name\":\"Alice\",\"unknown_field\":\"x\"}";
         User user = provider().deserialize(json, User.class, null);
         assertEquals(11, user.getUserId());
@@ -119,7 +157,7 @@ public abstract class AbstractSerializationContractTest {
     }
 
     @Test
-    void deserialize泛型Type目标() {
+    void deserializeGenericTypeTarget() {
         String json = "{\"a\":[{\"user_id\":11,\"user_name\":\"Alice\",\"create_time\":\"2023-01-01T12:00:00.123456\"}],"
                 + "\"z\":[{\"user_id\":12,\"user_name\":\"Bob\",\"create_time\":\"2023-01-01T13:00:00.123456\"}]}";
         java.util.Map<String, java.util.List<User>> result = provider().deserialize(json, mapListUserType(), null);
