@@ -31,6 +31,8 @@ AUtil (ACANX-Util) ACANX open source tool library, encapsulating common tool met
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/ACANX/AUtil)
 
+![Ask DeepWiki](https://deepwiki.com/badge.svg)
+
 ### Branch
 
 - V0.1.x  for JDK8
